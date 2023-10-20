@@ -1,12 +1,9 @@
 import React from "react";
 import Logo from "../assets/logoGrey.png";
-import {
-  AiFillFacebook,
-  AiFillInstagram,
-  AiFillYoutube,
-  AiOutlineTwitter,
-} from "react-icons/ai";
+
 import { FiMail } from "react-icons/fi";
+import SocialMedia from "./SocialMedia";
+
 const Footer = () => {
   return (
     <div className="bg-color-rev lg:h-screen text-white lg:flex pt-20 lg:pt-0">
@@ -74,20 +71,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div className="flex gap-2">
-            <span className="navbar-span">
-              <AiFillFacebook />
-            </span>
-            <span className="navbar-span">
-              <AiFillInstagram />
-            </span>
-            <span className="navbar-span">
-              <AiFillYoutube />
-            </span>
-            <span className="navbar-span">
-              <AiOutlineTwitter />
-            </span>
-          </div>
+          <SocialMedia />
           <p className="text-xs font-bold text-gray-500 lg:mr-14">
             © 2023 — ex.iphones.
           </p>
