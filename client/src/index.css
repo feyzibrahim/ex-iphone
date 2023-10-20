@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bg-color {
+  background: linear-gradient(155deg, #383638 2.06%, #0b0b0b 33.08%);
+}
+
+.bg-color-rev {
+  background: linear-gradient(-15deg, #383638 2.06%, #0b0b0b 33.08%);
+}
+
+.bg-color-two-side {
+  background: linear-gradient(
+    127deg,
+    #383638 3.9%,
+    #0b0b0b 28.86%,
+    #0b0b0b 70.57%,
+    #383638 96.6%
+  );
+}
+
+.btn-blue-no-pad {
+  @apply bg-blue-600 rounded-lg hover:bg-blue-700;
+}
+
+.btn-blue {
+  @apply bg-blue-600 px-3 lg:px-12 py-3 rounded-lg hover:bg-blue-700;
+}
+
+.navbar-p {
+  @apply text-blue-900 text-[.7em] font-[800] uppercase mb-6;
+}
+
+.navbar-li {
+  @apply font-semibold hover:text-gray-500 cursor-pointer;
+}
+
+.navbar-span {
+  @apply p-2 lg:p-3 border border-gray-500 rounded-full hover:bg-white hover:text-gray-500 cursor-pointer;
+}
