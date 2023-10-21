@@ -69,12 +69,12 @@ const AppleWatchCollection = () => {
     <>
       <div className="flex justify-between items-center m-10 lg:mx-20 p-5 lg:px-20 lg:py-10 bg-color-two-side rounded-2xl ">
         <img src={sideView} alt="Side View" className="w-10 lg:w-auto" />
-        <h1 className="text-2xl lg:text-8xl font-bold text-white">
+        <h1 className="text-3xl lg:text-8xl font-bold text-white">
           Apple Watch
         </h1>
         <img src={Front} alt="Front" className="w-10 lg:w-auto" />
       </div>
-      <div className="flex gap-20 px-5 overflow-scroll py-10">
+      <div className="flex gap-20 px-5 overflow-x-scroll scrollbar-hide py-10">
         {list.map((data) => {
           return <ProductCards data={data} />;
         })}

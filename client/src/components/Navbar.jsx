@@ -4,7 +4,7 @@ import Logo from "../assets/logoGrey.png";
 
 const Navbar = () => {
   return (
-    <nav className="flex z-10 absolute justify-between py-5 px-5 lg:px-40 font-bold text-gray-500 w-screen">
+    <nav className="flex z-10 absolute justify-between py-5 px-5 lg:px-40 font-bold text-gray-500 w-full">
       <div className="w-7 flex items-center">
         <img src={Logo} alt="ex.iphones. logo" />
         <p>ex.iphones.</p>

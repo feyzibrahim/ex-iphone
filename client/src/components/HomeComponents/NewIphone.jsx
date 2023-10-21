@@ -65,11 +65,11 @@ const NewIphone = () => {
   ];
 
   return (
-    <div className="lg:py-20">
+    <div className="pt-20 lg:py-20">
       <h1 className="text-3xl lg:text-5xl font-bold text-center mb-5 text-gray-800">
         Newest ex.iphones. Collection
       </h1>
-      <div className="flex gap-20 px-5 overflow-scroll py-10">
+      <div className="flex gap-20 px-5 overflow-x-scroll scrollbar-hide py-10">
         {list.map((data) => {
           return <ProductCards data={data} />;
         })}

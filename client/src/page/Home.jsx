@@ -11,10 +11,10 @@ import AppleWatchCollection from "../components/HomeComponents/AppleWatchCollect
 
 const Home = () => {
   return (
-    <div className="lg:overflow-x-hidden">
+    <div className="">
       {/* Landing Session */}
-      <div className="lg:h-screen bg-color lg:flex lg:items-center ">
-        <div className="lg:w-1/2 text-white pt-32 px-10 lg:pl-48 ">
+      <div className="lg:h-screen bg-color lg:flex lg:items-center overflow-clip">
+        <div className="lg:w-1/2 flex-shrink-0 text-white pt-32 px-10 lg:pl-48 ">
           <h1 className="text-4xl lg:text-6xl font-bold mb-6">
             Discover Most Affordable Apple Products
           </h1>
@@ -37,11 +37,7 @@ const Home = () => {
           </div>
         </div>
         {/* BG iPhone Image */}
-        <img
-          src={BgImage}
-          className="lg:absolute lg:bottom-0 lg:-right-72 lg:w-4/5"
-          alt="Bg Image"
-        />
+        <img src={BgImage} className="lg:w-[1200px] lg:-ml-32" alt="Bg Image" />
       </div>
       {/* ---------- New Collections  ---------*/}
       <NewCollection />
@@ -77,7 +73,7 @@ const Home = () => {
               Get free guide about smart watches daily.
             </p>
             <div className="flex justify-between rounded-2xl py-2 pl-2 lg:pl-5 pr-2 bg-gray-200 font-semibold">
-              <div className="flex items-center lg:gap-3">
+              <div className="flex items-center gap-1 lg:gap-3">
                 <BiSearch className="text-2xl text-blue-600" />
                 <input
                   type="text"
@@ -85,7 +81,9 @@ const Home = () => {
                   className="text-black bg-gray-200 outline-none w-2/3"
                 />
               </div>
-              <button className="btn-blue">Search</button>
+              <button className="btn-blue-no-pad  px-3 lg:px-12 py-2">
+                Search
+              </button>
             </div>
           </div>
           <div className="lg:w-1/2">

@@ -25,7 +25,7 @@ const NewCollection = () => {
       <h1 className="text-center text-2xl lg:text-5xl text-gray-500 lg:text-gray-400 mt-10 font-extrabold">
         Newest Collection Available
       </h1>
-      <divdiv className="grid grid-cols-2 mx-auto  lg:flex gap-5 p-10 justify-center">
+      <div className="grid grid-cols-2 mx-auto lg:flex gap-5 p-10 justify-center">
         {list.map((li) => {
           return (
             <div>
@@ -34,7 +34,7 @@ const NewCollection = () => {
             </div>
           );
         })}
-      </divdiv>
+      </div>
     </>
   );
 };

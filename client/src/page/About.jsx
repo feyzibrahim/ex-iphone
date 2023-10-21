@@ -85,16 +85,16 @@ const About = () => {
         </div>
         <div className="lg:py-20 lg:mx-20 py-5 flex lg:block">
           <p className="mb-5">Share</p>
-          <div className="p-3 border border-gray-400 rounded-full mr-5 lg:mr-0 lg:mb-5 hover:bg-gray-400 hover:text-white">
+          <div className="about-social">
             <AiFillFacebook />
           </div>
-          <div className="p-3 border border-gray-400 rounded-full mr-5 lg:mr-0 lg:mb-5 hover:bg-gray-400 hover:text-white">
+          <div className="about-social">
             <AiFillInstagram />
           </div>
-          <div className="p-3 border border-gray-400 rounded-full mr-5 lg:mr-0 lg:mb-5 hover:bg-gray-400 hover:text-white">
+          <div className="about-social">
             <AiFillYoutube />
           </div>
-          <div className="p-3 border border-gray-400 rounded-full mr-5 lg:mr-0 lg:mb-5 hover:bg-gray-400 hover:text-white">
+          <div className="about-social">
             <AiOutlineTwitter />
           </div>
         </div>
