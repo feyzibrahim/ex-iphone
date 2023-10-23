@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import Logo from "../assets/logoGrey.png";
 
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
+import ExIphoneLogo from "./ExIphoneLogo";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
@@ -16,8 +16,7 @@ const Navbar = () => {
   return (
     <nav className="flex z-10 absolute justify-between py-5 px-5 lg:px-40 font-bold text-gray-500 w-full">
       <div className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100">
-        <img src={Logo} alt="ex.iphones. logo" />
-        <p>ex.iphones.</p>
+        <ExIphoneLogo />
       </div>
       <div className="hidden lg:flex gap-10">
         <NavLink className="hover:text-gray-300" to="/">

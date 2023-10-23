@@ -56,6 +56,18 @@
   @apply p-3 border cursor-pointer border-gray-400 rounded-full mr-5 lg:mr-0 lg:mb-5 hover:bg-gray-400 hover:text-white;
 }
 
+.side-nav-link-sp {
+  @apply flex px-3 py-2 rounded items-center gap-4 active:bg-gray-200 hover:text-blue-600 hover:bg-gray-300;
+}
+
+.active {
+  @apply bg-gray-200 text-blue-500;
+}
+
+.side-nav-sub-title {
+  @apply uppercase text-xs font-normal py-1;
+}
+
 /* Hiding Scrollbar */
 
 /* For Webkit-based browsers (Chrome, Safari and Opera) */

@@ -1,16 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import SideNavbar from "./Components/SideNavbar";
+import { Outlet } from "react-router-dom";
 
 const Dashboard = () => {
-  const { user } = useSelector((state) => state.user);
-
   return (
-    <div className="py-20">
-      <h1>Admin</h1>
-      <p>{user.email}</p>
-      <p>
-        {user.firstName} {user.lastName}
-      </p>
+    <div className="flex overflow-y-hidden h-screen bg-gray-100">
+      <SideNavbar />
+      <Outlet />
     </div>
   );
 };
