@@ -70,7 +70,7 @@ const Home = () => {
               Subscribe To Newsletter
             </h1>
             <p className="text-sm font-bold my-2 text-gray-500">
-              Get free guide about smart watches daily.
+              Get weekly updates about the latest products in ex.iphone.
             </p>
             <div className="flex justify-between rounded-2xl py-2 pl-2 lg:pl-5 pr-2 bg-gray-200 font-semibold">
               <div className="flex items-center gap-1 lg:gap-3">

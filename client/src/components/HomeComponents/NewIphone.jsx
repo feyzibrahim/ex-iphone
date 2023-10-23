@@ -70,8 +70,8 @@ const NewIphone = () => {
         Newest ex.iphones. Collection
       </h1>
       <div className="flex gap-20 px-5 overflow-x-scroll scrollbar-hide py-10">
-        {list.map((data) => {
-          return <ProductCards data={data} />;
+        {list.map((data, index) => {
+          return <ProductCards key={index} data={data} />;
         })}
       </div>
     </div>

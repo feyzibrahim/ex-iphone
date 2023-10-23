@@ -28,7 +28,7 @@ const NewCollection = () => {
       <div className="grid grid-cols-2 mx-auto lg:flex gap-5 p-10 justify-center">
         {list.map((li) => {
           return (
-            <div>
+            <div key={li.title}>
               <img src={li.img} alt={li.title} />
               <p className="text-center mt-3 text-sm font-bold">{li.title}</p>
             </div>

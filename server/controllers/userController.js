@@ -9,7 +9,24 @@ const cookieConfig = {
   secure: true,
   httpOnly: true,
   // maxAge: 1000 * 60 * 60 * 24,
-  maxAge: 10000,
+  maxAge: 1000 * 60 * 60,
+};
+
+// To get user data on initial page load.
+const getUserDataFirst = async (req, res) => {
+  if (!req.cookies.user_token) {
+    return res.status(401).json({ error: "No token found" });
+  }
+
+  const token = req.cookies.user_token;
+
+  const { _id } = jwt.verify(token, process.env.SECRET);
+
+  const user = await User.findOne({ _id }, { password: 0 });
+
+  console.log(user);
+
+  res.status(200).json({ user });
 };
 
 const signUpUser = async (req, res) => {
@@ -44,7 +61,15 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  res.clearCookie("user_token");
+
+  res.status(200).json({ msg: "Logged out Successfully" });
+};
+
 module.exports = {
+  getUserDataFirst,
   signUpUser,
   loginUser,
+  logoutUser,
 };

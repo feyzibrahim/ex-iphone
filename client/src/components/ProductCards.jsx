@@ -5,9 +5,10 @@ const ProductCards = ({ data }) => {
     <div className="flex-shrink-0 text-center">
       <img src={data.img} alt={data.title} />
       <div className="flex gap-2 justify-center my-2">
-        {data.colors.map((col) => {
+        {data.colors.map((col, index) => {
           return (
             <div
+              key={index}
               className="w-3 h-3 rounded-full"
               style={{ background: col }}
             ></div>
