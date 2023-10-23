@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import Contact from "./page/Contact";
 import About from "./page/About";
 import Dashboard from "./page/Dashboard";
+import AdminDash from "./page/admin/Dashboard";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -30,7 +31,20 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={user ? <Dashboard /> : <Home />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                user.role === "admin" ? (
+                  <AdminDash />
+                ) : (
+                  <Dashboard />
+                )
+              ) : (
+                <Home />
+              )
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/contact" element={<Contact />} />

@@ -24,9 +24,9 @@ const getUserDataFirst = async (req, res) => {
 
   const user = await User.findOne({ _id }, { password: 0 });
 
-  console.log(user);
+  // console.log(user);
 
-  res.status(200).json({ user });
+  res.status(200).json(user);
 };
 
 const signUpUser = async (req, res) => {
@@ -39,7 +39,7 @@ const signUpUser = async (req, res) => {
 
     res.cookie("user_token", token, cookieConfig);
 
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
 
     res.cookie("user_token", token, cookieConfig);
 
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

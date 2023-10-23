@@ -5,11 +5,12 @@ const Dashboard = () => {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="h-screen w-full p-20">
-      <div>
-        <h1>{user.email}</h1>
-        <p>{user.role}</p>
-      </div>
+    <div className="py-20">
+      <h1>Admin</h1>
+      <p>{user.email}</p>
+      <p>
+        {user.firstName} {user.lastName}
+      </p>
     </div>
   );
 };

@@ -11,7 +11,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    console.log("Logout initiated");
   };
 
   return (
