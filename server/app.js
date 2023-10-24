@@ -30,9 +30,11 @@ app.use(logger("dev"));
 
 // Loading Routes
 const userRoutes = require("./routes/user");
+const adminRoutes = require("./routes/admin");
 
 // Mounting the routes
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

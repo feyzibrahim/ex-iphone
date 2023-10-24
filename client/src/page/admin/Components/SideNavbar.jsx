@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ExIphoneLogo from "../../../components/ExIphoneLogo";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import { RiDashboardLine } from "react-icons/ri";
 import { FiBox, FiSettings, FiHelpCircle, FiLogOut } from "react-icons/fi";
@@ -9,8 +9,20 @@ import { HiOutlineTicket } from "react-icons/hi";
 import { BsCardChecklist, BsCreditCard } from "react-icons/bs";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaUsersCog, FaUsers } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/actions/userActions";
+
+import "./style.css";
 
 const SideNavbar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <div className="hidden lg:block px-5 py-3 flex-shrink-0 border-r border-r-gray-300">
       <div className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100">
@@ -64,10 +76,13 @@ const SideNavbar = () => {
           <FiHelpCircle />
           Help
         </NavLink>
-        <div className="side-nav-link-sp cursor-pointer">
+        <button
+          className="side-nav-link-sp cursor-pointer w-full"
+          onClick={handleLogout}
+        >
           <FiLogOut />
           Logout
-        </div>
+        </button>
       </div>
     </div>
   );

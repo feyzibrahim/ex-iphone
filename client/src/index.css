@@ -60,10 +60,6 @@
   @apply flex px-3 py-2 rounded items-center gap-4 active:bg-gray-200 hover:text-blue-600 hover:bg-gray-300;
 }
 
-.active {
-  @apply bg-gray-200 text-blue-500;
-}
-
 .side-nav-sub-title {
   @apply uppercase text-xs font-normal py-1;
 }
@@ -108,7 +104,7 @@
 }
 
 .admin-input-no-m {
-  @apply w-full bg-gray-100 rounded-md py-2 px-3 text-sm outline-none border border-gray-200;
+  @apply bg-gray-100 rounded-md py-2 px-3 text-sm outline-none border border-gray-200;
 }
 
 .admin-div {

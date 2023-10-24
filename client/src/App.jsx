@@ -63,7 +63,10 @@ function App() {
 
         {/* Admin Routes */}
         {user && user.role === "admin" && (
-          <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route
+            path="/admin/*"
+            element={user ? <AdminRoutes /> : <Navigate to="/" />}
+          />
         )}
 
         <Route path="*" element={<Error404 />} />

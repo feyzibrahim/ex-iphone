@@ -50,4 +50,4 @@ const productsSchema = new Schema({
 
 const Products = mongoose.model("Products", productsSchema);
 
-export default Products;
+module.exports = Products;

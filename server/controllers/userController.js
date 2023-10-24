@@ -9,7 +9,7 @@ const cookieConfig = {
   secure: true,
   httpOnly: true,
   // maxAge: 1000 * 60 * 60 * 24,
-  maxAge: 1000 * 60 * 60,
+  maxAge: 1000 * 60 * 60 * 24,
 };
 
 // To get user data on initial page load.

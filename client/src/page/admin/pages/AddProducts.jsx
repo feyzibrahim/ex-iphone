@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineSave, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import CustomFileInput from "../Components/CustomFileInput";
+import { useDispatch } from "react-redux";
+import { productGetAll } from "../../../redux/actions/admin/productActions";
 
 const AddProducts = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const [category, setCategory] = useState([
+  const [categories, setCategories] = useState([
     { name: "Choose Category", img: "url" },
     { name: "iPhone", img: "url" },
     { name: "iMac", img: "url" },
@@ -19,7 +23,7 @@ const AddProducts = () => {
     { name: "Air Pods", img: "url" },
   ]);
 
-  const [status, setStatus] = useState([
+  const [statusList, setStatusList] = useState([
     "Draft",
     "Published",
     "Unpublished",
@@ -27,15 +31,62 @@ const AddProducts = () => {
     "Low Quantity",
   ]);
 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [stockQuantity, setStockQuantity] = useState("");
+  const [category, setCategory] = useState();
+  const [imageURL, setImageURL] = useState("");
+  const [status, setStatus] = useState("");
   const [attributes, setAttributes] = useState([]);
+  const [price, setPrice] = useState("");
+  const [markup, setMarkup] = useState("");
+  const [moreImageURL, setMoreImageURL] = useState("");
 
   const handleFileChange = (files) => {
     // Handle the selected files here
+    setMoreImageURL(files);
     console.log(files);
+  };
+
+  const handleSave = () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("stockQuantity", stockQuantity);
+    formData.append("attributes", attributes);
+    formData.append("price", price);
+    formData.append("markup", markup);
+    for (const file of moreImageURL) {
+      formData.append("moreImageURL", file);
+    }
+
+    console.log(formData);
+    dispatch(productGetAll(formData));
+
+    // for (const pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
   };
 
   const [attributeName, setAttributeName] = useState("");
   const [attributeValue, setAttributeValue] = useState("");
+  const [attributeHighlight, setAttributeHighlight] = useState(false);
+
+  const attributeHandler = (e) => {
+    e.preventDefault();
+    if (attributeName.trim() === "" || attributeValue.trim() === "") {
+      return;
+    }
+    const attribute = {
+      name: attributeName,
+      value: attributeValue,
+      isHighlight: attributeHighlight,
+    };
+    setAttributes([...attributes, attribute]);
+    setAttributeHighlight(false);
+    setAttributeName("");
+    setAttributeValue("");
+  };
 
   return (
     <div className="p-5 w-full overflow-y-scroll">
@@ -43,6 +94,7 @@ const AddProducts = () => {
       <div className="flex justify-between items-center text-xs font-semibold">
         <div>
           <h1 className="font-bold text-2xl">Add Products</h1>
+          {/* Bread Crumbs */}
           <div className="flex items-center gap-2  mt-2 mb-4 text-gray-500">
             <p className="text-blue-500 font-semibold">Dashboard</p>
             <span>
@@ -63,7 +115,10 @@ const AddProducts = () => {
             <AiOutlineClose />
             Cancel
           </button>
-          <button className="admin-button-fl bg-blue-700 text-white">
+          <button
+            className="admin-button-fl bg-blue-700 text-white"
+            onClick={handleSave}
+          >
             <AiOutlineSave />
             Save
           </button>
@@ -80,6 +135,8 @@ const AddProducts = () => {
               type="text"
               placeholder="Type product name here"
               className="admin-input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <p className="admin-label">Description</p>
             <textarea
@@ -87,12 +144,16 @@ const AddProducts = () => {
               id="description"
               className="admin-input h-36"
               placeholder="Type product description here..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <p className="admin-label">Quantity</p>
             <input
               type="number"
               placeholder="Type product quantity here"
               className="admin-input"
+              value={stockQuantity}
+              onChange={(e) => setStockQuantity(e.target.value)}
             />
           </div>
           {/* Image Uploading */}
@@ -104,44 +165,39 @@ const AddProducts = () => {
           {/* Attributes */}
           <div className="admin-div">
             <h1 className="font-bold mb-2">Product Attributes</h1>
-            <div className="flex flex-col lg:flex-row items-center gap-3">
+            <form
+              className="flex flex-col lg:flex-row items-center gap-3"
+              onSubmit={attributeHandler}
+            >
               <input
                 type="text"
-                className="admin-input-no-m"
+                className="admin-input-no-m w-full"
                 placeholder="Name"
                 value={attributeName}
                 onChange={(e) => setAttributeName(e.target.value)}
               />
               <input
                 type="text"
-                className="admin-input-no-m"
+                className="admin-input-no-m w-full"
                 placeholder="Value"
                 value={attributeValue}
                 onChange={(e) => setAttributeValue(e.target.value)}
               />
-              <button
-                onClick={() => {
-                  if (
-                    attributeName.trim() === "" ||
-                    attributeValue.trim() === ""
-                  ) {
-                    return;
-                  }
-                  const attribute = {
-                    name: attributeName,
-                    value: attributeValue,
-                  };
-                  setAttributes([...attributes, attribute]);
-                  setAttributeName("");
-                  setAttributeValue("");
-                }}
-                className="admin-button-fl w-full lg:w-auto bg-blue-700 text-white"
-              >
-                Add
-                <AiOutlinePlus />
-              </button>
-            </div>
-            <div className="border mt-5">
+              <div className="admin-input-no-m w-full lg:w-auto shrink-0">
+                <input
+                  type="checkbox"
+                  checked={attributeHighlight}
+                  onChange={() => setAttributeHighlight(!attributeHighlight)}
+                />{" "}
+                Highlight
+              </div>
+              <input
+                type="submit"
+                className="admin-button-fl w-full lg:w-auto bg-blue-700 text-white cursor-pointer"
+                value="Add"
+              />
+            </form>
+            <div className="border mt-5 rounded-lg">
               {attributes.map((at, index) => {
                 return (
                   <div
@@ -150,8 +206,11 @@ const AddProducts = () => {
                       index % 2 === 0 && "bg-gray-200"
                     }`}
                   >
-                    <p className="w-1/5">{at.name}</p>
-                    <p className="w-4/5">{at.value}</p>
+                    <p className="w-2/6">{at.name}</p>
+                    <p className="w-3/6">{at.value}</p>
+                    <p className="w-1/6">
+                      {at.isHighlight ? "Highlighted" : ""}
+                    </p>
                   </div>
                 );
               })}
@@ -167,36 +226,40 @@ const AddProducts = () => {
               type="number"
               placeholder="Type product name here"
               className="admin-input"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
             <p className="admin-label">Markup</p>
             <input
               type="number"
               placeholder="Type product markup here"
               className="admin-input"
+              value={markup}
+              onChange={(e) => setMarkup(e.target.value)}
             />
           </div>
           <div className="admin-div">
             <h1 className="font-bold">Category</h1>
             <p className="admin-label">Product Category</p>
-            <select name="category" id="category" className="admin-input">
-              {category.map((cat, index) => (
+            <select name="categories" id="categories" className="admin-input">
+              {categories.map((cat, index) => (
                 <option key={index} value={cat.name}>
                   {cat.name}
                 </option>
               ))}
             </select>
-            <p className="admin-label">Product Tags</p>
+            {/* <p className="admin-label">Product Tags</p>
             <input
               type="text"
               placeholder="Type product markup here"
               className="admin-input"
-            />
+            /> */}
           </div>
           <div className="admin-div">
             <h1 className="font-bold">Product Status</h1>
             <p className="admin-label">Status</p>
             <select name="status" id="status" className="admin-input">
-              {status.map((st, index) => (
+              {statusList.map((st, index) => (
                 <option key={index} value={st}>
                   {st}
                 </option>
