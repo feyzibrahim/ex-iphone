@@ -70,13 +70,47 @@
 
 /* Hiding Scrollbar */
 
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* For IE, Edge and Firefox */
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+/* Custom input file */
+
+.custom-file-input {
+  display: inline-block;
+}
+
+.custom-file-input input[type="file"] {
+  display: none;
+}
+
+/* Admin Page */
+
+.admin-button-fl {
+  @apply flex items-center gap-2 p-2 rounded-lg;
+}
+
+.admin-status {
+  @apply px-2 py-1 hover:bg-gray-100 hover:rounded-md cursor-pointer;
+}
+
+.admin-label {
+  @apply text-sm mt-2 font-semibold text-gray-700;
+}
+
+.admin-input {
+  @apply w-full bg-gray-100 rounded-md mt-2 py-2 px-3 text-sm outline-none border border-gray-200;
+}
+
+.admin-input-no-m {
+  @apply w-full bg-gray-100 rounded-md py-2 px-3 text-sm outline-none border border-gray-200;
+}
+
+.admin-div {
+  @apply bg-white p-5 rounded-lg mb-5;
 }

@@ -3,26 +3,26 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const AddressSchema = new Schema({
-  City: {
+  city: {
     type: String,
   },
-  Country: {
+  country: {
     type: String,
   },
-  PinCode: {
+  pinCode: {
     type: Number,
   },
-  AddressType: {
+  addressType: {
     type: String,
     enum: ["Shipping", "Communication"],
   },
-  State: {
+  state: {
     type: String,
   },
-  Street: {
+  street: {
     type: String,
   },
-  User: {
+  user: {
     type: Schema.Types.ObjectId,
     required: true,
   },

@@ -25,6 +25,7 @@ import ManageAdmins from "./page/admin/pages/ManageAdmins";
 import Customers from "./page/admin/pages/Customers";
 import Settings from "./page/admin/pages/Settings";
 import Help from "./page/admin/pages/Help";
+import AddProducts from "./page/admin/pages/AddProducts";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -80,6 +81,7 @@ function AdminRoutes() {
       <Route path="*" element={<AdminDash />}>
         <Route index element={<AdminHome />} />
         <Route path="products" element={<Products />} />
+        <Route path="products/addProducts" element={<AddProducts />} />
         <Route path="category" element={<Category />} />
         <Route path="orders" element={<Orders />} />
         <Route path="coupon" element={<Coupon />} />
