@@ -1,8 +1,16 @@
 import React from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="p-5 bg-white rounded-lg border border-gray-200 hover:shadow-lg cursor-pointer">
+    <div
+      className="p-5 bg-white rounded-lg border border-gray-200 hover:shadow-lg cursor-pointer"
+      onClick={() => {
+        navigate(`/product/${product._id}`);
+      }}
+    >
       <div className="overflow-hidden rounded-lg h-40 md:h-48 lg:h-56">
         <img
           src={`http://localhost:4000/img/${product.imageURL}`}

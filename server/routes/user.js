@@ -7,7 +7,7 @@ const {
   logoutUser,
 } = require("../controllers/userController");
 
-const { getProducts } = require("../controllers/productController");
+const { getProducts } = require("../controllers/user/productController");
 
 const router = express.Router();
 
