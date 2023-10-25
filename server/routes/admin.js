@@ -19,6 +19,6 @@ router.delete("/product/:id", deleteProduct);
 
 router.patch("/product/:id", updateProduct);
 
-router.post("/product", upload.array("moreImageURL"), addProduct);
+router.post("/product", upload.any(), addProduct);
 
 module.exports = router;

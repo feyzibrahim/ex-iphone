@@ -860,6 +860,11 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
+date-and-time@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/date-and-time/-/date-and-time-3.0.3.tgz#a571a2ca7a47ce08bfe3403d1507530bc432ba02"
+  integrity sha512-CmHCeTixc3KA5pcLTVs9JCFhmJMFTBsmSsgHnNed4YDNw9yUOrjjRn3zALy8eMgqmTO+4U8k5jl1peC7IoezfA==
+
 debug@^4.1.0, debug@^4.1.1, debug@^4.3.2:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"

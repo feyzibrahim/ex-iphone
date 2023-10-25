@@ -4,7 +4,8 @@ import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import CustomFileInput from "../Components/CustomFileInput";
 import { useDispatch } from "react-redux";
-import { productGetAll } from "../../../redux/actions/admin/productActions";
+import { createProduct } from "../../../redux/actions/admin/productActions";
+import CustomSingleFileInput from "../Components/CustomSingleFileInput";
 
 const AddProducts = () => {
   const dispatch = useDispatch();
@@ -36,16 +37,18 @@ const AddProducts = () => {
   const [stockQuantity, setStockQuantity] = useState("");
   const [category, setCategory] = useState();
   const [imageURL, setImageURL] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("Draft");
   const [attributes, setAttributes] = useState([]);
   const [price, setPrice] = useState("");
   const [markup, setMarkup] = useState("");
   const [moreImageURL, setMoreImageURL] = useState("");
 
-  const handleFileChange = (files) => {
-    // Handle the selected files here
+  const handleSingleImageInput = (img) => {
+    setImageURL(img);
+  };
+
+  const handleMultipleImageInput = (files) => {
     setMoreImageURL(files);
-    console.log(files);
   };
 
   const handleSave = () => {
@@ -53,19 +56,20 @@ const AddProducts = () => {
     formData.append("name", name);
     formData.append("description", description);
     formData.append("stockQuantity", stockQuantity);
-    formData.append("attributes", attributes);
+    formData.append("attributes", JSON.stringify(attributes));
     formData.append("price", price);
     formData.append("markup", markup);
+    formData.append("category", category);
+    formData.append("status", status.toLowerCase());
+
+    formData.append("imageURL", imageURL);
+    // console.log(imageURL);
+
     for (const file of moreImageURL) {
       formData.append("moreImageURL", file);
     }
 
-    console.log(formData);
-    dispatch(productGetAll(formData));
-
-    // for (const pair of formData.entries()) {
-    //   console.log(pair[0] + ", " + pair[1]);
-    // }
+    dispatch(createProduct(formData));
   };
 
   const [attributeName, setAttributeName] = useState("");
@@ -128,39 +132,45 @@ const AddProducts = () => {
       <div className="lg:flex ">
         {/* Product Information */}
         <div className="lg:w-4/6 lg:mr-5">
-          <div className="admin-div">
-            <h1 className="font-bold">Product Information</h1>
-            <p className="admin-label">Title</p>
-            <input
-              type="text"
-              placeholder="Type product name here"
-              className="admin-input"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <p className="admin-label">Description</p>
-            <textarea
-              name="description"
-              id="description"
-              className="admin-input h-36"
-              placeholder="Type product description here..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            <p className="admin-label">Quantity</p>
-            <input
-              type="number"
-              placeholder="Type product quantity here"
-              className="admin-input"
-              value={stockQuantity}
-              onChange={(e) => setStockQuantity(e.target.value)}
-            />
+          <div className="admin-div lg:flex gap-5">
+            <div className="lg:w-1/3 mb-3 lg:mb-0">
+              <h1 className="font-bold mb-3">Product Thumbnail</h1>
+              <CustomSingleFileInput onChange={handleSingleImageInput} />
+            </div>
+            <div className="lg:w-2/3">
+              <h1 className="font-bold">Product Information</h1>
+              <p className="admin-label">Title</p>
+              <input
+                type="text"
+                placeholder="Type product name here"
+                className="admin-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <p className="admin-label">Description</p>
+              <textarea
+                name="description"
+                id="description"
+                className="admin-input h-36"
+                placeholder="Type product description here..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              ></textarea>
+              <p className="admin-label">Quantity</p>
+              <input
+                type="number"
+                placeholder="Type product quantity here"
+                className="admin-input"
+                value={stockQuantity}
+                onChange={(e) => setStockQuantity(e.target.value)}
+              />
+            </div>
           </div>
           {/* Image Uploading */}
           <div className="admin-div">
             <h1 className="font-bold">Product Images</h1>
             <p className="admin-label my-2">Drop Here</p>
-            <CustomFileInput onChange={handleFileChange} />
+            <CustomFileInput onChange={handleMultipleImageInput} />
           </div>
           {/* Attributes */}
           <div className="admin-div">
@@ -241,7 +251,13 @@ const AddProducts = () => {
           <div className="admin-div">
             <h1 className="font-bold">Category</h1>
             <p className="admin-label">Product Category</p>
-            <select name="categories" id="categories" className="admin-input">
+            <select
+              name="categories"
+              id="categories"
+              className="admin-input"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
               {categories.map((cat, index) => (
                 <option key={index} value={cat.name}>
                   {cat.name}
@@ -258,7 +274,13 @@ const AddProducts = () => {
           <div className="admin-div">
             <h1 className="font-bold">Product Status</h1>
             <p className="admin-label">Status</p>
-            <select name="status" id="status" className="admin-input">
+            <select
+              name="status"
+              id="status"
+              className="admin-input"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
               {statusList.map((st, index) => (
                 <option key={index} value={st}>
                   {st}

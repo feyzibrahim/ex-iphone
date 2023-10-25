@@ -21,18 +21,32 @@ const getProduct = (req, res) => {
 // Creating new Product
 const addProduct = async (req, res) => {
   try {
-    let formData = { ...req.body };
+    let formData = { ...req.body, isActive: true };
     const files = req?.files;
 
-    if (files.length > 0) {
+    const attributes = JSON.parse(formData.attributes);
+
+    formData.attributes = attributes;
+
+    if (files && files.length > 0) {
       formData.moreImageURL = [];
-      console.log("first");
-      files.map((file) => formData.moreImageURL.push(file.filename));
+      formData.imageURL = "";
+      files.map((file) => {
+        if (file.fieldname === "imageURL") {
+          formData.imageURL = file.filename;
+        } else {
+          formData.moreImageURL.push(file.filename);
+        }
+      });
     }
 
-    // const product = await Product.create({ ...req.body });
+    console.log(formData);
 
-    res.status(200).json({ product: formData });
+    const product = await Product.create(formData);
+
+    console.log(product);
+
+    res.status(200).json({ product });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

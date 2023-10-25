@@ -19,26 +19,41 @@ const Navbar = () => {
         <ExIphoneLogo />
       </div>
       <div className="hidden lg:flex gap-10">
-        <NavLink className="hover:text-gray-300" to="/">
+        <NavLink className="hover:text-blue-400  py-1" to="/">
           Home
         </NavLink>
-        <NavLink className="hover:text-gray-300" to="/contact">
-          Contact
-        </NavLink>
-        <NavLink className="hover:text-gray-300" to="/about">
-          About
-        </NavLink>
+        {!user ? (
+          <>
+            <NavLink className="hover:text-blue-400  py-1" to="/contact">
+              Contact
+            </NavLink>
+            <NavLink className="hover:text-blue-400  py-1" to="/about">
+              About
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink className="hover:text-blue-400  py-1" to="/products">
+              Products
+            </NavLink>
+            <NavLink className="hover:text-blue-400  py-1" to="/og">
+              Original Products
+            </NavLink>
+          </>
+        )}
       </div>
       <div className="flex gap-3">
         {user ? (
-          <button onClick={handleLogout}>Logout</button>
+          <button onClick={handleLogout} className="hover:text-blue-400  py-1">
+            Logout
+          </button>
         ) : (
           <>
-            <NavLink className="hover:text-gray-300" to="/login">
+            <NavLink className="hover:text-blue-400" to="/login">
               Login
             </NavLink>
             <span>|</span>
-            <NavLink className="hover:text-gray-300" to="/register">
+            <NavLink className="hover:text-blue-400" to="/register">
               Sign Up
             </NavLink>
           </>

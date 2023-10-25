@@ -64,6 +64,12 @@
   @apply uppercase text-xs font-normal py-1;
 }
 
+/* Navbar elements active state */
+
+.active {
+  @apply bg-gray-200 text-blue-500 py-1 px-2 rounded;
+}
+
 /* Hiding Scrollbar */
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -109,4 +115,18 @@
 
 .admin-div {
   @apply bg-white p-5 rounded-lg mb-5;
+}
+
+.admin-table-head {
+  @apply font-semibold p-4 text-left;
+}
+
+.admin-table-row {
+  @apply text-sm p-4;
+}
+
+/* Product Page */
+
+.category-li {
+  @apply text-sm hover:text-blue-600 cursor-pointer my-3;
 }

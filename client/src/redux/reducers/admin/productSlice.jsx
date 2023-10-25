@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { productGetAll } from "../../actions/admin/productActions";
+import { getProducts, createProduct } from "../../actions/admin/productActions";
 
 const productSlice = createSlice({
   name: "products",
@@ -10,17 +10,30 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(productGetAll.pending, (state) => {
+      .addCase(getProducts.pending, (state) => {
         state.loading = true;
       })
-      .addCase(productGetAll.fulfilled, (state) => {
+      .addCase(getProducts.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.user = null;
+        state.products = payload;
       })
-      .addCase(productGetAll.rejected, (state, { payload }) => {
+      .addCase(getProducts.rejected, (state, { payload }) => {
         state.loading = false;
-        state.user = null;
+        state.products = null;
+        state.error = payload;
+      })
+      .addCase(createProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.products = [...state.products, payload];
+      })
+      .addCase(createProduct.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.products = null;
         state.error = payload;
       });
   },

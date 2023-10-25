@@ -3,13 +3,6 @@ import axios from "axios";
 
 const config = {
   headers: {
-    "Content-Type": "multipart/form-data",
-  },
-  withCredentials: true,
-};
-
-const configJson = {
-  headers: {
     "Content-Type": "application/json",
   },
   withCredentials: true,
@@ -25,31 +18,15 @@ const handleError = (error, rejectWithValue) => {
   }
 };
 
-// Function to get the product details
-export const createProduct = createAsyncThunk(
-  "products/createProduct",
-  async (formData, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:4000/admin/product",
-        formData,
-        config
-      );
-      return data;
-    } catch (error) {
-      handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getProducts = createAsyncThunk(
-  "products/getProducts",
+export const getUserProducts = createAsyncThunk(
+  "products/getUserProducts",
   async (rc, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        "http://localhost:4000/admin/products",
-        configJson
+        "http://localhost:4000/user/products",
+        config
       );
+      console.log(data.products);
       return data.products;
     } catch (error) {
       handleError(error, rejectWithValue);

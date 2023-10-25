@@ -8,8 +8,17 @@ import NewCollection from "../components/HomeComponents/NewCollection";
 import fourIphones from "../assets/fourIphone.png";
 import NewIphone from "../components/HomeComponents/NewIphone";
 import AppleWatchCollection from "../components/HomeComponents/AppleWatchCollection";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { loading } = useSelector((state) => state.user);
+
+  if (loading) {
+    return (
+      <div className="h-screen flex justify-center items-center">Loading</div>
+    );
+  }
+
   return (
     <div className="">
       {/* Landing Session */}

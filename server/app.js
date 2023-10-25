@@ -36,6 +36,9 @@ const adminRoutes = require("./routes/admin");
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
+// Public Api for accessing images
+app.use("/img", express.static(__dirname + "/public/products/"));
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

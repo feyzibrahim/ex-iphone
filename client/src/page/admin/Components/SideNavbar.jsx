@@ -12,8 +12,6 @@ import { FaUsersCog, FaUsers } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../redux/actions/userActions";
 
-import "./style.css";
-
 const SideNavbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
