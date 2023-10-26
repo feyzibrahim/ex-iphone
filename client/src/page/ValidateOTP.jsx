@@ -25,8 +25,8 @@ const ValidateOTP = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let ooo = parseInt(otp.join(""));
-    if (ooo.toString().split("").length < 6) {
+    let otpNumber = parseInt(otp.join(""));
+    if (otpNumber.toString().split("").length < 6) {
       setError("OTP is not valid");
       return;
     } else {
@@ -39,7 +39,7 @@ const ValidateOTP = () => {
       .post(
         "http://localhost:4000/user/validate-otp",
         {
-          otp: ooo,
+          otp: otpNumber,
         },
         {
           headers: {

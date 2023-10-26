@@ -95,6 +95,12 @@ const forgotPassword = async (req, res) => {
       throw Error("Email is not Registered");
     }
 
+    const otpExists = await OTP.findOne({ email });
+
+    if (otpExists) {
+      throw Error("OTP is already send to your email");
+    }
+
     let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 10000;
 
     await OTP.create({ email, otp });
