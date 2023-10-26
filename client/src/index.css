@@ -67,7 +67,7 @@
 /* Navbar elements active state */
 
 .active {
-  @apply bg-gray-200 text-blue-500 py-1 px-2 rounded;
+  @apply bg-gray-200 text-blue-500 py-2  px-3 rounded;
 }
 
 /* Hiding Scrollbar */
@@ -129,4 +129,8 @@
 
 .category-li {
   @apply text-sm hover:text-blue-600 cursor-pointer my-3;
+}
+
+.description-ul {
+  @apply flex items-center gap-2 py-1;
 }

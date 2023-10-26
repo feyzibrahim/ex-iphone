@@ -102,7 +102,7 @@ const Products = () => {
                         <img
                           src={`http://localhost:4000/img/${pro.imageURL}`}
                           alt="img"
-                          className="object-contain"
+                          className="object-contain w-full h-full"
                         />
                       </div>
 

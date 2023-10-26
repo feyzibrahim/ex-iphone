@@ -26,7 +26,6 @@ export const getUserProducts = createAsyncThunk(
         "http://localhost:4000/user/products",
         config
       );
-      console.log(data.products);
       return data.products;
     } catch (error) {
       handleError(error, rejectWithValue);
