@@ -28,6 +28,7 @@ import Help from "./page/admin/pages/Help";
 import AddProducts from "./page/admin/pages/AddProducts";
 import ProductDetails from "./page/user/ProductDetails";
 import ValidateOTP from "./page/ValidateOTP";
+import ForgetPassword from "./page/ForgetPassword";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -58,11 +59,16 @@ function App() {
             )
           }
         />
+
+        {/* Auth Pages */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="otp" element={<ValidateOTP />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
+        <Route path="forgot-password" element={<ForgetPassword />} />
+
+        {/* General Pages */}
+        <Route path="contact" element={<Contact />} />
+        <Route path="about" element={<About />} />
 
         {/* Product Routes */}
         <Route path="/product/:id" element={<ProductDetails />} />

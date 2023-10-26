@@ -8,7 +8,13 @@ const {
 } = require("../controllers/userController");
 
 const { getProducts } = require("../controllers/user/productController");
-const { sendOTP, validateOTP } = require("../controllers/otpController");
+const {
+  sendOTP,
+  validateOTP,
+  forgotPassword,
+  validateForgotOTP,
+  newPassword,
+} = require("../controllers/otpController");
 
 const router = express.Router();
 
@@ -28,5 +34,12 @@ router.get("/products", getProducts);
 // OTP
 router.get("/send-otp", sendOTP);
 router.post("/validate-otp", validateOTP);
+
+// Forget Password
+
+router.post("/forget-password", forgotPassword);
+router.post("/forget-password-validate-otp", validateForgotOTP);
+
+router.post("/set-new-password", newPassword);
 
 module.exports = router;

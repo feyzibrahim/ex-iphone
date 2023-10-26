@@ -114,9 +114,11 @@ const Login = () => {
           >
             {loading ? "Loading..." : "Login"}
           </button>
-          <p className="my-5 text-blue-600 font-bold cursor-pointer hover:text-blue-500">
-            Forgot Password?
-          </p>
+          <Link to="/forgot-password">
+            <div className="my-5 text-blue-600 font-bold cursor-pointer hover:text-blue-500">
+              Forgot Password?
+            </div>
+          </Link>
           <p className="my-4">OR</p>
           <button className="bg-gray-300 w-full rounded-full py-3 text-black flex justify-center items-center gap-5 hover:bg-gray-400">
             <span className="text-2xl">
