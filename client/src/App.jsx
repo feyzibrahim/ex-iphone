@@ -27,6 +27,7 @@ import Settings from "./page/admin/pages/Settings";
 import Help from "./page/admin/pages/Help";
 import AddProducts from "./page/admin/pages/AddProducts";
 import ProductDetails from "./page/user/ProductDetails";
+import ValidateOTP from "./page/ValidateOTP";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -59,6 +60,7 @@ function App() {
         />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="otp" element={<ValidateOTP />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
 

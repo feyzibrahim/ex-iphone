@@ -74,8 +74,6 @@ export const signUpUser = createAsyncThunk(
         config
       );
 
-      console.log(data);
-
       return data;
     } catch (error) {
       return handleError(error, rejectWithValue);

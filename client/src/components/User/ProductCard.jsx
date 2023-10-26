@@ -11,11 +11,11 @@ const ProductCard = ({ product }) => {
         navigate(`/product/${product._id}`);
       }}
     >
-      <div className="overflow-hidden rounded-lg h-40 md:h-48 lg:h-56">
+      <div className="overflow-hidden rounded-lg h-56">
         <img
           src={`http://localhost:4000/img/${product.imageURL}`}
           alt={product.name}
-          className="object-cover w-full h-full"
+          className="object-contain w-full h-full"
         />
       </div>
       <div className="flex text-sm items-center gap-1 mt-4 ">
@@ -30,7 +30,9 @@ const ProductCard = ({ product }) => {
       </div>
       <p className="font-bold  text-gray-800">{product.name}</p>
       <p className="font-semibold text-md text-blue-500">
-        <span className="text-gray-500 line-through">{product.price}₹</span>
+        <span className="text-gray-500 line-through">
+          {parseInt(product.price * 1.25)}₹
+        </span>
         {" " + product.price}₹
       </p>
     </div>

@@ -67,7 +67,7 @@
 /* Navbar elements active state */
 
 .active {
-  @apply bg-gray-200 text-blue-500 py-2  px-3 rounded;
+  @apply bg-gray-200 text-blue-500  rounded;
 }
 
 /* Hiding Scrollbar */

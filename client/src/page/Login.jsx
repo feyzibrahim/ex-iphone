@@ -24,7 +24,11 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (!user.isEmailVerified) {
+        navigate("/otp");
+      } else {
+        navigate("/");
+      }
     }
   }, [user]);
 

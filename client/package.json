@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@vanyapr/react-image-magnifiers": "^1.4.2",
     "autoprefixer": "^10.4.16",
     "axios": "^1.5.1",
     "date-and-time": "^3.0.3",

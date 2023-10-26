@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "../components/SearchBar";
-import { getUserProducts } from "../redux/actions/user/userProductActions";
 import ProductCard from "../components/User/ProductCard";
+import { getUserProducts } from "../redux/actions/user/userProductActions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { userProducts, loading, error } = useSelector(

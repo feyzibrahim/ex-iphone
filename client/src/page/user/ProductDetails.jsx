@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
+// import {
+//   MagnifierContainer,
+//   MagnifierPreview,
+//   Magnifier,
+//   SideBySideMagnifier,
+// } from "@vanyapr/react-image-magnifiers";
 import { AiFillStar, AiOutlineStar, AiFillHeart } from "react-icons/ai";
 
 import DescReview from "./components/DescReview";
@@ -26,12 +31,25 @@ const ProductDetails = () => {
       <div className="lg:flex gap-10 justify-center">
         {/* Product Images */}
         <div className="lg:w-1/2 bg-white p-5 rounded flex flex-col items-center">
-          <div className="w-80 h-80 lg:w-96 lg:h-96">
+          <div className="w-80 h-80 lg:w-96 lg:h-96 flex">
             <img
               src={`http://localhost:4000/img/${currentImage}`}
               alt="Some to be"
               className="w-full h-full object-contain"
             />
+            {/* <Magnifier
+              imageSrc={`http://localhost:4000/img/${currentImage}`}
+              imageAlt="Large Image"
+              largeImageSrc={`http://localhost:4000/img/${currentImage}`}
+              magnifierSize="30%"
+            />
+            <SideBySideMagnifier
+              imageSrc={`http://localhost:4000/img/${currentImage}`}
+              imageAlt="Large Image"
+              alwaysInPlace={true}
+              largeImageSrc={`http://localhost:4000/img/${currentImage}`}
+              smallImageSrc={`http://localhost:4000/img/${currentImage}`}
+            /> */}
           </div>
 
           <div className="flex gap-5 mt-5">

@@ -19,7 +19,11 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/");
+      if (!user.isEmailVerified) {
+        navigate("/otp");
+      } else {
+        navigate("/");
+      }
     }
   }, [user]);
 
@@ -32,7 +36,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -44,8 +48,10 @@ const Register = () => {
     formData.append("passwordAgain", passwordAgain);
     formData.append("phoneNumber", phoneNumber);
 
-    console.log(formData);
     dispatch(signUpUser(formData));
+    // if (!res.payload.isEmailVerified) {
+    //   navigate("/otp");
+    // }
   };
 
   return (
@@ -161,7 +167,7 @@ const Register = () => {
             className="btn-blue text-white w-full my-3"
             disabled={loading}
           >
-            {loading ? "Loading..." : "Login"}
+            {loading ? "Loading..." : "Sign Up"}
           </button>
         </form>
         <div className="text-center">
