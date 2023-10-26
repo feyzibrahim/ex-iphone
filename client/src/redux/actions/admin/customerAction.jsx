@@ -27,9 +27,9 @@ const handleError = (error, rejectWithValue) => {
   }
 };
 
-// Function to create new product
-export const createProduct = createAsyncThunk(
-  "products/createProduct",
+// Function to Create new Customer
+export const createNewCustomer = createAsyncThunk(
+  "customers/createNewCustomer",
   async (formData, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
@@ -44,13 +44,12 @@ export const createProduct = createAsyncThunk(
   }
 );
 
-// Function to get the product details
-export const getProducts = createAsyncThunk(
-  "products/getProducts",
+export const getCustomers = createAsyncThunk(
+  "customers/getCustomers",
   async (rc, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/products`, configJson);
-      return data.products;
+      const { data } = await axios.get(`${URL}/admin/customers`, configJson);
+      return data.customers;
     } catch (error) {
       handleError(error, rejectWithValue);
     }

@@ -9,30 +9,30 @@ import {
 import { FiDownload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getProducts } from "../../../redux/actions/admin/productActions";
+import { getCustomers } from "../../../../redux/actions/admin/customerAction";
 import date from "date-and-time";
 
-const Products = () => {
+const Customers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { products, loading, error } = useSelector((state) => state.products);
+  const { customers, loading, error } = useSelector((state) => state.customers);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getCustomers());
   }, []);
 
   return (
     <div className="p-5 w-full overflow-y-auto">
       <div className="flex justify-between items-center text-xs font-semibold">
         <div>
-          <h1 className="font-bold text-2xl">Products</h1>
-          <div className="flex items-center gap-2  mt-2 mb-4 text-gray-500">
+          <h1 className="font-bold text-2xl">Customers</h1>
+          <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
             <p className="text-blue-500 font-semibold">Dashboard</p>
             <span>
               <BsCaretRightFill />
             </span>
-            <p className="font-semibold">Product List</p>
+            <p className="font-semibold">Customer List</p>
           </div>
         </div>
         <div className="flex gap-3">
@@ -42,22 +42,20 @@ const Products = () => {
           </button>
           <button
             className="admin-button-fl bg-blue-700 text-white"
-            onClick={() => navigate("addProducts")}
+            onClick={() => navigate("addCustomer")}
           >
             <AiOutlinePlus />
-            Add Product
+            Create New Customer
           </button>
         </div>
       </div>
       <div className="lg:flex justify-between items-center text-xs font-semibold">
         <div className="flex justify-between gap-2 font-semibold bg-white text-gray-500 my-2 p-1 shadow rounded-md">
           <p className="bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer">
-            All products
+            All
           </p>
-          <p className="admin-status">Published</p>
-          <p className="admin-status">Low Stock</p>
-          <p className="admin-status">Draft</p>
-          <p className="admin-status">Out of Stocks</p>
+          <p className="admin-status">Active</p>
+          <p className="admin-status">Blocked</p>
         </div>
         <div className="flex my-2 gap-3">
           <button className="admin-button-fl bg-white">
@@ -71,23 +69,23 @@ const Products = () => {
         </div>
       </div>
       <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
-        {products && (
+        {customers && (
           <table className="w-full min-w-max table-auto ">
             <thead className="font-normal">
               <tr className="border-b border-gray-200">
                 <th className="admin-table-head">Name</th>
-                <th className="admin-table-head">Description</th>
-                <th className="admin-table-head">Category</th>
-                <th className="admin-table-head">Quantity</th>
-                <th className="admin-table-head">Price</th>
+                <th className="admin-table-head">Email</th>
+                <th className="admin-table-head">Phone No</th>
+                <th className="admin-table-head">DOB</th>
                 <th className="admin-table-head">Status</th>
-                <th className="admin-table-head">Added</th>
+                <th className="admin-table-head">Joined</th>
+                <th className="admin-table-head">Wallet Balance</th>
                 <th className="admin-table-head">Action</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((pro, index) => {
-                const isLast = index === products.length - 1;
+              {customers.map((customer, index) => {
+                const isLast = index === customers.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-gray-200 ";
@@ -99,24 +97,32 @@ const Products = () => {
                   >
                     <td className="admin-table-row flex items-center gap-2">
                       <div className="w-10 h-10 overflow-clip flex justify-center items-center">
-                        <img
-                          src={`http://localhost:4000/img/${pro.imageURL}`}
-                          alt="img"
-                          className="object-contain w-full h-full"
-                        />
+                        {customer.profileImgURL ? (
+                          <img
+                            src={`http://localhost:4000/img/${customer.imageURL}`}
+                            alt="img"
+                            className="object-contain w-full h-full"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
+                        )}
                       </div>
-
-                      {pro.name}
+                      {customer.firstName} {customer.lastName}
                     </td>
-                    <td className="admin-table-row">{pro.description}</td>
-                    <td className="admin-table-row">{pro.category}</td>
-                    <td className="admin-table-row">{pro.stockQuantity}</td>
-                    <td className="admin-table-row">{pro.price}</td>
-                    <td className="admin-table-row capitalize">{pro.status}</td>
+                    <td className="admin-table-row">{customer.email}</td>
+                    <td className="admin-table-row">{customer.phoneNumber}</td>
+                    <td className="admin-table-row">{customer.dateOfBirth}</td>
+                    <td className="admin-table-row">{customer.status}</td>
                     <td className="admin-table-row">
-                      {pro.createdAt
-                        ? date.format(new Date(pro.createdAt), "MMM DD YYYY")
+                      {customer.createdAt
+                        ? date.format(
+                            new Date(customer.createdAt),
+                            "MMM DD YYYY"
+                          )
                         : "No Data"}
+                    </td>
+                    <td className="admin-table-row capitalize">
+                      {customer.walletBalance}
                     </td>
                     <td className="admin-table-row">
                       <div className="flex items-center gap-2 text-lg">
@@ -139,4 +145,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Customers;

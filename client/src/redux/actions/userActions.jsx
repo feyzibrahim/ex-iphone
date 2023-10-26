@@ -8,6 +8,8 @@ const config = {
   withCredentials: true,
 };
 
+const URL = "http://localhost:4000";
+
 const handleError = (error, rejectWithValue) => {
   if (error.response && error.response.data.error) {
     console.log(error.response.data.error);
@@ -22,10 +24,7 @@ export const logout = createAsyncThunk(
   "user/logout",
   async (userCredentials, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/user/logout",
-        config
-      );
+      const { data } = await axios.get(`${URL}/user/logout`, config);
 
       return data;
     } catch (error) {
@@ -38,7 +37,7 @@ export const getUserDataFirst = createAsyncThunk(
   "user/getUserDataFirst",
   async (userCredentials, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get("http://localhost:4000/user/", config);
+      const { data } = await axios.get(`${URL}/user/`, config);
 
       return data;
     } catch (error) {
@@ -52,7 +51,7 @@ export const loginUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/user/login",
+        `${URL}/user/login`,
         userCredentials,
         config
       );
@@ -69,7 +68,7 @@ export const signUpUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/user/signup",
+        `${URL}/user/signup`,
         userCredentials,
         config
       );

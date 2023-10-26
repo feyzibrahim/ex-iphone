@@ -8,6 +8,8 @@ const config = {
   withCredentials: true,
 };
 
+const URL = "http://localhost:4000";
+
 const handleError = (error, rejectWithValue) => {
   if (error.response && error.response.data.error) {
     console.log(error.response.data.error);
@@ -22,10 +24,7 @@ export const getUserProducts = createAsyncThunk(
   "products/getUserProducts",
   async (rc, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        "http://localhost:4000/user/products",
-        config
-      );
+      const { data } = await axios.get(`${URL}/user/products`, config);
       return data.products;
     } catch (error) {
       handleError(error, rejectWithValue);

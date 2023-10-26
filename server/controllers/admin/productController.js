@@ -1,5 +1,6 @@
 const Product = require("../../model/productModel");
 
+// Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find();

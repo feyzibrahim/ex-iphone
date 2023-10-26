@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import CustomFileInput from "../Components/CustomFileInput";
+import CustomFileInput from "../../Components/CustomFileInput";
 import { useDispatch } from "react-redux";
-import { createProduct } from "../../../redux/actions/admin/productActions";
-import CustomSingleFileInput from "../Components/CustomSingleFileInput";
+import { createProduct } from "../../../../redux/actions/admin/productActions";
+import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 
 const AddProducts = () => {
   const dispatch = useDispatch();

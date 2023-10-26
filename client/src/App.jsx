@@ -13,22 +13,25 @@ import Footer from "./components/Footer";
 import Contact from "./page/Contact";
 import About from "./page/About";
 import Dashboard from "./page/Dashboard";
+import ProductDetails from "./page/user/ProductDetails";
+import ValidateOTP from "./page/ValidateOTP";
+import ForgetPassword from "./page/ForgetPassword";
+
+// Admin
 import AdminDash from "./page/admin/Dashboard";
 import AdminHome from "./page/admin/pages/AdminHome";
-import Products from "./page/admin/pages/Products";
 import Category from "./page/admin/pages/Category";
 import Orders from "./page/admin/pages/Orders";
 import Coupon from "./page/admin/pages/Coupon";
 import Banner from "./page/admin/pages/Banner";
 import Transaction from "./page/admin/pages/Transaction";
 import ManageAdmins from "./page/admin/pages/ManageAdmins";
-import Customers from "./page/admin/pages/Customers";
+import Customers from "./page/admin/pages/customer/Customers";
 import Settings from "./page/admin/pages/Settings";
 import Help from "./page/admin/pages/Help";
-import AddProducts from "./page/admin/pages/AddProducts";
-import ProductDetails from "./page/user/ProductDetails";
-import ValidateOTP from "./page/ValidateOTP";
-import ForgetPassword from "./page/ForgetPassword";
+
+import Products from "./page/admin/pages/products/Products";
+import AddProducts from "./page/admin/pages/products/AddProducts";
 
 function App() {
   const { user } = useSelector((state) => state.user);
