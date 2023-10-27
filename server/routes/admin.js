@@ -15,7 +15,7 @@ const {
 router.get("/products", getProducts);
 router.get("/product/:id", getProduct);
 router.delete("/product/:id", deleteProduct);
-router.patch("/product/:id", updateProduct);
+router.patch("/product/:id", upload.any(), updateProduct);
 router.post("/product", upload.any(), addProduct);
 
 // Admin Customer controller functions and mounting them to corresponding route

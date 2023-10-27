@@ -3,6 +3,7 @@ import {
   getProducts,
   createProduct,
   deleteProducts,
+  updateProduct,
 } from "../../actions/admin/productActions";
 
 const productSlice = createSlice({
@@ -14,7 +15,6 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
       // Getting Product details
       .addCase(getProducts.pending, (state) => {
         state.loading = true;
@@ -57,6 +57,27 @@ const productSlice = createSlice({
         );
       })
       .addCase(deleteProducts.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.products = null;
+        state.error = payload;
+      })
+
+      // Updating a product
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProduct.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        const index = state.products.findIndex(
+          (user) => user._id === payload._id
+        );
+
+        if (index !== -1) {
+          state.adminUser[index] = payload;
+        }
+      })
+      .addCase(updateProduct.rejected, (state, { payload }) => {
         state.loading = false;
         state.products = null;
         state.error = payload;

@@ -72,3 +72,23 @@ export const deleteProducts = createAsyncThunk(
     }
   }
 );
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      console.log(id);
+      console.log(formData);
+
+      const { data } = await axios.patch(
+        `${URL}/admin/product/${id}`,
+        formData,
+        config
+      );
+
+      return data;
+    } catch (error) {
+      handleError(error, rejectWithValue);
+    }
+  }
+);

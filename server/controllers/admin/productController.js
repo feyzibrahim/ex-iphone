@@ -66,12 +66,49 @@ const addProduct = async (req, res) => {
   }
 };
 
-const updateProduct = (req, res) => {
-  const { id } = req.params;
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const formData = req.body;
 
-  console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
 
-  res.status(200).json({ msg: `Product Number ${id} - updated` });
+    const files = req?.files;
+
+    if (files && files.length > 0) {
+      formData.moreImageURL = [];
+      formData.imageURL = "";
+      files.map((file) => {
+        if (file.fieldname === "imageURL") {
+          formData.imageURL = file.filename;
+          console.log("true");
+        } else {
+          console.log("false");
+          formData.moreImageURL.push(file.filename);
+        }
+      });
+    }
+
+    const attributes = JSON.parse(formData.attributes);
+    formData.attributes = attributes;
+    console.log(attributes);
+
+    const product = await Product.findOneAndUpdate(
+      { _id: id },
+      { $set: { ...formData } },
+      { new: true }
+    );
+
+    if (!product) {
+      throw Error("No Such Product");
+    }
+
+    res.status(200).json({ product });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const deleteProduct = async (req, res) => {
