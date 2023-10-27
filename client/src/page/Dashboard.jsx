@@ -61,7 +61,7 @@ const Dashboard = () => {
           </div>
           <div className="shrink-0 hidden lg:block">40/4000 Results Loaded</div>
         </div>
-        <div className="flex flex-wrap -mx-2 justify-between mt-5">
+        <div className="flex flex-wrap -mx-2  mt-5">
           {userProducts &&
             userProducts.map((pro, index) => (
               <div

@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCaretRightFill } from "react-icons/bs";
 import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CustomFileInput from "../../Components/CustomFileInput";
 import { useDispatch } from "react-redux";
 import { createProduct } from "../../../../redux/actions/admin/productActions";
 import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 import ConfirmModal from "../../../../components/ConfirmModal";
+import axios from "axios";
 
-const AddProducts = () => {
+const EditProduct = () => {
   const dispatch = useDispatch();
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
@@ -26,11 +29,11 @@ const AddProducts = () => {
   ]);
 
   const [statusList, setStatusList] = useState([
-    "Draft",
-    "Published",
-    "Unpublished",
-    "Out of Stock",
-    "Low Quantity",
+    "draft",
+    "published",
+    "unpublished",
+    "out of stock",
+    "low quantity",
   ]);
 
   const [name, setName] = useState("");
@@ -42,12 +45,35 @@ const AddProducts = () => {
   const [attributes, setAttributes] = useState([]);
   const [price, setPrice] = useState("");
   const [markup, setMarkup] = useState("");
-  const [moreImageURL, setMoreImageURL] = useState("");
+  const [moreImageURL, setMoreImageURL] = useState([]);
 
+  // Fetching The product details initially
+  useEffect(() => {
+    const getProductDetails = async () => {
+      axios
+        .get(`http://localhost:4000/admin/product/${id}`)
+        .then(({ data }) => {
+          console.log(data.product);
+          setName(data.product.name || "");
+          setDescription(data.product.description || "");
+          setStockQuantity(data.product.stockQuantity || "");
+          setCategory(data.product.category || "");
+          setStatus(data.product.status || "");
+          setAttributes(data.product.attributes || "");
+          setPrice(data.product.price || "");
+          setMarkup(data.product.markup || "");
+          setImageURL(data.product.imageURL || "");
+        });
+    };
+    getProductDetails();
+  }, []);
+
+  // Functions for thumbnail uploads
   const handleSingleImageInput = (img) => {
     setImageURL(img);
   };
 
+  // Functions for product images uploads
   const handleMultipleImageInput = (files) => {
     setMoreImageURL(files);
   };
@@ -115,7 +141,7 @@ const AddProducts = () => {
         {/* Top Bar */}
         <div className="flex justify-between items-center text-xs font-semibold">
           <div>
-            <h1 className="font-bold text-2xl">Add Products</h1>
+            <h1 className="font-bold text-2xl">Edit Products</h1>
             {/* Bread Crumbs */}
             <div className="flex items-center gap-2  mt-2 mb-4 text-gray-500">
               <p className="text-blue-500 font-semibold">Dashboard</p>
@@ -126,7 +152,7 @@ const AddProducts = () => {
               <span>
                 <BsCaretRightFill />
               </span>
-              <p className="font-semibold">Add Products</p>
+              <p className="font-semibold">Edit Products</p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -142,7 +168,7 @@ const AddProducts = () => {
               onClick={toggleConfirm}
             >
               <AiOutlineSave />
-              Save
+              Update
             </button>
           </div>
         </div>
@@ -153,7 +179,25 @@ const AddProducts = () => {
             <div className="admin-div lg:flex gap-5">
               <div className="lg:w-1/3 mb-3 lg:mb-0">
                 <h1 className="font-bold mb-3">Product Thumbnail</h1>
-                <CustomSingleFileInput onChange={handleSingleImageInput} />
+                {imageURL ? (
+                  <div className="bg-gray-100 py-5 rounded-lg text-center">
+                    <div className="h-56">
+                      <img
+                        src={`http://localhost:4000/img/${imageURL}`}
+                        alt="im"
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                    <button
+                      className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded"
+                      onClick={() => setImageURL("")}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ) : (
+                  <CustomSingleFileInput onChange={handleSingleImageInput} />
+                )}
               </div>
               <div className="lg:w-2/3">
                 <h1 className="font-bold">Product Information</h1>
@@ -282,12 +326,6 @@ const AddProducts = () => {
                   </option>
                 ))}
               </select>
-              {/* <p className="admin-label">Product Tags</p>
-            <input
-              type="text"
-              placeholder="Type product markup here"
-              className="admin-input"
-            /> */}
             </div>
             <div className="admin-div">
               <h1 className="font-bold">Product Status</h1>
@@ -295,7 +333,7 @@ const AddProducts = () => {
               <select
                 name="status"
                 id="status"
-                className="admin-input"
+                className="admin-input capitalize"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
               >
@@ -313,4 +351,4 @@ const AddProducts = () => {
   );
 };
 
-export default AddProducts;
+export default EditProduct;

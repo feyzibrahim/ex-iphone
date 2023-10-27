@@ -1,4 +1,5 @@
 const Product = require("../../model/productModel");
+const mongoose = require("mongoose");
 
 // Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
@@ -11,12 +12,24 @@ const getProducts = async (req, res) => {
   }
 };
 
-const getProduct = (req, res) => {
-  const { id } = req.params;
+const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
 
-  res.status(200).json({ msg: `Product Number ${id}` });
+    const product = await Product.findOne({ _id: id });
+
+    if (!product) {
+      throw Error("No Such Product");
+    }
+
+    res.status(200).json({ product });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 // Creating new Product
@@ -61,12 +74,24 @@ const updateProduct = (req, res) => {
   res.status(200).json({ msg: `Product Number ${id} - updated` });
 };
 
-const deleteProduct = (req, res) => {
-  const { id } = req.params;
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
 
-  res.status(200).json({ msg: `Product Number ${id} - Deleted` });
+    const product = await Product.findOneAndDelete({ _id: id });
+
+    if (!product) {
+      throw Error("No Such Product");
+    }
+
+    res.status(200).json({ product });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {

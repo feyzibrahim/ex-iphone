@@ -77,19 +77,19 @@ const CustomFileInput = ({ onChange }) => {
             {droppedFiles.map((file, index) => (
               <div
                 key={index}
-                className="bg-white p-2 rounded-lg shadow-lg mb-2 w-24"
+                className="bg-white p-2 rounded-lg shadow-lg mb-2 w-24 h-24"
               >
                 {file.type.startsWith("image/") ? (
                   <img
                     src={URL.createObjectURL(file)}
                     alt={file.name}
-                    className="h-20 w-20 object-cover rounded"
+                    className="h-full w-full object-contain rounded"
                   />
                 ) : (
                   <div className="w-20 h-20 bg-gray-100"></div>
                 )}
 
-                <p className="flex-grow truncate text-xs">{file.name}</p>
+                <p className="flex-grow truncate text-xs mt-3">{file.name}</p>
               </div>
             ))}
           </div>

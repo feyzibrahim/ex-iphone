@@ -119,7 +119,7 @@ const ProductDetails = () => {
             </span>
           </p>
           {currentPro.attributes &&
-            currentPro.attributes.map((at, index) => (
+            currentPro.attributes.slice(0, 5).map((at, index) => (
               <div key={index}>
                 <p className="font-semibold text-gray-500 text-sm">{at.name}</p>
                 <p className="py-2 px-3 capitalize rounded bg-white ">

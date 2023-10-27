@@ -34,6 +34,7 @@ import AddProducts from "./page/admin/pages/products/AddProducts";
 
 import Categories from "./page/admin/pages/categories/Categories";
 import CreateCategories from "./page/admin/pages/categories/CreateCategories";
+import EditProduct from "./page/admin/pages/products/EditProduct";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -101,6 +102,7 @@ function AdminRoutes() {
         <Route index element={<AdminHome />} />
         <Route path="products" element={<Products />} />
         <Route path="products/addProducts" element={<AddProducts />} />
+        <Route path="products/edit-product/:id" element={<EditProduct />} />
         <Route path="categories" element={<Categories />} />
         <Route
           path="categories/create-category"

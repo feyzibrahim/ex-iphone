@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProducts, createProduct } from "../../actions/admin/productActions";
+import {
+  getProducts,
+  createProduct,
+  deleteProducts,
+} from "../../actions/admin/productActions";
 
 const productSlice = createSlice({
   name: "products",
@@ -10,6 +14,8 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      // Getting Product details
       .addCase(getProducts.pending, (state) => {
         state.loading = true;
       })
@@ -23,6 +29,8 @@ const productSlice = createSlice({
         state.products = null;
         state.error = payload;
       })
+
+      // Creating new Product
       .addCase(createProduct.pending, (state) => {
         state.loading = true;
       })
@@ -32,6 +40,23 @@ const productSlice = createSlice({
         state.products = [...state.products, payload];
       })
       .addCase(createProduct.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.products = null;
+        state.error = payload;
+      })
+
+      // Deleting a Product
+      .addCase(deleteProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProducts.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.products = state.products.filter(
+          (product) => product._id !== payload._id
+        );
+      })
+      .addCase(deleteProducts.rejected, (state, { payload }) => {
         state.loading = false;
         state.products = null;
         state.error = payload;

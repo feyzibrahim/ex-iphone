@@ -54,17 +54,17 @@ const CustomSingleFileInput = ({ onChange }) => {
     >
       {selectedFile ? (
         <div className="mt-4 lg:mt-0">
-          <div className="bg-white p-2 rounded-lg shadow-lg mb-2 ">
+          <div className="bg-white p-2 h-52 rounded-lg shadow-lg mb-2 ">
             {selectedFile.type.startsWith("image/") ? (
               <img
                 src={URL.createObjectURL(selectedFile)}
                 alt={selectedFile.name}
-                className="object-cover rounded"
+                className="object-contain w-full h-full rounded"
               />
             ) : (
               <div className="w-20 h-20 bg-gray-100"></div>
             )}
-            <p className="flex-grow truncate text-xs">{selectedFile.name}</p>
+            <p className="truncate text-xs mt-3">{selectedFile.name}</p>
           </div>
           <button
             className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded"

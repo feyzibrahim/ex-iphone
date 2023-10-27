@@ -56,3 +56,19 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
+
+export const deleteProducts = createAsyncThunk(
+  "products/deleteProducts",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(
+        `${URL}/admin/product/${id}`,
+        configJson
+      );
+
+      return data.product;
+    } catch (error) {
+      handleError(error, rejectWithValue);
+    }
+  }
+);
