@@ -36,7 +36,7 @@ const SideNavbar = () => {
           <FiBox />
           Products
         </NavLink>
-        <NavLink className="side-nav-link-sp" to="category">
+        <NavLink className="side-nav-link-sp" to="categories">
           <ImStack />
           Category
         </NavLink>

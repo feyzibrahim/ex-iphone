@@ -33,4 +33,19 @@ router.delete("/customer/:id", deleteCustomer);
 router.patch("/customer/:id", updateCustomer);
 router.post("/customer", upload.any(), addCustomer);
 
+// Admin Category controller functions and mounting them to corresponding route
+const {
+  getCategories,
+  getCategory,
+  createCategory,
+  deleteCategory,
+  updateCategory,
+} = require("../controllers/admin/categoryController");
+
+router.get("/categories", getCategories);
+router.get("/category/:id", getCategory);
+router.delete("/category/:id", deleteCategory);
+router.patch("/category/:id", updateCategory);
+router.post("/category", upload.any(), createCategory);
+
 module.exports = router;
