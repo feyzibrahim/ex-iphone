@@ -12,6 +12,7 @@ const getCategories = async (req, res) => {
   }
 };
 
+// Only getting one Category
 const getCategory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -35,7 +36,6 @@ const getCategory = async (req, res) => {
 // Creating new Category if needed for admin
 const createCategory = async (req, res) => {
   try {
-    // Will be update later
     let formData = req.body;
     const imgURL = req?.file?.filename;
 
@@ -45,17 +45,17 @@ const createCategory = async (req, res) => {
 
     const category = await Category.create(formData);
 
-    res.status(200).json(category);
+    res.status(200).json({ category });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
+// Updating the category
 const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
     let formData = req.body;
-    console.log(formData);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw Error("Invalid ID!!!");
@@ -67,8 +67,6 @@ const updateCategory = async (req, res) => {
       formData = { ...formData, imgURL: imgURL };
     }
 
-    console.log(formData);
-
     const category = await Category.findOneAndUpdate(
       { _id: id },
       { $set: { ...formData } },
@@ -79,20 +77,30 @@ const updateCategory = async (req, res) => {
       throw Error("No such Category");
     }
 
-    console.log(category);
-
-    res.status(200).json(category);
+    res.status(200).json({ category });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-const deleteCategory = (req, res) => {
-  const { id } = req.params;
+const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
 
-  res.status(200).json({ msg: `Category Number ${id} - Deleted` });
+    const category = await Category.findOneAndDelete({ _id: id });
+
+    if (!category) {
+      throw Error("No Such Category");
+    }
+
+    res.status(200).json({ category });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {

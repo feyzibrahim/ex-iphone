@@ -70,11 +70,11 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = null;
         const index = state.products.findIndex(
-          (user) => user._id === payload._id
+          (product) => product._id === payload._id
         );
 
         if (index !== -1) {
-          state.adminUser[index] = payload;
+          state.products[index] = payload;
         }
       })
       .addCase(updateProduct.rejected, (state, { payload }) => {

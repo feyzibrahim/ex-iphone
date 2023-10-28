@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getCategories,
   createNewCategory,
+  deleteCategory,
+  updateCategory,
 } from "../../actions/admin/categoriesAction";
 
 const categoriesSlice = createSlice({
@@ -35,6 +37,40 @@ const categoriesSlice = createSlice({
         state.categories = [...state.categories, payload];
       })
       .addCase(createNewCategory.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.categories = null;
+        state.error = payload;
+      })
+      .addCase(deleteCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCategory.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.categories = state.categories.filter(
+          (category) => category._id !== payload._id
+        );
+      })
+      .addCase(deleteCategory.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.categories = null;
+        state.error = payload;
+      })
+      .addCase(updateCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateCategory.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        const index = state.categories.findIndex(
+          (product) => product._id === payload._id
+        );
+
+        if (index !== -1) {
+          state.categories[index] = payload;
+        }
+      })
+      .addCase(updateCategory.rejected, (state, { payload }) => {
         state.loading = false;
         state.categories = null;
         state.error = payload;

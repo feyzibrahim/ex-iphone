@@ -3,7 +3,10 @@ import { AiOutlinePlus, AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
+import {
+  deleteCategory,
+  getCategories,
+} from "../../../../redux/actions/admin/categoriesAction";
 import date from "date-and-time";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import ConfirmModel from "../../../../components/ConfirmModal";
@@ -21,8 +24,16 @@ const Categories = () => {
   }, []);
 
   const [showDeleteModel, setShowDeleteModel] = useState(false);
-  const toggleDeleteModel = () => {
+  const [idToBeDeleted, setIdToBeDeleted] = useState("");
+
+  const toggleDeleteModel = (id) => {
+    setIdToBeDeleted(id);
     setShowDeleteModel(!showDeleteModel);
+  };
+
+  const deleteData = () => {
+    dispatch(deleteCategory(idToBeDeleted));
+    toggleDeleteModel("");
   };
 
   return (
@@ -30,6 +41,7 @@ const Categories = () => {
       {showDeleteModel && (
         <ConfirmModel
           negativeAction={toggleDeleteModel}
+          positiveAction={deleteData}
           title="Are your sure?"
         />
       )}
@@ -113,7 +125,7 @@ const Categories = () => {
                           </span>
                           <span
                             className="hover:text-gray-500"
-                            onClick={toggleDeleteModel}
+                            onClick={() => toggleDeleteModel(category._id)}
                           >
                             <AiOutlineDelete />
                           </span>

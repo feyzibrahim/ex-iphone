@@ -67,7 +67,24 @@ export const updateCategory = createAsyncThunk(
         formData,
         config
       );
+      console.log(data.category);
       return data;
+    } catch (error) {
+      handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const deleteCategory = createAsyncThunk(
+  "categories/deleteCategory",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(
+        `${URL}/admin/category/${id}`,
+        configJson
+      );
+
+      return data.category;
     } catch (error) {
       handleError(error, rejectWithValue);
     }
