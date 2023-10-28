@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import SignUpBG from "../assets/SignUpBG.png";
-import Logo from "../assets/logoGrey.png";
+import SignUpBG from "../../assets/SignUpBG.png";
+import Logo from "../../assets/logoGrey.png";
 import {
   AiOutlineLock,
   AiOutlineUser,
@@ -10,7 +10,7 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser } from "../redux/actions/userActions";
+import { signUpUser } from "../../redux/actions/userActions";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);

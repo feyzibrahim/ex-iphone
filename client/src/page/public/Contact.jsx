@@ -1,5 +1,5 @@
 import React from "react";
-import SocialMedia from "../components/SocialMedia";
+import SocialMedia from "../../components/SocialMedia";
 import { FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 

@@ -45,7 +45,7 @@ const {
 router.get("/categories", getCategories);
 router.get("/category/:id", getCategory);
 router.delete("/category/:id", deleteCategory);
-router.patch("/category/:id", updateCategory);
+router.patch("/category/:id", upload.single("imgURL"), updateCategory);
 router.post("/category", upload.single("imgURL"), createCategory);
 
 module.exports = router;

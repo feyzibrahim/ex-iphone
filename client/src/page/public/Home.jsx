@@ -1,13 +1,13 @@
 import React from "react";
 
-import BgImage from "../assets/iphone.png";
-import NewsLetter from "../assets/newletter.png";
+import BgImage from "../../assets/iphone.png";
+import NewsLetter from "../../assets/newletter.png";
 
 import { BiSearch } from "react-icons/bi";
-import NewCollection from "../components/HomeComponents/NewCollection";
-import fourIphones from "../assets/fourIphone.png";
-import NewIphone from "../components/HomeComponents/NewIphone";
-import AppleWatchCollection from "../components/HomeComponents/AppleWatchCollection";
+import NewCollection from "../../components/HomeComponents/NewCollection";
+import fourIphones from "../../assets/fourIphone.png";
+import NewIphone from "../../components/HomeComponents/NewIphone";
+import AppleWatchCollection from "../../components/HomeComponents/AppleWatchCollection";
 import { useSelector } from "react-redux";
 
 const Home = () => {

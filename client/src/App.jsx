@@ -4,18 +4,24 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserDataFirst } from "./redux/actions/userActions";
 
-import Error404 from "./page/Error404";
-import Home from "./page/Home";
-import Login from "./page/Login";
-import Register from "./page/Register";
+// General
+import Home from "./page/public/Home";
+import Contact from "./page/public/Contact";
+import About from "./page/public/About";
+import Error404 from "./page/public/Error404";
+
+// Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import Contact from "./page/Contact";
-import About from "./page/About";
+
+// Auth
+import Login from "./page/auth/Login";
+import Register from "./page/auth/Register";
+import ValidateOTP from "./page/auth/ValidateOTP";
+import ForgetPassword from "./page/auth/ForgetPassword";
+
 import Dashboard from "./page/Dashboard";
 import ProductDetails from "./page/user/ProductDetails";
-import ValidateOTP from "./page/ValidateOTP";
-import ForgetPassword from "./page/ForgetPassword";
 
 // Admin
 import AdminDash from "./page/admin/Dashboard";
@@ -31,10 +37,11 @@ import Help from "./page/admin/pages/Help";
 
 import Products from "./page/admin/pages/products/Products";
 import AddProducts from "./page/admin/pages/products/AddProducts";
+import EditProduct from "./page/admin/pages/products/EditProduct";
 
 import Categories from "./page/admin/pages/categories/Categories";
-import CreateCategories from "./page/admin/pages/categories/CreateCategories";
-import EditProduct from "./page/admin/pages/products/EditProduct";
+import CreateCategory from "./page/admin/pages/categories/CreateCategory";
+import EditCategory from "./page/admin/pages/categories/EditCategory";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -101,13 +108,13 @@ function AdminRoutes() {
       <Route path="/" element={<AdminDash />}>
         <Route index element={<AdminHome />} />
         <Route path="products" element={<Products />} />
-        <Route path="products/addProducts" element={<AddProducts />} />
-        <Route path="products/edit-product/:id" element={<EditProduct />} />
+        <Route path="products/add" element={<AddProducts />} />
+        <Route path="products/edit/:id" element={<EditProduct />} />
+
         <Route path="categories" element={<Categories />} />
-        <Route
-          path="categories/create-category"
-          element={<CreateCategories />}
-        />
+        <Route path="categories/create" element={<CreateCategory />} />
+        <Route path="categories/edit/:id" element={<EditCategory />} />
+
         <Route path="orders" element={<Orders />} />
         <Route path="coupon" element={<Coupon />} />
         <Route path="banner" element={<Banner />} />

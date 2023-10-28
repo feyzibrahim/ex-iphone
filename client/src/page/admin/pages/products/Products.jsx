@@ -58,7 +58,7 @@ const Products = () => {
             </button>
             <button
               className="admin-button-fl bg-blue-700 text-white"
-              onClick={() => navigate("addProducts")}
+              onClick={() => navigate("add")}
             >
               <AiOutlinePlus />
               Add Product

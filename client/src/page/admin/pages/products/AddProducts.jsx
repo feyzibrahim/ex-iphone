@@ -118,7 +118,7 @@ const AddProducts = () => {
             <h1 className="font-bold text-2xl">Add Products</h1>
             {/* Bread Crumbs */}
             <BreadCrumbs
-              list={["Dashboard", "Category List", "Add Products"]}
+              list={["Dashboard", "Products List", "Add Products"]}
             />
           </div>
           <div className="flex gap-3">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ForgotBG from "../assets/forgot.png";
-import Logo from "../assets/logoGrey.png";
+import ForgotBG from "../../assets/forgot.png";
+import Logo from "../../assets/logoGrey.png";
 import { AiOutlineMail, AiOutlineLock } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

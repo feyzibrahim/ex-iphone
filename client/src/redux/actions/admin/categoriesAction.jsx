@@ -44,12 +44,30 @@ export const createNewCategory = createAsyncThunk(
   }
 );
 
+// Function to fetch all categories
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async (rc, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${URL}/admin/categories`, configJson);
       return data.categories;
+    } catch (error) {
+      handleError(error, rejectWithValue);
+    }
+  }
+);
+
+// Function to Update new Category
+export const updateCategory = createAsyncThunk(
+  "categories/updateCategory",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/admin/category/${id}`,
+        formData,
+        config
+      );
+      return data;
     } catch (error) {
       handleError(error, rejectWithValue);
     }

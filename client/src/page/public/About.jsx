@@ -1,6 +1,6 @@
 import React from "react";
-import AboutBG from "../assets/aboutBG.png";
-import Logo from "../assets/logoGrey.png";
+import AboutBG from "../../assets/aboutBG.png";
+import Logo from "../../assets/logoGrey.png";
 import {
   AiFillFacebook,
   AiFillInstagram,

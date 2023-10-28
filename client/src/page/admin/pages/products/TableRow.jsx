@@ -44,7 +44,7 @@ const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
         <div className="flex items-center gap-2 text-lg">
           <span
             className="hover:text-gray-500"
-            onClick={() => navigate(`edit-product/${product._id}`)}
+            onClick={() => navigate(`edit/${product._id}`)}
           >
             <AiOutlineEdit />
           </span>

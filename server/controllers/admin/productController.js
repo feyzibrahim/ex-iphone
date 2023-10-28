@@ -12,6 +12,7 @@ const getProducts = async (req, res) => {
   }
 };
 
+// Get single Product
 const getProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -66,6 +67,7 @@ const addProduct = async (req, res) => {
   }
 };
 
+// Update a Product
 const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -125,6 +127,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Deleting a Product
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
