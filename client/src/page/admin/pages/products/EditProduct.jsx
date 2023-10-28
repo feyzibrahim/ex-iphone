@@ -65,6 +65,7 @@ const EditProduct = () => {
         .get(`http://localhost:4000/admin/product/${id}`)
         .then(({ data }) => {
           setFetchedData({ ...data.product });
+
           setDuplicateFetchData({ ...data.product });
         });
     };
@@ -80,6 +81,7 @@ const EditProduct = () => {
   // Functions for product images uploads
   const [newMoreImage, setNewMoreImage] = useState([]);
   const handleMultipleImageInput = (files) => {
+    console.log("fetchedData");
     setNewMoreImage(files);
   };
 
@@ -99,6 +101,7 @@ const EditProduct = () => {
     if (newMoreImage.length > 0) {
       for (const file of newMoreImage) {
         formData.append("moreImageURL", file);
+        console.log("first");
       }
     }
 
@@ -106,12 +109,14 @@ const EditProduct = () => {
       formData.append("imageURL", newThumb);
     }
 
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
+    // Function to console FormData
+
+    // for (const pair of formData.entries()) {
+    //   console.log(pair[0] + ", " + pair[1]);
+    // }
 
     dispatch(updateProduct({ id: id, formData: formData }));
-    // navigate(-1);
+    navigate(-1);
   };
 
   const [attributeName, setAttributeName] = useState("");

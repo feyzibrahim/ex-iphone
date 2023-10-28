@@ -83,17 +83,31 @@ const updateProduct = async (req, res) => {
       files.map((file) => {
         if (file.fieldname === "imageURL") {
           formData.imageURL = file.filename;
-          console.log("true");
         } else {
-          console.log("false");
           formData.moreImageURL.push(file.filename);
+          console.log("SOmething here");
         }
       });
+
+      if (formData.imageURL === "") {
+        delete formData.imageURL;
+      }
+
+      if (formData.moreImageURL.length === 0 || formData.moreImageURL === "") {
+        delete formData.moreImageURL;
+      }
     }
 
-    const attributes = JSON.parse(formData.attributes);
-    formData.attributes = attributes;
-    console.log(attributes);
+    if (formData.moreImageURL === "") {
+      formData.moreImageURL = [];
+    }
+
+    console.log(formData);
+
+    if (formData.attributes) {
+      const attributes = JSON.parse(formData.attributes);
+      formData.attributes = attributes;
+    }
 
     const product = await Product.findOneAndUpdate(
       { _id: id },
