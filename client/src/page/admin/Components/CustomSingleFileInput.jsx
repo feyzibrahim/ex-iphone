@@ -84,6 +84,7 @@ const CustomSingleFileInput = ({ onChange }) => {
             Drag and drop an image here, or click to upload
           </p>
           <button
+            type="button"
             className="bg-zinc-200 text-blue-600 text-sm font-semibold py-2 px-4 rounded"
             onClick={handleButtonClick}
           >

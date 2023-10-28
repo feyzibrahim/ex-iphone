@@ -46,6 +46,6 @@ router.get("/categories", getCategories);
 router.get("/category/:id", getCategory);
 router.delete("/category/:id", deleteCategory);
 router.patch("/category/:id", updateCategory);
-router.post("/category", upload.any(), createCategory);
+router.post("/category", upload.single("imgURL"), createCategory);
 
 module.exports = router;

@@ -24,27 +24,15 @@ const createCategory = async (req, res) => {
   try {
     // Will be update later
     let formData = req.body;
-    // const files = req?.files;
+    const imgURL = req?.file?.filename;
 
-    // if (files && files.length > 0) {
-    //   formData.moreImageURL = [];
-    //   formData.imageURL = "";
-    //   files.map((file) => {
-    //     if (file.fieldname === "imageURL") {
-    //       formData.imageURL = file.filename;
-    //     } else {
-    //       formData.moreImageURL.push(file.filename);
-    //     }
-    //   });
-    // }
-
-    console.log(formData);
+    if (imgURL) {
+      formData = { ...formData, imgURL: imgURL };
+    }
 
     const category = await Category.create(formData);
 
-    console.log(category);
-
-    res.status(200).json({ category });
+    res.status(200).json(category);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

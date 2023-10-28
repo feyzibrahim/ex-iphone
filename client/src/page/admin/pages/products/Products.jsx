@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BsCaretRightFill, BsFilterRight } from "react-icons/bs";
+import { BsFilterRight } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineCalendar } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import {
 } from "../../../../redux/actions/admin/productActions";
 import TableRow from "./TableRow";
 import ConfirmModal from "../../../../components/ConfirmModal";
+import BreadCrumbs from "../../Components/BreadCrumbs";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -48,13 +49,7 @@ const Products = () => {
         <div className="flex justify-between items-center text-xs font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Products</h1>
-            <div className="flex items-center gap-2  mt-2 mb-4 text-gray-500">
-              <p className="text-blue-500 font-semibold">Dashboard</p>
-              <span>
-                <BsCaretRightFill />
-              </span>
-              <p className="font-semibold">Product List</p>
-            </div>
+            <BreadCrumbs list={["Dashboard", "Product List"]} />
           </div>
           <div className="flex gap-3">
             <button className="admin-button-fl bg-gray-200 text-blue-700">

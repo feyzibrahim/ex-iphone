@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BsCaretRightFill } from "react-icons/bs";
 import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomFileInput from "../../Components/CustomFileInput";
@@ -8,6 +7,7 @@ import { updateProduct } from "../../../../redux/actions/admin/productActions";
 import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
+import BreadCrumbs from "../../Components/BreadCrumbs";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -165,17 +165,9 @@ const EditProduct = () => {
           <div>
             <h1 className="font-bold text-2xl">Edit Products</h1>
             {/* Bread Crumbs */}
-            <div className="flex items-center gap-2  mt-2 mb-4 text-gray-500">
-              <p className="text-blue-500 font-semibold">Dashboard</p>
-              <span>
-                <BsCaretRightFill />
-              </span>
-              <p className="font-semibold">Product List</p>
-              <span>
-                <BsCaretRightFill />
-              </span>
-              <p className="font-semibold">Edit Products</p>
-            </div>
+            <BreadCrumbs
+              list={["Dashboard", "Category List", "Edit Products"]}
+            />
           </div>
           <div className="flex gap-3">
             <button
