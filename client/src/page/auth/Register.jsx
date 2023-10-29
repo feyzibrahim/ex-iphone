@@ -11,6 +11,10 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../../redux/actions/userActions";
+import { Formik, Form } from "formik";
+import * as Yup from "Yup";
+import InputWithIcon from "./InputWithIcon";
+import PasswordInputWithIcon from "./PasswordInputWithIcon";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -27,31 +31,46 @@ const Register = () => {
     }
   }, [user]);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordAgain, setPasswordAgain] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordAgain: "",
+    phoneNumber: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    firstName: Yup.string().required("First Name is required"),
+    lastName: Yup.string().required("Last Name is required"),
+    email: Yup.string().email().required("Email is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
+    passwordAgain: Yup.string()
+      .required("Password is required")
+      .oneOf([Yup.ref("password"), null], "Password must match"),
+    phoneNumber: Yup.number()
+      .typeError("Phone number should be digits")
+      .moreThan(999999999, "Not valid phone number"),
+  });
 
   const dispatch = useDispatch();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-
+  const handleRegister = async (value) => {
     const formData = new FormData();
 
-    formData.append("firstName", firstName);
-    formData.append("lastName", lastName);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("passwordAgain", passwordAgain);
-    formData.append("phoneNumber", phoneNumber);
+    formData.append("firstName", value.firstName);
+    formData.append("lastName", value.lastName);
+    formData.append("email", value.email);
+    formData.append("password", value.password);
+    formData.append("passwordAgain", value.passwordAgain);
+    formData.append("phoneNumber", value.phoneNumber);
 
     dispatch(signUpUser(formData));
-    // if (!res.payload.isEmailVerified) {
-    //   navigate("/otp");
-    // }
   };
 
   return (
@@ -66,110 +85,58 @@ const Register = () => {
           <p className="text-3xl font-bold ">ex.iphones.</p>
         </div>
         <h1 className="text-2xl my-5 font-bold">Sign Up</h1>
-        <form>
-          <p>
-            <label htmlFor="username">First Name</label>
-          </p>
-          <div className="flex items-center gap-3 border bg-white border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-            <AiOutlineUser />
-            <input
-              type="text"
-              name="username"
-              placeholder="Enter your Username"
-              className="bg-transparent outline-none w-full"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleRegister}
+          validationSchema={validationSchema}
+        >
+          <Form className="w-full">
+            <InputWithIcon
+              icon={<AiOutlineUser />}
+              title="First Name"
+              name="firstName"
+              placeholder="Enter your first name"
             />
-          </div>
-          <>
-            <p>
-              <label htmlFor="username">Second Name</label>
-            </p>
-            <div className="flex items-center gap-3 border bg-white border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-              <AiOutlineUser />
-              <input
-                type="text"
-                name="username"
-                placeholder="Enter your Username"
-                className="bg-transparent outline-none w-full"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-          </>
-          <>
-            <p>
-              <label htmlFor="email">Email</label>
-            </p>
-            <div className="flex items-center gap-3 bg-white border border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-              <AiOutlineMail />
-              <input
-                type="Email"
-                name="email"
-                placeholder="Enter your Email"
-                className="bg-transparent outline-none w-full"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </>
-          <>
-            <p>
-              <label htmlFor="password">Password</label>
-            </p>
-            <div className="flex items-center gap-3 bg-white border border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-              <AiOutlineLock />
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your Password"
-                className="bg-transparent outline-none w-full"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </>
-          <>
-            <p>
-              <label htmlFor="password">Confirm Password</label>
-            </p>
-            <div className="flex items-center gap-3 bg-white border border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-              <AiOutlineLock />
-              <input
-                type="password"
-                name="password"
-                placeholder="Enter your Password again"
-                className="bg-transparent outline-none w-full"
-                value={passwordAgain}
-                onChange={(e) => setPasswordAgain(e.target.value)}
-              />
-            </div>
-          </>
-          <>
-            <p>
-              <label htmlFor="phoneNumber">Phone Number</label>
-            </p>
-            <div className="flex items-center gap-3 bg-white border border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-              <AiOutlinePhone />
-              <input
-                type="number"
-                name="phoneNumber"
-                placeholder="Enter your Phone Number"
-                className="bg-transparent outline-none w-full"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-            </div>
-          </>
-          {error && <p className="my-2 text-red-400">{error}</p>}
-          <button
-            onClick={handleRegister}
-            className="btn-blue text-white w-full my-3"
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Sign Up"}
-          </button>
-        </form>
+            <InputWithIcon
+              icon={<AiOutlineUser />}
+              title="Last Name"
+              name="lastName"
+              placeholder="Enter your last name"
+            />
+            <InputWithIcon
+              icon={<AiOutlineMail />}
+              title="Email"
+              name="email"
+              placeholder="Enter your email"
+            />
+            <PasswordInputWithIcon
+              icon={<AiOutlineLock />}
+              title="Password"
+              name="password"
+              placeholder="Enter your password"
+            />
+            <PasswordInputWithIcon
+              icon={<AiOutlineLock />}
+              title="Confirm Password"
+              name="passwordAgain"
+              placeholder="Confirm your password"
+            />
+            <InputWithIcon
+              icon={<AiOutlinePhone />}
+              title="Phone Number"
+              name="phoneNumber"
+              placeholder="Enter your phone number"
+            />
+            <button
+              type="submit"
+              className="btn-blue text-white w-full my-3"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Sign Up"}
+            </button>
+            {error && <p className="my-2 text-red-400">{error}</p>}
+          </Form>
+        </Formik>
         <div className="text-center">
           <p className="my-4">OR</p>
           <button className="bg-gray-300 w-full rounded-full py-3 text-black flex justify-center items-center gap-5 hover:bg-gray-400">

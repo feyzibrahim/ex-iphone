@@ -163,6 +163,14 @@ const newPassword = async (req, res) => {
       throw Error("Passwords are not same");
     }
 
+    const oldUserData = await User.findOne({ email });
+
+    const match = await bcrypt.compare(password, oldUserData.password);
+
+    if (match) {
+      throw Error("Provide new Password");
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 

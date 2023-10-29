@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from "react";
 import LoginBG from "../../assets/LoginBG.png";
 import Logo from "../../assets/logoGrey.png";
-import {
-  AiOutlineLock,
-  AiOutlineUser,
-  AiOutlineEye,
-  AiOutlineEyeInvisible,
-} from "react-icons/ai";
+import { AiOutlineLock, AiOutlineUser } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/actions/userActions";
 
+import { Formik, Form } from "formik";
+import * as Yup from "Yup";
+import InputWithIcon from "./InputWithIcon";
+import PasswordInputWithIcon from "./PasswordInputWithIcon";
+
 const Login = () => {
   const { user, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPass, setShowPass] = useState(false);
-
   const navigate = useNavigate();
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Email is not valid")
+      .required("Email is required"),
+    password: Yup.string().required("Password is required"),
+  });
 
   useEffect(() => {
     if (user) {
@@ -32,20 +39,9 @@ const Login = () => {
     }
   }, [user]);
 
-  const togglePass = () => setShowPass(!showPass);
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-
-    if (email.trim() === "" || password.trim() === "") {
-      return;
-    }
-
-    let userCredentials = {
-      email,
-      password,
-    };
-    dispatch(loginUser(userCredentials));
+  const handleLoginSubmit = (value) => {
+    console.log(value);
+    dispatch(loginUser(value));
   };
 
   return (
@@ -60,7 +56,37 @@ const Login = () => {
           <p className="text-3xl font-bold">ex.iphones.</p>
         </div>
         <h1 className="text-2xl my-5 font-bold">Login</h1>
-        <div>
+
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleLoginSubmit}
+          validationSchema={validationSchema}
+        >
+          <Form className="w-full">
+            <InputWithIcon
+              name="email"
+              title="Email"
+              placeholder="Enter your email"
+              icon={<AiOutlineUser />}
+            />
+            <PasswordInputWithIcon
+              name="password"
+              title="Password"
+              placeholder="Enter your password"
+              icon={<AiOutlineLock />}
+            />
+            {error && <p className="my-2 text-red-400">{error}</p>}
+            <button
+              type="submit"
+              className="btn-blue text-white w-full mt-5"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Login"}
+            </button>
+          </Form>
+        </Formik>
+
+        {/* <div>
           <p>
             <label htmlFor="username">Username</label>
           </p>
@@ -104,16 +130,9 @@ const Login = () => {
           </div>
         </div>
 
-        {error && <p className="my-2 text-red-400">{error}</p>}
+        {error && <p className="my-2 text-red-400">{error}</p>} */}
 
         <div className="text-center">
-          <button
-            className="btn-blue text-white w-full"
-            onClick={handleLoginSubmit}
-            disabled={loading}
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
           <Link to="/forgot-password">
             <div className="my-5 text-blue-600 font-bold cursor-pointer hover:text-blue-500">
               Forgot Password?

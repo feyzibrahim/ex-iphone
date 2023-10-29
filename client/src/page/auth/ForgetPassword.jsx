@@ -242,7 +242,9 @@ const ForgetPassword = () => {
         )}
         {finalMessage && (
           <div>
-            <h1>Your password has been reset please login again</h1>
+            <h1 className="my-4">
+              Your password has been reset please login again
+            </h1>
             <button
               className="btn-blue text-white w-full"
               onClick={() => navigate("/login")}

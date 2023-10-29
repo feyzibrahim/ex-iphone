@@ -64,6 +64,22 @@
   @apply uppercase text-xs font-normal py-1;
 }
 
+/* Sign UP page */
+
+.sign-up-input {
+  @apply border-t border-b border-e bg-white border-gray-200 p-2 rounded-e-lg outline-none;
+}
+.sign-up-input-y {
+  @apply border-t border-b bg-white border-gray-200 p-2 outline-none;
+}
+
+.sign-up-icon {
+  @apply bg-white p-3 border-s border-t border-b border-gray-200 rounded-s-lg outline-none;
+}
+.sign-up-icon-rev {
+  @apply bg-white p-3 border-e border-t border-b border-gray-200 rounded-e-lg outline-none;
+}
+
 /* Navbar elements active state */
 
 .active {
