@@ -20,8 +20,10 @@ import Register from "./page/auth/Register";
 import ValidateOTP from "./page/auth/ValidateOTP";
 import ForgetPassword from "./page/auth/ForgetPassword";
 
+// User
 import Dashboard from "./page/Dashboard";
 import ProductDetails from "./page/user/ProductDetails";
+import Cart from "./page/user/Cart";
 
 // Admin
 import AdminDash from "./page/admin/Dashboard";
@@ -83,8 +85,9 @@ function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="about" element={<About />} />
 
-        {/* Product Routes */}
+        {/* User Routes */}
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Admin Routes */}
         {user && user.role === "admin" ? (

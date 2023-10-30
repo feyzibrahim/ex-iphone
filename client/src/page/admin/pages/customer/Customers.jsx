@@ -70,7 +70,7 @@ const Customers = () => {
       </div>
       <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
         {customers && (
-          <table className="w-full min-w-max table-auto ">
+          <table className="w-full min-w-max table-auto">
             <thead className="font-normal">
               <tr className="border-b border-gray-200">
                 <th className="admin-table-head">Name</th>

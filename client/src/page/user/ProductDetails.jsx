@@ -8,8 +8,10 @@ import { useParams } from "react-router-dom";
 //   SideBySideMagnifier,
 // } from "@vanyapr/react-image-magnifiers";
 import { AiFillStar, AiOutlineStar, AiFillHeart } from "react-icons/ai";
+import axios from "axios";
 
 import DescReview from "./components/DescReview";
+import Quantity from "./components/Quantity";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -25,6 +27,34 @@ const ProductDetails = () => {
   let [currentImage, setCurrentImage] = useState(currentPro.imageURL);
 
   let [count, setCount] = useState(1);
+
+  const increment = () => {
+    setCount((c) => c + 1);
+  };
+
+  const decrement = () => {
+    if (count > 1) {
+      setCount((c) => c - 1);
+    }
+  };
+
+  const addToCart = async () => {
+    await axios
+      .post(
+        `http://localhost:4000/user/cart`,
+        {
+          product: id,
+          quantity: count,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .then((data) => console.log(data));
+  };
 
   return (
     <div className="px-5 lg:px-40 py-20 bg-gray-100">
@@ -128,22 +158,15 @@ const ProductDetails = () => {
               </div>
             ))}
           <div className="flex my-4 gap-3">
-            <div className="flex gap-5 items-center border border-gray-500 rounded-lg p-2 font-bold">
-              <button
-                onClick={() => setCount((c) => c - 1)}
-                className="px-2 hover:bg-white rounded-full"
-              >
-                -
-              </button>
-              {count}
-              <button
-                onClick={() => setCount((c) => c + 1)}
-                className="px-2 hover:bg-white rounded-full"
-              >
-                +
-              </button>
-            </div>
-            <button className="w-full font-semibold text-blue-700 border border-blue-700 rounded-lg p-2 hover:bg-blue-700 hover:text-white">
+            <Quantity
+              count={count}
+              decrement={decrement}
+              increment={increment}
+            />
+            <button
+              onClick={addToCart}
+              className="w-full font-semibold text-blue-700 border border-blue-700 rounded-lg p-2 hover:bg-blue-700 hover:text-white"
+            >
               Add to Cart
             </button>
           </div>

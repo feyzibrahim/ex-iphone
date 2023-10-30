@@ -8,7 +8,6 @@ const createToken = (_id) => {
 const cookieConfig = {
   secure: true,
   httpOnly: true,
-  // maxAge: 1000 * 60 * 60 * 24,
   maxAge: 1000 * 60 * 60 * 24,
 };
 
@@ -23,8 +22,6 @@ const getUserDataFirst = async (req, res) => {
   const { _id } = jwt.verify(token, process.env.SECRET);
 
   const user = await User.findOne({ _id }, { password: 0 });
-
-  // console.log(user);
 
   res.status(200).json(user);
 };

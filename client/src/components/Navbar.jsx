@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
 import ExIphoneLogo from "./ExIphoneLogo";
+import {
+  AiOutlineShoppingCart,
+  AiOutlineHeart,
+  AiOutlineUser,
+  AiOutlineHistory,
+  AiOutlineLogout,
+} from "react-icons/ai";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [dropDown, setDropDown] = useState(false);
+  const toggleDropDown = () => {
+    setDropDown(!dropDown);
+  };
+
   const handleLogout = () => {
+    toggleDropDown();
     dispatch(logout());
     navigate("/");
   };
@@ -44,14 +57,44 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="flex gap-3">
+      <div className="flex gap-6 items-center relative">
         {user ? (
-          <button
-            onClick={handleLogout}
-            className="hover:text-blue-400 px-2 py-1"
-          >
-            Logout
-          </button>
+          <>
+            <NavLink to="/cart" className="hover:text-blue-400 p-2">
+              <AiOutlineShoppingCart className="text-xl" />
+            </NavLink>
+            <NavLink to="/wishlist" className="hover:text-blue-400 p-2">
+              <AiOutlineHeart className="text-xl" />
+            </NavLink>
+            <button className="hover:text-blue-400" onClick={toggleDropDown}>
+              <AiOutlineUser className="text-xl" />
+            </button>
+            {dropDown && (
+              <div className="absolute top-10 font-normal w-44 bg-white rounded-lg">
+                <NavLink
+                  to="/profile"
+                  className="navbar-drop-ul"
+                  onClick={toggleDropDown}
+                >
+                  <AiOutlineUser className="text-xl" /> Profile
+                </NavLink>
+                <NavLink
+                  to="/order-history"
+                  className="navbar-drop-ul"
+                  onClick={toggleDropDown}
+                >
+                  <AiOutlineHistory className="text-xl" /> Order History
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="navbar-drop-ul w-full"
+                >
+                  <AiOutlineLogout className="text-xl" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <>
             <NavLink className="hover:text-blue-400 py-1 px-2" to="/login">

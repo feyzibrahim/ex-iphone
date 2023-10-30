@@ -8,6 +8,7 @@ import categoriesSlice from "./reducers/admin/categoriesSlice";
 
 // User
 import userProductsReducer from "./reducers/user/userProductSlice";
+import cartReducer from "./reducers/user/cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
 
     // User Side
     userProducts: userProductsReducer,
+    cart: cartReducer,
 
     // Admin Side
     products: productsReducer,
