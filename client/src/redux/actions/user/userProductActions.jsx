@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../../Common/links";
 
 const config = {
   headers: {
@@ -7,8 +8,6 @@ const config = {
   },
   withCredentials: true,
 };
-
-const URL = "http://localhost:4000";
 
 const handleError = (error, rejectWithValue) => {
   if (error.response && error.response.data.error) {

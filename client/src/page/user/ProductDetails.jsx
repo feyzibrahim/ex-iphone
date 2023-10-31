@@ -12,6 +12,7 @@ import axios from "axios";
 
 import DescReview from "./components/DescReview";
 import Quantity from "./components/Quantity";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -38,7 +39,9 @@ const ProductDetails = () => {
     }
   };
 
+  const [cartLoading, setCartLoading] = useState(false);
   const addToCart = async () => {
+    setCartLoading(true);
     await axios
       .post(
         `http://localhost:4000/user/cart`,
@@ -53,7 +56,16 @@ const ProductDetails = () => {
           withCredentials: true,
         }
       )
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data);
+        toast.success("Added to cart");
+        setCartLoading(false);
+      })
+      .catch((error) => {
+        toast.error("Failed to add to cart");
+        console.log(error);
+        setCartLoading(false);
+      });
   };
 
   return (
@@ -167,7 +179,7 @@ const ProductDetails = () => {
               onClick={addToCart}
               className="w-full font-semibold text-blue-700 border border-blue-700 rounded-lg p-2 hover:bg-blue-700 hover:text-white"
             >
-              Add to Cart
+              {cartLoading ? "Loading" : "Add to Cart"}
             </button>
           </div>
           <div className="flex gap-3">

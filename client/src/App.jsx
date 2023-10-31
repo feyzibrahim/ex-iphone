@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
+import { Toaster } from "react-hot-toast";
+
+// Redux
 import { getUserDataFirst } from "./redux/actions/userActions";
 
 // General
@@ -56,50 +59,54 @@ function App() {
   }, [dispatch, user]);
 
   return (
-    <BrowserRouter>
-      {user ? user.role === "user" && <Navbar /> : <Navbar />}
+    <>
+      <Toaster position="top-center" />
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            user ? (
-              user.role === "admin" ? (
-                <Navigate to="/admin" />
+      <BrowserRouter>
+        {user ? user.role === "user" && <Navbar /> : <Navbar />}
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user ? (
+                user.role === "admin" ? (
+                  <Navigate to="/admin" />
+                ) : (
+                  <Dashboard />
+                )
               ) : (
-                <Dashboard />
+                <Home />
               )
-            ) : (
-              <Home />
-            )
-          }
-        />
+            }
+          />
 
-        {/* Auth Pages */}
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="otp" element={<ValidateOTP />} />
-        <Route path="forgot-password" element={<ForgetPassword />} />
+          {/* Auth Pages */}
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="otp" element={<ValidateOTP />} />
+          <Route path="forgot-password" element={<ForgetPassword />} />
 
-        {/* General Pages */}
-        <Route path="contact" element={<Contact />} />
-        <Route path="about" element={<About />} />
+          {/* General Pages */}
+          <Route path="contact" element={<Contact />} />
+          <Route path="about" element={<About />} />
 
-        {/* User Routes */}
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/cart" element={<Cart />} />
+          {/* User Routes */}
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
 
-        {/* Admin Routes */}
-        {user && user.role === "admin" ? (
-          <Route path="/admin/*" element={<AdminRoutes />} />
-        ) : (
-          <Route path="/admin" element={<Navigate to="/" />} />
-        )}
+          {/* Admin Routes */}
+          {user && user.role === "admin" ? (
+            <Route path="/admin/*" element={<AdminRoutes />} />
+          ) : (
+            <Route path="/admin" element={<Navigate to="/" />} />
+          )}
 
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-      {user ? user.role === "user" && <Footer /> : <Footer />}
-    </BrowserRouter>
+          <Route path="*" element={<Error404 />} />
+        </Routes>
+        {user ? user.role === "user" && <Footer /> : <Footer />}
+      </BrowserRouter>
+    </>
   );
 }
 
