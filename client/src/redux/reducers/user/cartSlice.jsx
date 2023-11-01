@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCart, deleteEntireCart } from "../../actions/user/cartActions";
+import {
+  getCart,
+  deleteEntireCart,
+  deleteOneProduct,
+} from "../../actions/user/cartActions";
 import toast from "react-hot-toast";
 
 const cartSlice = createSlice({
@@ -9,8 +13,20 @@ const cartSlice = createSlice({
     cart: [],
     error: null,
     cartId: "",
+    totalPrice: 0,
+    discount: 0,
+    shipping: 0,
+    tax: 0,
   },
   reducers: {
+    calculateTotalPrice: (state) => {
+      let sum = state.cart.reduce(
+        (total, item) => total + item.product.price * item.quantity,
+        0
+      );
+      state.totalPrice = sum;
+      state.tax = sum * 0.08;
+    },
     increment: (state, action) => {
       const { item } = action.payload;
       const updatedCart = state.cart.map((cartItem) => {
@@ -70,9 +86,30 @@ const cartSlice = createSlice({
         state.loading = false;
         state.cart = null;
         state.error = payload;
+      })
+      .addCase(deleteOneProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteOneProduct.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+
+        const { productId } = payload;
+
+        state.cart = state.cart.filter((item) => {
+          console.log(item.product._id, productId);
+          return item.product._id !== productId;
+        });
+
+        toast.success("Item Deleted");
+      })
+      .addCase(deleteOneProduct.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.cart = null;
+        state.error = payload;
       });
   },
 });
 
-export const { increment, decrement } = cartSlice.actions;
+export const { increment, decrement, calculateTotalPrice } = cartSlice.actions;
 export default cartSlice.reducer;

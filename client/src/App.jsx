@@ -47,6 +47,7 @@ import EditProduct from "./page/admin/pages/products/EditProduct";
 import Categories from "./page/admin/pages/categories/Categories";
 import CreateCategory from "./page/admin/pages/categories/CreateCategory";
 import EditCategory from "./page/admin/pages/categories/EditCategory";
+import Checkout from "./page/user/Checkout";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -94,6 +95,7 @@ function App() {
           {/* User Routes */}
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
 
           {/* Admin Routes */}
           {user && user.role === "admin" ? (

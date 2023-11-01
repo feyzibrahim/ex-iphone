@@ -3,23 +3,36 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const AddressSchema = new Schema({
-  city: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  companyName: {
+    type: String,
+  },
+  address: {
     type: String,
   },
   country: {
     type: String,
   },
+  regionState: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
   pinCode: {
     type: Number,
   },
-  addressType: {
-    type: String,
-    enum: ["Shipping", "Communication"],
-  },
-  state: {
+  email: {
     type: String,
   },
-  street: {
+  phoneNumber: {
     type: String,
   },
   user: {

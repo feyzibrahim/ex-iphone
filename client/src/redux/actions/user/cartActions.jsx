@@ -45,6 +45,21 @@ export const deleteEntireCart = createAsyncThunk(
   }
 );
 
+export const deleteOneProduct = createAsyncThunk(
+  "cart/deleteOneProduct",
+  async ({ cartId, productId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(
+        `${URL}/user/cart/${cartId}/item/${productId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      handleError(error, rejectWithValue);
+    }
+  }
+);
+
 // export const addToCart = createAsyncThunk(
 //   "cart/addToCart",
 //   async (formData, { rejectWithValue }) => {

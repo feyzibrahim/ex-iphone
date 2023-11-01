@@ -9,6 +9,7 @@ import categoriesSlice from "./reducers/admin/categoriesSlice";
 // User
 import userProductsReducer from "./reducers/user/userProductSlice";
 import cartReducer from "./reducers/user/cartSlice";
+import addressReducer from "./reducers/user/addressSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     // User Side
     userProducts: userProductsReducer,
     cart: cartReducer,
+    address: addressReducer,
 
     // Admin Side
     products: productsReducer,

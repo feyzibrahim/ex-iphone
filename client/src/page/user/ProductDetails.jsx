@@ -57,7 +57,6 @@ const ProductDetails = () => {
         }
       )
       .then((data) => {
-        console.log(data);
         toast.success("Added to cart");
         setCartLoading(false);
       })

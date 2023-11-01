@@ -18,7 +18,15 @@ const {
   getCart,
   addToCart,
   deleteCart,
+  deleteOneProduct,
 } = require("../controllers/user/cartController");
+const {
+  getAddress,
+  createAddress,
+  deleteAddress,
+  getAddresses,
+  updateAddress,
+} = require("../controllers/user/addressController");
 
 const router = express.Router();
 
@@ -47,5 +55,13 @@ router.post("/set-new-password", newPassword);
 router.get("/cart", getCart);
 router.post("/cart", addToCart);
 router.delete("/cart/:id", deleteCart);
+router.delete("/cart/:cartId/item/:productId", deleteOneProduct);
+
+// Address
+router.get("/address", getAddresses);
+router.get("/address/:id", getAddress);
+router.post("/address", createAddress);
+router.delete("/address/:id", deleteAddress);
+router.patch("/address/:id", updateAddress);
 
 module.exports = router;
