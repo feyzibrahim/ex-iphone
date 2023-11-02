@@ -30,7 +30,10 @@ const Navbar = () => {
 
   return (
     <nav className="flex z-10 absolute items-center justify-between py-5 px-5 lg:px-40 font-bold text-gray-500 w-full">
-      <div className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100">
+      <div
+        className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100"
+        onClick={() => navigate("/")}
+      >
         <ExIphoneLogo />
       </div>
       <div className="hidden lg:flex gap-10">
@@ -70,7 +73,7 @@ const Navbar = () => {
               <AiOutlineUser className="text-xl" />
             </button>
             {dropDown && (
-              <div className="absolute top-10 font-normal w-44 bg-white rounded-lg">
+              <div className="absolute top-10 font-normal w-44 bg-white rounded-lg shadow-2xl">
                 <NavLink
                   to="/profile"
                   className="navbar-drop-ul"

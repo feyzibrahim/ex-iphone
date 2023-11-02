@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./userModel");
 
 const { Schema } = mongoose;
 
@@ -37,6 +38,7 @@ const AddressSchema = new Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
+    ref: User,
     required: true,
   },
 });

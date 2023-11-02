@@ -150,10 +150,12 @@ const ProductDetails = () => {
             </p>
           </div>
           <p className="text-xl font-semibold my-2">
-            <span className="text-blue-600">{currentPro.price}₹</span>
+            <span className="text-blue-600">
+              {currentPro.price + currentPro.markup}₹
+            </span>
             {"  "}
             <span className="text-gray-500 line-through">
-              {currentPro.price * 1.25}₹
+              {(currentPro.price + currentPro.markup) * 1.25}₹
             </span>
             <span className="bg-orange-500 px-3 py-1 ml-5 text-base rounded">
               25% Off

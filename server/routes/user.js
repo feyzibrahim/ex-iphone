@@ -7,6 +7,7 @@ const {
   logoutUser,
 } = require("../controllers/userController");
 const { getProducts } = require("../controllers/user/productController");
+const { createOrder } = require("../controllers/user/orderController");
 const {
   sendOTP,
   validateOTP,
@@ -38,8 +39,12 @@ router.post("/signup", signUpUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);
 
-// User Products
+// Products
 router.get("/products", getProducts);
+
+// Order
+
+router.post("/order", createOrder);
 
 // OTP
 router.get("/send-otp", sendOTP);

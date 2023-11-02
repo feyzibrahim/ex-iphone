@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Quantity from "./components/Quantity";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,19 +6,15 @@ import {
   deleteEntireCart,
   deleteOneProduct,
 } from "../../redux/actions/user/cartActions";
-import { URL } from "../../Common/links";
-import {
-  increment,
-  decrement,
-  calculateTotalPrice,
-} from "../../redux/reducers/user/cartSlice";
+import { calculateTotalPrice } from "../../redux/reducers/user/cartSlice";
 import ConfirmModel from "../../components/ConfirmModal";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import CartProductRow from "./components/CartProductRow";
+import TotalAndSubTotal from "./components/TotalAndSubTotal";
 
 const Cart = () => {
-  const { cart, loading, error, cartId, totalPrice, shipping, discount, tax } =
-    useSelector((state) => state.cart);
+  const { cart, loading, error, cartId } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,12 +27,6 @@ const Cart = () => {
     dispatch(calculateTotalPrice());
   }, [cart]);
 
-  const dispatchIncrement = (item) => {
-    dispatch(increment({ item }));
-  };
-  const dispatchDecrement = (item) => {
-    dispatch(decrement({ item }));
-  };
   const deleteCart = () => {
     toggleConfirm();
     dispatch(deleteEntireCart(cartId));
@@ -109,45 +98,12 @@ const Cart = () => {
                     const isLast = index === cart.length - 1;
 
                     return (
-                      <tr key={index} className={isLast ? "" : "border-b"}>
-                        <td className="cart-table-row">
-                          <div className="flex items-center gap-3 truncate">
-                            {item.product.imageURL ? (
-                              <div className="w-12 h-12">
-                                <img
-                                  src={`${URL}/img/${item.product.imageURL}`}
-                                  alt="asdfas"
-                                  className="h-full w-full object-contain"
-                                />
-                              </div>
-                            ) : (
-                              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-                            )}
-                            {item.product.name}
-                          </div>
-                        </td>
-                        <td className="cart-table-row">{item.product.price}</td>
-                        <td className="cart-table-row">
-                          <Quantity
-                            count={item.quantity}
-                            increment={() => dispatchIncrement(item)}
-                            decrement={() => dispatchDecrement(item)}
-                          />
-                        </td>
-                        <td className="cart-table-row">
-                          {item.product.price * item.quantity}
-                        </td>
-                        <td>
-                          <div
-                            onClick={() =>
-                              toggleProductConfirm(item.product._id)
-                            }
-                            className="cursor-pointer"
-                          >
-                            <AiOutlineDelete className="text-xl" />
-                          </div>
-                        </td>
-                      </tr>
+                      <CartProductRow
+                        item={item}
+                        toggleProductConfirm={toggleProductConfirm}
+                        isLast={isLast}
+                        key={index}
+                      />
                     );
                   })}
                 </tbody>
@@ -163,32 +119,7 @@ const Cart = () => {
         <div className="lg:w-1/3">
           <div className="bg-white p-5 mb-5  border border-gray-200">
             <h3 className="text-lg font-semibold">Cart Total</h3>
-            <div className="border-b border-gray-200 pb-2 mb-2">
-              <div className="cart-total-li">
-                <p className="cart-total-li-first">Sub Total</p>
-                <p className="cart-total-li-second">{totalPrice}₹</p>
-              </div>
-              <div className="cart-total-li">
-                <p className="cart-total-li-first">Shipping</p>
-                <p className="cart-total-li-second">
-                  {shipping === 0 ? "Free" : shipping}
-                </p>
-              </div>
-              <div className="cart-total-li">
-                <p className="cart-total-li-first">Discount</p>
-                <p className="cart-total-li-second">{discount}₹</p>
-              </div>
-              <div className="cart-total-li">
-                <p className="cart-total-li-first">Tax</p>
-                <p className="cart-total-li-second">{tax}₹</p>
-              </div>
-            </div>
-            <div className="cart-total-li">
-              <p className="font-semibold text-gray-500">Total</p>
-              <p className="font-semibold">
-                {totalPrice + discount + tax + shipping}₹
-              </p>
-            </div>
+            <TotalAndSubTotal />
             <button
               className="btn-blue w-full text-white uppercase font-semibold text-sm my-5"
               onClick={() => {

@@ -56,6 +56,16 @@ const cartSlice = createSlice({
       });
       state.cart = updatedCart;
     },
+    clearCartOnOrderPlaced: (state) => {
+      state.loading = false;
+      state.error = null;
+      state.cart = [];
+      state.cartId = "";
+      state.totalPrice = 0;
+      state.discount = 0;
+      state.shipping = 0;
+      state.tax = 0;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -65,8 +75,8 @@ const cartSlice = createSlice({
       .addCase(getCart.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.cart = payload.cart.items;
-        state.cartId = payload.cart._id;
+        state.cart = payload.cart?.items || [];
+        state.cartId = payload.cart?._id || "";
       })
       .addCase(getCart.rejected, (state, { payload }) => {
         state.loading = false;
@@ -111,5 +121,10 @@ const cartSlice = createSlice({
   },
 });
 
-export const { increment, decrement, calculateTotalPrice } = cartSlice.actions;
+export const {
+  increment,
+  decrement,
+  calculateTotalPrice,
+  clearCartOnOrderPlaced,
+} = cartSlice.actions;
 export default cartSlice.reducer;

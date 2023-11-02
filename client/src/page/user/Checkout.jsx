@@ -1,239 +1,182 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { GiPayMoney } from "react-icons/gi";
+import { BiWallet } from "react-icons/bi";
+import axios from "axios";
 import { URL } from "../../Common/links";
-import { useNavigate } from "react-router-dom";
-import Modal from "../../components/Modal";
-import Address from "./components/Address";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-
-import {
-  getAddresses,
-  deleteAddress,
-} from "../../redux/actions/user/addressActions";
-import ConfirmModal from "../../components/ConfirmModal";
-import AddressEdit from "./components/AddressEdit";
+import { config } from "../../Common/configurations";
+import CheckoutCartRow from "./components/CheckoutCartRow";
+import AddressCheckoutSession from "./components/AddressCheckoutSession";
+import TotalAndSubTotal from "./components/TotalAndSubTotal";
+import Loading from "../../components/Loading";
+import OrderConfirmation from "./components/OrderConfirmation";
+import { clearCartOnOrderPlaced } from "../../redux/reducers/user/cartSlice";
 
 const Checkout = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // Cart from Redux
-  const { cart, loading, error, cartId, totalPrice, shipping, discount, tax } =
-    useSelector((state) => state.cart);
+  const { cart, loading, error } = useSelector((state) => state.cart);
 
-  // Address from Redux
-  const {
-    addresses,
-    loading: addressLoading,
-    error: addressError,
-  } = useSelector((state) => state.address);
-
-  // If there is no item in the cart navigate to cart
-  useEffect(() => {
-    if (cart.length === 0) {
-      navigate("/cart");
-    }
-  }, [cart]);
-
+  // Address Selection
   const [selectedAddress, setSelectedAddress] = useState("");
+  // Payment Selection
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const handleSelectedPayment = (e) => {
+    setSelectedPayment(e.target.value);
+  };
+  // Additional Note
+  const [additionalNotes, setAdditionalNotes] = useState("");
 
-  // Fetching address when the page is loading
-  useEffect(() => {
-    dispatch(getAddresses());
-  }, []);
+  const [orderPlacedLoading, setOrderPlacedLoading] = useState(false);
+  const [confirmationPage, setConfirmationPage] = useState(false);
+  const [orderData, setOrderData] = useState({});
 
-  // Selecting the first address as default when the address are loaded
-  useEffect(() => {
-    if (addresses.length > 0) {
-      setSelectedAddress(addresses[0]._id);
+  // Order placing
+  const placeOrder = () => {
+    if (cart.length === 0) {
+      toast.error("Add product to cart");
+      return;
     }
-    setCreateAddress(false);
-    setEnableDeleteModal(false);
-    setEditAddressModal(false);
-  }, [addresses]);
+    if (!selectedAddress) {
+      toast.error("Delivery address not found");
+      return;
+    }
+    if (!selectedPayment) {
+      toast.error("Please select a payment mode");
+      return;
+    }
 
-  // Displaying address modal for creating address
-  const [createAddress, setCreateAddress] = useState(false);
-  const toggleAddress = () => {
-    setCreateAddress(!createAddress);
-  };
-
-  // Enabling delete modal
-  const [enableDeleteModal, setEnableDeleteModal] = useState(false);
-  const toggleDeleteModal = (deleteAddressId) => {
-    setEnableDeleteModal(!enableDeleteModal);
-    setToBeDeletedId(deleteAddressId);
-  };
-
-  // Dispatching the delete function
-  const [toBeDeletedId, setToBeDeletedId] = useState("");
-  const dispatchDeleteAddress = () => {
-    dispatch(deleteAddress(toBeDeletedId));
-  };
-
-  const [toBeEditedAddress, setToBeEditedAddress] = useState({});
-  const [editAddressModal, setEditAddressModal] = useState(false);
-  const toggleEditAddress = () => {
-    setEditAddressModal(!editAddressModal);
+    setOrderPlacedLoading(true);
+    // api call
+    axios
+      .post(
+        `${URL}/user/order`,
+        {
+          notes: additionalNotes,
+          address: selectedAddress,
+          paymentMode: selectedPayment,
+        },
+        config
+      )
+      .then(({ data }) => {
+        setOrderData(data.order);
+        toast.success("Order Placed");
+        setOrderPlacedLoading(false);
+        setConfirmationPage(true);
+        dispatch(clearCartOnOrderPlaced());
+      })
+      .catch((err) => {
+        toast.error(err);
+        setOrderPlacedLoading(false);
+      });
   };
 
   return (
     <>
-      {createAddress && <Modal tab={<Address closeToggle={toggleAddress} />} />}
-      {editAddressModal && (
-        <Modal
-          tab={
-            <AddressEdit
-              closeToggle={toggleEditAddress}
-              address={toBeEditedAddress}
+      {orderPlacedLoading ? (
+        <Loading />
+      ) : confirmationPage ? (
+        <OrderConfirmation orderData={orderData} />
+      ) : (
+        <div className="pt-20 px-5 lg:p-20 lg:flex items-start gap-5 bg-gray-100">
+          <div className="lg:w-3/4">
+            <AddressCheckoutSession
+              selectedAddress={selectedAddress}
+              setSelectedAddress={setSelectedAddress}
             />
-          }
-        />
-      )}
-      {enableDeleteModal && (
-        <ConfirmModal
-          title="Confirm Delete?"
-          negativeAction={toggleDeleteModal}
-          positiveAction={dispatchDeleteAddress}
-        />
-      )}
-      <div className="pt-20 px-5 lg:p-20 lg:flex items-start gap-5 bg-gray-100">
-        {/* Address form */}
-        <div className="lg:w-3/4">
-          <>
-            <h1 className="my-1 font-semibold text-lg">Choose below address</h1>
-            <div className="bg-white p-5 rounded">
-              {addresses.length > 0 ? (
-                <>
-                  <h2 className="my-1 font-semibold ">Your addresses</h2>
-                  {addresses.map((item, index) => {
-                    const selected = selectedAddress === item._id;
-                    return (
-                      // Address Row
-                      <div
-                        key={index}
-                        className={`border rounded my-1 py-2 px-4 cursor-pointer hover:bg-gray-100 flex justify-between items-center ${
-                          selected && "border-blue-400 border-2"
-                        }`}
-                        onClick={() => {
-                          setSelectedAddress(item._id);
-                        }}
-                      >
-                        <p className="line-clamp-1">
-                          <span className="mr-2">
-                            <input
-                              type="radio"
-                              name="chosen"
-                              id="chosen"
-                              checked={selected}
-                              onChange={() => {
-                                setSelectedAddress(item._id);
-                              }}
-                            />
-                          </span>
-                          <span className="font-semibold">
-                            {item.firstName} {item.lastName},
-                          </span>{" "}
-                          {item.address}
-                        </p>
-                        <div className="flex gap-3">
-                          <AiOutlineEdit
-                            className="hover:text-gray-500"
-                            onClick={() => {
-                              setToBeEditedAddress(item);
-                              toggleEditAddress();
-                            }}
-                          />
-                          <AiOutlineDelete
-                            onClick={() => toggleDeleteModal(item._id)}
-                            className="hover:text-gray-500"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </>
-              ) : (
-                <h1>No Saved address found</h1>
-              )}
-              <div className="my-5 text-white">
-                <button className="btn-blue" onClick={toggleAddress}>
-                  Add a new Address
-                </button>
-              </div>
-            </div>
-          </>
-          <p className="my-1 font-semibold">Additional Notes</p>
-          <textarea
-            placeholder="Notes about your order e.g. special notes for delivery"
-            className="w-full h-40 px-3 py-2 outline-none rounded"
-          ></textarea>
-        </div>
-
-        {/* Order Summery Session */}
-
-        <div className="lg:w-1/4 bg-white px-5 py-3 border border-gray-200 rounded shrink-0">
-          <h1 className="font-semibold py-2">Order Summery</h1>
-          <div className="py-1">
-            {cart &&
-              cart.map((item, index) => (
-                // Cart row
-                <div className="flex gap-2 items-center mb-3" key={index}>
-                  <div className="w-9 h-9 shrink-0">
-                    <img
-                      src={`${URL}/img/${item.product.imageURL}`}
-                      alt="im"
-                      className="h-full w-full object-contain"
+            <div className="bg-white my-5 p-5 rounded">
+              <h1 className="text-xl font-semibold border-b pb-2 mb-3">
+                Payment Option
+              </h1>
+              <div className="flex items-center justify-center py-5">
+                <label className="cursor-pointer" htmlFor="cashOnDelivery">
+                  <div className="border-r px-5  flex flex-col items-center ">
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <GiPayMoney className="text-2xl" />
+                    </div>
+                    <p className="mb-2 text-sm">Cash On Delivery</p>
+                    <input
+                      type="radio"
+                      name="paymentMode"
+                      id="cashOnDelivery"
+                      value="cashOnDelivery"
+                      onChange={handleSelectedPayment}
+                      checked={selectedPayment === "cashOnDelivery"}
                     />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold line-clamp-1">
-                      {item.product.name}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {item.quantity} x{" "}
-                      <span className="font-semibold text-blue-500">
-                        {item.product.price}₹
-                      </span>
-                    </p>
+                </label>
+                <label className="cursor-pointer" htmlFor="razorPay">
+                  <div className="border-r px-5 flex flex-col items-center">
+                    <div className="w-10 h-10">
+                      <img
+                        src="https://d6xcmfyh68wv8.cloudfront.net/assets/razorpay-glyph.svg"
+                        alt="Razor Pay Icon"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <p className="mb-2 text-sm">Razer Pay</p>
+                    <input
+                      type="radio"
+                      name="paymentMode"
+                      id="razorPay"
+                      value="razorPay"
+                      onChange={handleSelectedPayment}
+                      checked={selectedPayment === "razorPay"}
+                    />
                   </div>
-                </div>
-              ))}
+                </label>
+                <label className="cursor-pointer" htmlFor="myWallet">
+                  <div className="px-5 flex flex-col items-center">
+                    <div className="w-10 h-10 flex items-center justify-center">
+                      <BiWallet className="text-2xl" />
+                    </div>
+                    <p className="mb-2 text-sm">My Wallet</p>
+                    <input
+                      type="radio"
+                      name="paymentMode"
+                      id="myWallet"
+                      value="myWallet"
+                      onChange={handleSelectedPayment}
+                      checked={selectedPayment === "myWallet"}
+                    />
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <p className="my-1 font-semibold">Additional Notes</p>
+            <textarea
+              placeholder="Notes about your order e.g. special notes for delivery"
+              className="w-full h-40 px-3 py-2 outline-none rounded resize-none"
+              value={additionalNotes}
+              onChange={(e) => {
+                setAdditionalNotes(e.target.value);
+              }}
+            ></textarea>
           </div>
-          <div className="border-b border-gray-200 pb-2 mb-2">
-            <div className="cart-total-li">
-              <p className="cart-total-li-first">Sub Total</p>
-              <p className="cart-total-li-second">{totalPrice}₹</p>
+
+          {/* Order Summery Session */}
+
+          <div className="lg:w-1/4 bg-white px-5 py-3 border border-gray-200 rounded shrink-0">
+            <h1 className="font-semibold py-2">Order Summery</h1>
+            <div className="py-1">
+              {cart &&
+                cart.map((item, index) => (
+                  <CheckoutCartRow item={item} key={index} />
+                ))}
             </div>
-            <div className="cart-total-li">
-              <p className="cart-total-li-first">Shipping</p>
-              <p className="cart-total-li-second">
-                {shipping === 0 ? "Free" : shipping}
-              </p>
-            </div>
-            <div className="cart-total-li">
-              <p className="cart-total-li-first">Discount</p>
-              <p className="cart-total-li-second">{discount}₹</p>
-            </div>
-            <div className="cart-total-li">
-              <p className="cart-total-li-first">Tax</p>
-              <p className="cart-total-li-second">{tax}₹</p>
-            </div>
+            <TotalAndSubTotal />
+            <button
+              className="btn-blue w-full text-white uppercase font-semibold text-sm my-5"
+              onClick={placeOrder}
+            >
+              Place order
+            </button>
           </div>
-          <div className="cart-total-li">
-            <p className="font-semibold text-gray-500">Total</p>
-            <p className="font-semibold">
-              {totalPrice + discount + tax + shipping}₹
-            </p>
-          </div>
-          <button
-            className="btn-blue w-full text-white uppercase font-semibold text-sm my-5"
-            onClick={() => {}}
-          >
-            Place order
-          </button>
         </div>
-      </div>
+      )}
     </>
   );
 };

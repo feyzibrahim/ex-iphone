@@ -40,7 +40,6 @@ const Login = () => {
   }, [user]);
 
   const handleLoginSubmit = (value) => {
-    console.log(value);
     dispatch(loginUser(value));
   };
 
