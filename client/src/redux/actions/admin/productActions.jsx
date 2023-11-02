@@ -39,7 +39,7 @@ export const createProduct = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -52,7 +52,7 @@ export const getProducts = createAsyncThunk(
       const { data } = await axios.get(`${URL}/admin/products`, configJson);
       return data.products;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -68,7 +68,7 @@ export const deleteProducts = createAsyncThunk(
 
       return data.product;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -85,7 +85,7 @@ export const updateProduct = createAsyncThunk(
 
       return data;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );

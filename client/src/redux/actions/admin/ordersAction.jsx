@@ -11,7 +11,7 @@ export const getOrders = createAsyncThunk(
 
       return data.orders;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -28,7 +28,23 @@ export const updateOrderStatus = createAsyncThunk(
 
       return data.order;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const getOrderWithQuery = createAsyncThunk(
+  "address/getOrderWithQuery",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${URL}/admin/orders?status=${formData}`,
+        config
+      );
+
+      return data.orders;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
     }
   }
 );

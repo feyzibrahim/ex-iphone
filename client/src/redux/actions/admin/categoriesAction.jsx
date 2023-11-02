@@ -39,7 +39,7 @@ export const createNewCategory = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -52,7 +52,7 @@ export const getCategories = createAsyncThunk(
       const { data } = await axios.get(`${URL}/admin/categories`, configJson);
       return data.categories;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -70,7 +70,7 @@ export const updateCategory = createAsyncThunk(
       console.log(data.category);
       return data;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -86,7 +86,7 @@ export const deleteCategory = createAsyncThunk(
 
       return data.category;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );

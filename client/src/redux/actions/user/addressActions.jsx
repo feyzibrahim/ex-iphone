@@ -15,7 +15,7 @@ export const createAddress = createAsyncThunk(
 
       return data.address;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -28,7 +28,7 @@ export const getAddresses = createAsyncThunk(
 
       return data.addresses;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -41,7 +41,7 @@ export const deleteAddress = createAsyncThunk(
 
       return data.address;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -58,7 +58,7 @@ export const updateAddress = createAsyncThunk(
 
       return data.address;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );

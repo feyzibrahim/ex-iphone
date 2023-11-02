@@ -12,7 +12,10 @@ import { useSelector, useDispatch } from "react-redux";
 import date from "date-and-time";
 import Modal from "../../../../components/Modal";
 
-import { getOrders } from "../../../../redux/actions/admin/ordersAction";
+import {
+  getOrders,
+  getOrderWithQuery,
+} from "../../../../redux/actions/admin/ordersAction";
 import { BsFilterRight } from "react-icons/bs";
 import UpdateOrder from "./UpdateOrder";
 
@@ -32,6 +35,8 @@ const Orders = () => {
     setUpdateModal(!updateModal);
     setSelectedOrderToUpdate(data);
   };
+
+  const [activeStatusFilter, setActiveStatusFilter] = useState("all status");
 
   return (
     <>
@@ -67,15 +72,97 @@ const Orders = () => {
         </div>
         <div className="lg:flex justify-between items-center font-semibold">
           <div className="flex justify-between gap-2 font-semibold bg-white text-gray-500 my-2 p-1 shadow rounded-md">
-            <p className="bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer">
+            <p
+              className={
+                activeStatusFilter === "all status"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrders());
+                setActiveStatusFilter("all status");
+              }}
+            >
               All Status
             </p>
-            <p className="admin-status">Pending</p>
-            <p className="admin-status">Processing</p>
-            <p className="admin-status">Shipped</p>
-            <p className="admin-status">Delivered</p>
-            <p className="admin-status">Cancelled</p>
-            <p className="admin-status">Returned</p>
+            <p
+              className={
+                activeStatusFilter === "pending"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("pending"));
+                setActiveStatusFilter("pending");
+              }}
+            >
+              Pending
+            </p>
+            <p
+              className={
+                activeStatusFilter === "processing"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("processing"));
+                setActiveStatusFilter("processing");
+              }}
+            >
+              Processing
+            </p>
+            <p
+              className={
+                activeStatusFilter === "shipped"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("shipped"));
+                setActiveStatusFilter("shipped");
+              }}
+            >
+              Shipped
+            </p>
+            <p
+              className={
+                activeStatusFilter === "delivered"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("delivered"));
+                setActiveStatusFilter("delivered");
+              }}
+            >
+              Delivered
+            </p>
+            <p
+              className={
+                activeStatusFilter === "cancelled"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("cancelled"));
+                setActiveStatusFilter("cancelled");
+              }}
+            >
+              Cancelled
+            </p>
+            <p
+              className={
+                activeStatusFilter === "returned"
+                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
+                  : "admin-status"
+              }
+              onClick={() => {
+                dispatch(getOrderWithQuery("returned"));
+                setActiveStatusFilter("returned");
+              }}
+            >
+              Returned
+            </p>
           </div>
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
@@ -88,7 +175,7 @@ const Orders = () => {
             </button>
           </div>
         </div>
-        {orders.length > 0 ? (
+        {orders && orders.length > 0 ? (
           <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
             <table className="w-full min-w-max table-auto ">
               <thead className="font-normal">
@@ -113,6 +200,7 @@ const Orders = () => {
                     <tr
                       key={index}
                       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
+                      onClick={() => navigate(`detail/${item._id}`)}
                     >
                       <td className="admin-table-row">{index + 1}</td>
                       <td className="admin-table-row flex items-center gap-2">
@@ -181,7 +269,7 @@ const Orders = () => {
           </div>
         ) : (
           <div className="absolute top-1/2 left-1/3 lg:left-1/2 lg:right-1/2">
-            <p className="w-44">No orders are placed yet</p>
+            <p className="w-44">{error ? error : "No orders are placed yet"}</p>
           </div>
         )}
       </div>

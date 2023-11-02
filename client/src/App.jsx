@@ -32,7 +32,6 @@ import Checkout from "./page/user/Checkout";
 // Admin
 import AdminDash from "./page/admin/Dashboard";
 import AdminHome from "./page/admin/pages/AdminHome";
-import Orders from "./page/admin/pages/Order/Orders";
 import Coupon from "./page/admin/pages/Coupon";
 import Banner from "./page/admin/pages/Banner";
 import Transaction from "./page/admin/pages/Transaction";
@@ -48,6 +47,9 @@ import EditProduct from "./page/admin/pages/products/EditProduct";
 import Categories from "./page/admin/pages/categories/Categories";
 import CreateCategory from "./page/admin/pages/categories/CreateCategory";
 import EditCategory from "./page/admin/pages/categories/EditCategory";
+
+import Orders from "./page/admin/pages/Order/Orders";
+import OrderDetails from "./page/admin/pages/Order/OrderDetails";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -128,6 +130,8 @@ function AdminRoutes() {
         <Route path="categories/edit/:id" element={<EditCategory />} />
 
         <Route path="orders" element={<Orders />} />
+        <Route path="orders/detail/:id" element={<OrderDetails />} />
+
         <Route path="coupon" element={<Coupon />} />
         <Route path="banner" element={<Banner />} />
         <Route path="transaction" element={<Transaction />} />

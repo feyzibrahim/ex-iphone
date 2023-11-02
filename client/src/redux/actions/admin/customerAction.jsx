@@ -39,7 +39,7 @@ export const createNewCustomer = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );
@@ -51,7 +51,7 @@ export const getCustomers = createAsyncThunk(
       const { data } = await axios.get(`${URL}/admin/customers`, configJson);
       return data.customers;
     } catch (error) {
-      handleError(error, rejectWithValue);
+      return handleError(error, rejectWithValue);
     }
   }
 );

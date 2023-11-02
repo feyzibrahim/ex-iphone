@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getOrders, updateOrderStatus } from "../../actions/admin/ordersAction";
+import {
+  getOrders,
+  updateOrderStatus,
+  getOrderWithQuery,
+} from "../../actions/admin/ordersAction";
 import toast from "react-hot-toast";
 
 const ordersSlice = createSlice({
@@ -42,6 +46,20 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.orders = null;
         state.error = payload;
+      })
+      .addCase(getOrderWithQuery.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getOrderWithQuery.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.orders = payload;
+      })
+      .addCase(getOrderWithQuery.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.orders = null;
+        state.error = payload;
+        toast.error(payload);
       });
   },
 });

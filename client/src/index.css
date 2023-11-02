@@ -32,6 +32,10 @@
   @apply border-2 text-blue-600 hover:text-blue-200 uppercase text-sm border-blue-600 px-5 font-semibold lg:px-12 py-3 rounded-lg hover:bg-blue-700;
 }
 
+.xy-center {
+  @apply flex justify-between items-center;
+}
+
 .navbar-p {
   @apply text-blue-900 text-[.7em] font-[800] uppercase mb-6;
 }
@@ -183,4 +187,18 @@
 
 .inputType {
   @apply border bg-white border-gray-200 px-3 py-2 rounded outline-none;
+}
+
+/* Order Admin */
+
+.tile {
+  @apply bg-white rounded-lg p-5 font-semibold lg:w-1/3;
+}
+
+.tile-row {
+  @apply flex items-center py-2 gap-3;
+}
+
+.tile-row-icon {
+  @apply p-3 bg-gray-100 rounded-full text-xl text-gray-500;
 }

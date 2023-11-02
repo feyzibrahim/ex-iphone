@@ -52,12 +52,15 @@ router.post("/category", upload.single("imgURL"), createCategory);
 
 const {
   getOrders,
+  getOrder,
   clearOrder,
   updateOrderStatus,
 } = require("../controllers/admin/orderController");
 
 router.get("/orders", getOrders);
-router.patch("/order-status/:id", updateOrderStatus);
 router.delete("/clear-orders", clearOrder);
+
+router.get("/order/:id", getOrder);
+router.patch("/order-status/:id", updateOrderStatus);
 
 module.exports = router;
