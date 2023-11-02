@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const Cart = require("../../model/cartModel");
 const mongoose = require("mongoose");
 const Address = require("../../model/addressModel");
-const Order = require("../../model/orderModal");
+const Order = require("../../model/orderModel");
 
 const createOrder = async (req, res) => {
   const token = req.cookies.user_token;
@@ -23,10 +23,13 @@ const createOrder = async (req, res) => {
     markup: 1,
   });
 
-  const sum = cart.items.reduce(
-    (total, item) => total + item.product.price * item.quantity,
-    0
-  );
+  let sum = 0;
+  let totalQuantity = 0;
+
+  cart.items.map((item) => {
+    sum = sum + item.product.price * item.quantity;
+    totalQuantity = totalQuantity + item.quantity;
+  });
 
   const sumWithTax = sum + sum * 0.08;
 
@@ -42,6 +45,7 @@ const createOrder = async (req, res) => {
     products: products,
     totalPrice: sumWithTax,
     paymentMode,
+    totalQuantity,
   };
 
   const order = await Order.create(orderData);

@@ -27,11 +27,12 @@ import ForgetPassword from "./page/auth/ForgetPassword";
 import Dashboard from "./page/Dashboard";
 import ProductDetails from "./page/user/ProductDetails";
 import Cart from "./page/user/Cart";
+import Checkout from "./page/user/Checkout";
 
 // Admin
 import AdminDash from "./page/admin/Dashboard";
 import AdminHome from "./page/admin/pages/AdminHome";
-import Orders from "./page/admin/pages/Orders";
+import Orders from "./page/admin/pages/Order/Orders";
 import Coupon from "./page/admin/pages/Coupon";
 import Banner from "./page/admin/pages/Banner";
 import Transaction from "./page/admin/pages/Transaction";
@@ -47,7 +48,6 @@ import EditProduct from "./page/admin/pages/products/EditProduct";
 import Categories from "./page/admin/pages/categories/Categories";
 import CreateCategory from "./page/admin/pages/categories/CreateCategory";
 import EditCategory from "./page/admin/pages/categories/EditCategory";
-import Checkout from "./page/user/Checkout";
 
 function App() {
   const { user } = useSelector((state) => state.user);

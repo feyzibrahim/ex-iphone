@@ -3,7 +3,7 @@ const upload = require("../middleware/upload");
 
 const router = express.Router();
 
-// Admin Products controller functions and mounting them to corresponding route
+// Products controller functions and mounting them to corresponding route
 const {
   getProducts,
   getProduct,
@@ -18,7 +18,7 @@ router.delete("/product/:id", deleteProduct);
 router.patch("/product/:id", upload.any(), updateProduct);
 router.post("/product", upload.any(), addProduct);
 
-// Admin Customer controller functions and mounting them to corresponding route
+// Customer controller functions and mounting them to corresponding route
 const {
   getCustomers,
   getCustomer,
@@ -33,7 +33,7 @@ router.delete("/customer/:id", deleteCustomer);
 router.patch("/customer/:id", updateCustomer);
 router.post("/customer", upload.any(), addCustomer);
 
-// Admin Category controller functions and mounting them to corresponding route
+// Category controller functions and mounting them to corresponding route
 const {
   getCategories,
   getCategory,
@@ -47,5 +47,17 @@ router.get("/category/:id", getCategory);
 router.delete("/category/:id", deleteCategory);
 router.patch("/category/:id", upload.single("imgURL"), updateCategory);
 router.post("/category", upload.single("imgURL"), createCategory);
+
+// Order controller functions and mounting them to corresponding route
+
+const {
+  getOrders,
+  clearOrder,
+  updateOrderStatus,
+} = require("../controllers/admin/orderController");
+
+router.get("/orders", getOrders);
+router.patch("/order-status/:id", updateOrderStatus);
+router.delete("/clear-orders", clearOrder);
 
 module.exports = router;

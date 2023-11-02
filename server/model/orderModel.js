@@ -99,6 +99,10 @@ const OrderSchema = new Schema(
       required: true,
       enum: ["cashOnDelivery", "razerPay", "myWallet"],
     },
+    totalQuantity: {
+      type: Number,
+      min: 0,
+    },
   },
   { timestamps: true }
 );
