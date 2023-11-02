@@ -1,0 +1,63 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getOrders } from "../../redux/actions/user/userOrderActions";
+import date from "date-and-time";
+import { Link } from "react-router-dom";
+import { BsArrowRight } from "react-icons/bs";
+
+const OrderHistory = () => {
+  const { userOrders, loading, error } = useSelector(
+    (state) => state.userOrders
+  );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getOrders());
+  }, []);
+
+  return (
+    <div className="min-h-screen pt-20 px-5 lg:pt-20 lg:px-40 bg-gray-100">
+      <div className="bg-white rounded-lg overflow-x-auto">
+        <h1 className="uppercase text-xl font-semibold p-5">Order History</h1>
+        <table className="w-full min-w-max table-auto">
+          <thead>
+            <tr className="bg-gray-200 font-semibold">
+              <td className="px-5 py-2">Product Name</td>
+              <td className="px-5 py-2">Status</td>
+              <td className="px-5 py-2">Date</td>
+              <td className="px-5 py-2">Total</td>
+              <td className="px-5 py-2">Action</td>
+            </tr>
+          </thead>
+          <tbody>
+            {userOrders &&
+              userOrders.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td className="px-5 py-2">
+                      {item.products[0].productId.name}
+                    </td>
+                    <td className="px-5 py-2">{item.status}</td>
+                    <td className="px-5 py-2">
+                      {date.format(new Date(item.createdAt), "MMM DD YYYY")}
+                    </td>
+                    <td className="px-5 py-2">{item.totalPrice}₹</td>
+                    <td className="px-5 py-2 hover:underline hover:text-blue-600 text-blue-400 ">
+                      <Link
+                        to={`detail/${item._id}`}
+                        className="flex items-center gap-2"
+                      >
+                        View Details <BsArrowRight />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default OrderHistory;

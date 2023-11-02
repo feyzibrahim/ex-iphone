@@ -4,7 +4,7 @@ import { URL } from "../../../Common/links";
 import { config, handleError } from "../../../Common/configurations";
 
 export const getOrders = createAsyncThunk(
-  "address/getOrders",
+  "orders/getOrders",
   async (nothing, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(`${URL}/admin/orders`, config);
@@ -17,7 +17,7 @@ export const getOrders = createAsyncThunk(
 );
 
 export const updateOrderStatus = createAsyncThunk(
-  "address/updateOrderStatus",
+  "orders/updateOrderStatus",
   async ({ id, formData }, { rejectWithValue }) => {
     try {
       const { data } = await axios.patch(
@@ -34,7 +34,7 @@ export const updateOrderStatus = createAsyncThunk(
 );
 
 export const getOrderWithQuery = createAsyncThunk(
-  "address/getOrderWithQuery",
+  "orders/getOrderWithQuery",
   async (formData, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(

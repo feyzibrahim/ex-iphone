@@ -103,6 +103,9 @@ const OrderSchema = new Schema(
       type: Number,
       min: 0,
     },
+    reason: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

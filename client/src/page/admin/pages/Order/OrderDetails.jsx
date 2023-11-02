@@ -3,6 +3,7 @@ import BreadCrumbs from "../../Components/BreadCrumbs";
 import { FiDownload } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import date from "date-and-time";
 
 import { URL } from "../../../../Common/links";
 import { BiCalendar } from "react-icons/bi";
@@ -28,11 +29,9 @@ const OrderDetails = () => {
 
         if (res) {
           setOrderData(res.data.order);
-          console.log(res.data.order);
           setLoading(false);
         }
       } catch (error) {
-        console.error(error);
         setLoading(false);
         setError(error);
       }
@@ -72,7 +71,9 @@ const OrderDetails = () => {
                   </div>
                   Order Date
                 </div>
-                <p>{orderData.createdAt}</p>
+                <p>
+                  {date.format(new Date(orderData.createdAt), "MMM DD YYYY")}
+                </p>
               </div>
               <div className="xy-center">
                 <div className="tile-row">
@@ -128,18 +129,8 @@ const OrderDetails = () => {
               </div>
             </div>
             <div className="tile">
-              <div className="flex items-center justify-between">
+              <div>
                 <h1 className="text-lg font-bold">Address</h1>
-                <p>{orderData.status}</p>
-              </div>
-              <div className="xy-center">
-                <div className="tile-row ">
-                  <div className="tile-row-icon">
-                    <FaMapMarkerAlt />
-                  </div>
-                  Billing Address
-                </div>
-                <p>{orderData.address?.address}</p>
               </div>
               <div className="xy-center">
                 <div className="tile-row">
@@ -149,6 +140,20 @@ const OrderDetails = () => {
                   Shipping Address
                 </div>
                 <p>{orderData.address?.address}</p>
+              </div>
+              <div>
+                <h1 className="text-lg font-bold mt-5">Delivery Date</h1>
+              </div>
+              <div className="xy-center">
+                <div className="tile-row ">
+                  <div className="tile-row-icon">
+                    <BiCalendar />
+                  </div>
+                  Expected Date
+                </div>
+                <p>
+                  {date.format(new Date(orderData.deliveryDate), "MMM DD YYYY")}
+                </p>
               </div>
             </div>
           </div>

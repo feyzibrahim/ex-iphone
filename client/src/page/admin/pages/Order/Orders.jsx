@@ -177,7 +177,7 @@ const Orders = () => {
         </div>
         {orders && orders.length > 0 ? (
           <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
-            <table className="w-full min-w-max table-auto ">
+            <table className="w-full min-w-max table-auto">
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
                   <th className="admin-table-head">No:</th>
@@ -244,7 +244,8 @@ const Orders = () => {
                         <div className="flex items-center gap-2 text-lg">
                           <span
                             className="hover:text-gray-500"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.stopPropagation();
                               toggleUpdateModal({
                                 id: item._id,
                                 status: item.status,
