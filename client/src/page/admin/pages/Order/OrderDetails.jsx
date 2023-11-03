@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { AiOutlineUser, AiOutlinePhone } from "react-icons/ai";
 import { HiOutlineMail } from "react-icons/hi";
+import StatusComponent from "../../../../components/StatusComponent";
 
 const OrderDetails = () => {
   const { id } = useParams();
@@ -62,7 +63,9 @@ const OrderDetails = () => {
             <div className="tile">
               <div className="flex items-center justify-between">
                 <h1 className="text-lg font-bold line-clamp-1">Order #</h1>
-                <p>{orderData.status}</p>
+                <p>
+                  <StatusComponent status={orderData.status} />
+                </p>
               </div>
               <div className="xy-center">
                 <div className="tile-row ">

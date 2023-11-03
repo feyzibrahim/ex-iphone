@@ -1,6 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { config, handleError } from "../../Common/configurations";
+import {
+  config,
+  handleError,
+  configMultiPart,
+} from "../../Common/configurations";
 import { URL } from "../../Common/links";
 
 export const logout = createAsyncThunk(
@@ -56,6 +60,23 @@ export const signUpUser = createAsyncThunk(
         config
       );
 
+      return data;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const editUserProfile = createAsyncThunk(
+  "user/editUserProfile",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}/user/edit-profile`,
+        formData,
+        configMultiPart
+      );
+      console.log(data);
       return data;
     } catch (error) {
       return handleError(error, rejectWithValue);

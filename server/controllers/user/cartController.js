@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Cart = require("../../model/cartModel");
 const mongoose = require("mongoose");
+const Products = require("../../model/productModel");
 
 const getCart = async (req, res) => {
   try {
@@ -29,6 +30,15 @@ const addToCart = async (req, res) => {
     const token = req.cookies.user_token;
     const { _id } = jwt.verify(token, process.env.SECRET);
     const items = req.body;
+
+    const product = await Products.findById(items.product);
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    if (product.stockQuantity < items.quantity) {
+      throw new Error("Insufficient stock Quantity");
+    }
 
     let cart = {};
     const exists = await Cart.findOne({ user: _id });

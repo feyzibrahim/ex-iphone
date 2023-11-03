@@ -3,6 +3,7 @@ const Cart = require("../../model/cartModel");
 const mongoose = require("mongoose");
 const Address = require("../../model/addressModel");
 const Order = require("../../model/orderModel");
+const Products = require("../../model/productModel");
 
 const createOrder = async (req, res) => {
   try {
@@ -49,6 +50,43 @@ const createOrder = async (req, res) => {
       totalQuantity,
     };
 
+    const updateProductList = async (id, count) => {
+      const product = await Products.findOne({ _id: id });
+
+      if (product.stockQuantity - count < 0) {
+        throw Error(`${product.name} doesn't have ${count} stock`);
+      }
+
+      const updateProduct = await Products.findByIdAndUpdate(
+        id,
+        {
+          $inc: { stockQuantity: -count },
+        },
+        { new: true }
+      );
+
+      if (
+        parseInt(updateProduct.stockQuantity) < 5 &&
+        parseInt(updateProduct.stockQuantity) > 0
+      ) {
+        await Products.findByIdAndUpdate(id, {
+          $set: { status: "low quantity" },
+        });
+      }
+
+      if (parseInt(updateProduct.stockQuantity) === 0) {
+        await Products.findByIdAndUpdate(id, {
+          $set: { status: "out of stock" },
+        });
+      }
+    };
+
+    const updateProductPromises = products.map((item) => {
+      return updateProductList(item.productId, item.quantity);
+    });
+
+    await Promise.all(updateProductPromises);
+
     const order = await Order.create(orderData);
 
     if (order) {
@@ -76,7 +114,6 @@ const getOrders = async (req, res) => {
       {
         address: 0,
         paymentMode: 0,
-        totalQuantity: 0,
         deliveryDate: 0,
         user: 0,
         products: { $slice: 1 },

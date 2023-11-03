@@ -89,3 +89,19 @@ export const updateProduct = createAsyncThunk(
     }
   }
 );
+
+export const getProductsWithQuery = createAsyncThunk(
+  "products/getProductsWithQuery",
+  async (query, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${URL}/admin/products?status=${query}`,
+        config
+      );
+
+      return data.products;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);

@@ -3,7 +3,7 @@ const Product = require("../../model/productModel");
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find({
-      status: { $in: ["published", "out of stock", "low quantity"] },
+      status: { $in: ["published", "low quantity"] },
     });
 
     res.status(200).json({ products });

@@ -22,7 +22,7 @@ const OrderDetailsProductRow = ({ length, index, item }) => {
             )}
           </div>
           <div>
-            <p className="text-lg font-semibold text-blue-600">
+            <p className="lg:text-lg font-semibold text-blue-600 line-clamp-1">
               {item.productId.name}
             </p>
             <p className="line-clamp-2">{item.productId.description}</p>

@@ -68,7 +68,8 @@ const Checkout = () => {
         dispatch(clearCartOnOrderPlaced());
       })
       .catch((err) => {
-        toast.error(err);
+        const errorMessage = err.response.data.error;
+        toast.error(errorMessage);
         setOrderPlacedLoading(false);
       });
   };

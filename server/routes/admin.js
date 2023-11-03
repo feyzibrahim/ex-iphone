@@ -25,6 +25,7 @@ const {
   addCustomer,
   deleteCustomer,
   updateCustomer,
+  blockOrUnBlock,
 } = require("../controllers/admin/customerController");
 
 router.get("/customers", getCustomers);
@@ -32,6 +33,7 @@ router.get("/customer/:id", getCustomer);
 router.delete("/customer/:id", deleteCustomer);
 router.patch("/customer/:id", updateCustomer);
 router.post("/customer", upload.any(), addCustomer);
+router.patch("/customer-block-unblock/:id", blockOrUnBlock);
 
 // Category controller functions and mounting them to corresponding route
 const {

@@ -1,10 +1,45 @@
 const Product = require("../../model/productModel");
 const mongoose = require("mongoose");
 
+function isValidStatus(status) {
+  const validStatusValues = [
+    "draft",
+    "published",
+    "out of stock",
+    "low quantity",
+    "unpublished",
+  ];
+
+  return validStatusValues.includes(status);
+}
+
 // Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const query = req.query;
+    let products;
+    if (Object.keys(query).length === 0) {
+      products = await Product.find(
+        {},
+        { attributes: 0, moreImageURL: 0, category: 0 }
+      );
+    }
+
+    let status = query.status;
+
+    if (status) {
+      if (!isValidStatus(status)) {
+        throw Error("Not a valid query");
+      }
+      products = await Product.find(
+        { status },
+        { attributes: 0, moreImageURL: 0, category: 0 }
+      );
+
+      if (products.length === 0) {
+        throw Error(`No ${status} products`);
+      }
+    }
 
     res.status(200).json({ products });
   } catch (error) {
@@ -55,11 +90,7 @@ const addProduct = async (req, res) => {
       });
     }
 
-    console.log(formData);
-
     const product = await Product.create(formData);
-
-    console.log(product);
 
     res.status(200).json({ product });
   } catch (error) {

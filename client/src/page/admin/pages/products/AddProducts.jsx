@@ -64,7 +64,6 @@ const AddProducts = () => {
     formData.append("status", status.toLowerCase());
 
     formData.append("imageURL", imageURL);
-    // console.log(imageURL);
 
     for (const file of moreImageURL) {
       formData.append("moreImageURL", file);

@@ -18,6 +18,8 @@ import {
 } from "../../../../redux/actions/admin/ordersAction";
 import { BsFilterRight } from "react-icons/bs";
 import UpdateOrder from "./UpdateOrder";
+import StatusComponent from "../../../../components/StatusComponent";
+import FilterArray from "../../Components/FilterArray";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -36,7 +38,13 @@ const Orders = () => {
     setSelectedOrderToUpdate(data);
   };
 
-  const [activeStatusFilter, setActiveStatusFilter] = useState("all status");
+  const handleClick = (value) => {
+    if (value === "all") {
+      dispatch(getOrders());
+    } else {
+      dispatch(getOrderWithQuery(value));
+    }
+  };
 
   return (
     <>
@@ -71,99 +79,18 @@ const Orders = () => {
           </div>
         </div>
         <div className="lg:flex justify-between items-center font-semibold">
-          <div className="flex justify-between gap-2 font-semibold bg-white text-gray-500 my-2 p-1 shadow rounded-md">
-            <p
-              className={
-                activeStatusFilter === "all status"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrders());
-                setActiveStatusFilter("all status");
-              }}
-            >
-              All Status
-            </p>
-            <p
-              className={
-                activeStatusFilter === "pending"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("pending"));
-                setActiveStatusFilter("pending");
-              }}
-            >
-              Pending
-            </p>
-            <p
-              className={
-                activeStatusFilter === "processing"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("processing"));
-                setActiveStatusFilter("processing");
-              }}
-            >
-              Processing
-            </p>
-            <p
-              className={
-                activeStatusFilter === "shipped"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("shipped"));
-                setActiveStatusFilter("shipped");
-              }}
-            >
-              Shipped
-            </p>
-            <p
-              className={
-                activeStatusFilter === "delivered"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("delivered"));
-                setActiveStatusFilter("delivered");
-              }}
-            >
-              Delivered
-            </p>
-            <p
-              className={
-                activeStatusFilter === "cancelled"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("cancelled"));
-                setActiveStatusFilter("cancelled");
-              }}
-            >
-              Cancelled
-            </p>
-            <p
-              className={
-                activeStatusFilter === "returned"
-                  ? "bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer"
-                  : "admin-status"
-              }
-              onClick={() => {
-                dispatch(getOrderWithQuery("returned"));
-                setActiveStatusFilter("returned");
-              }}
-            >
-              Returned
-            </p>
-          </div>
+          <FilterArray
+            list={[
+              "all",
+              "pending",
+              "processing",
+              "shipped",
+              "delivered",
+              "canceled",
+              "returned",
+            ]}
+            handleClick={handleClick}
+          />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
               <AiOutlineCalendar />
@@ -220,7 +147,9 @@ const Orders = () => {
                             {item.products[0].productId.name}
                           </p>
                           <p className="font-semibold text-gray-500">
-                            +{item.totalQuantity - 1} Products
+                            {item.totalQuantity === 1
+                              ? item.totalQuantity + " Product"
+                              : "+" + (item.totalQuantity - 1) + " Products"}
                           </p>
                         </div>
                       </td>
@@ -238,7 +167,7 @@ const Orders = () => {
                         )}
                       </td>
                       <td className="admin-table-row capitalize">
-                        {item.status}
+                        <StatusComponent status={item.status} />
                       </td>
                       <td className="admin-table-row">
                         <div className="flex items-center gap-2 text-lg">

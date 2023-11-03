@@ -40,7 +40,7 @@ const EditProduct = () => {
   const [fetchedData, setFetchedData] = useState({
     name: "",
     description: "",
-    stockQuantity: "",
+    stockQuantity: 0,
     category: "",
     imageURL: "",
     status: "",

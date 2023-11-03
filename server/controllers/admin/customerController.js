@@ -3,7 +3,38 @@ const User = require("../../model/userModel");
 // Getting all Customer to list on admin dashboard
 const getCustomers = async (req, res) => {
   try {
-    const customers = await User.find();
+    const query = req.query;
+
+    let customers;
+
+    if (Object.keys(query).length === 0) {
+      customers = await User.find(
+        { role: "user" },
+        {
+          password: 0,
+          dateOfBirth: 0,
+          role: 0,
+          walletBalance: 0,
+          isEmailVerified: 0,
+        }
+      );
+    } else {
+      let { isActive } = query;
+
+      customers = await User.find(
+        { role: "user", isActive },
+        {
+          password: 0,
+          dateOfBirth: 0,
+          role: 0,
+          walletBalance: 0,
+          isEmailVerified: 0,
+        }
+      );
+      if (customers.length === 0) {
+        throw Error(`No ${isActive ? "active" : "blocked"} users`);
+      }
+    }
 
     res.status(200).json({ customers });
   } catch (error) {
@@ -38,11 +69,7 @@ const addCustomer = async (req, res) => {
       });
     }
 
-    console.log(formData);
-
     const customer = await User.create(formData);
-
-    console.log(customer);
 
     res.status(200).json({ customer });
   } catch (error) {
@@ -58,12 +85,36 @@ const updateCustomer = (req, res) => {
   res.status(200).json({ msg: `Customer Number ${id} - updated` });
 };
 
-const deleteCustomer = (req, res) => {
-  const { id } = req.params;
+const deleteCustomer = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  console.log(id);
+    const customer = await User.findOneAndDelete({ _id: id });
 
-  res.status(200).json({ msg: `Customer Number ${id} - Deleted` });
+    if (!customer) {
+      throw Error("No Such Customer");
+    }
+
+    res.status(200).json({ customer });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const blockOrUnBlock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isActive } = req.body;
+
+    const customer = await User.findByIdAndUpdate(
+      id,
+      { $set: { isActive } },
+      { new: true }
+    );
+    res.status(200).json({ customer });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {
@@ -72,4 +123,5 @@ module.exports = {
   addCustomer,
   deleteCustomer,
   updateCustomer,
+  blockOrUnBlock,
 };

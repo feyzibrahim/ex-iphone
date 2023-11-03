@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getProducts,
   deleteProducts,
+  getProductsWithQuery,
 } from "../../../../redux/actions/admin/productActions";
 import TableRow from "./TableRow";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import BreadCrumbs from "../../Components/BreadCrumbs";
+import FilterArray from "../../Components/FilterArray";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -34,6 +36,14 @@ const Products = () => {
   const deleteData = () => {
     dispatch(deleteProducts(idToBeDeleted));
     toggleConfirmDelete("");
+  };
+
+  const handleQuerySearch = (status) => {
+    if (status === "all") {
+      dispatch(getProducts());
+    } else {
+      dispatch(getProductsWithQuery(status));
+    }
   };
 
   return (
@@ -66,15 +76,17 @@ const Products = () => {
           </div>
         </div>
         <div className="lg:flex justify-between items-center text-xs font-semibold">
-          <div className="flex justify-between gap-2 font-semibold bg-white text-gray-500 my-2 p-1 shadow rounded-md">
-            <p className="bg-gray-100 rounded px-2 py-1 text-blue-600 cursor-pointer">
-              All products
-            </p>
-            <p className="admin-status">Published</p>
-            <p className="admin-status">Low Stock</p>
-            <p className="admin-status">Draft</p>
-            <p className="admin-status">Out of Stocks</p>
-          </div>
+          <FilterArray
+            list={[
+              "all",
+              "draft",
+              "published",
+              "out of stock",
+              "low quantity",
+              "unpublished",
+            ]}
+            handleClick={handleQuerySearch}
+          />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
               <AiOutlineCalendar />

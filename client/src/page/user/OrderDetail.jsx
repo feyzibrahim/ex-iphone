@@ -7,6 +7,7 @@ import date from "date-and-time";
 import OrderDetailsProductRow from "./components/OrderDetailsProductRow";
 import Modal from "../../components/Modal";
 import OrderCancellation from "./components/OrderCancellation";
+import StatusComponent from "../../components/StatusComponent";
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -48,12 +49,15 @@ const OrderDetail = () => {
         <div className="bg-white rounded-lg overflow-x-auto">
           <div className="flex items-center justify-between p-5 border-b">
             <h1 className="uppercase text-xl font-semibold">Order Detail</h1>
-            <p
-              className="text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
-              onClick={toggleCancelModal}
-            >
-              Cancel Order <TiCancel className="text-gray-200xl" />
-            </p>
+            {orderData.status !== "cancelled" &&
+              orderData.status !== "delivered" && (
+                <p
+                  className="text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
+                  onClick={toggleCancelModal}
+                >
+                  Cancel Order <TiCancel className="text-gray-200xl" />
+                </p>
+              )}
           </div>
           <div>
             <div className="p-5 m-5 bg-gray-200 rounded-lg flex items-center justify-between">
@@ -69,10 +73,15 @@ const OrderDetail = () => {
               </div>
               <h1 className="text-3xl font-bold">{orderData.totalPrice}₹</h1>
             </div>
-            <p className="px-5 pb-5 border-b">
-              <span className="text-gray-500">Order expected arrival </span>
-              {date.format(new Date(orderData.deliveryDate), "MMM DD, YYYY")}
-            </p>
+            <div className="px-5 pb-5 border-b flex items-center justify-between">
+              <p>
+                <span className="text-gray-500">Order expected arrival </span>
+                {date.format(new Date(orderData.deliveryDate), "MMM DD, YYYY")}
+              </p>
+              <p>
+                <StatusComponent status={orderData.status} />
+              </p>
+            </div>
             <div className="p-5 w-full border-b">
               <h1 className="text-lg font-semibold pb-3">
                 Products{" "}

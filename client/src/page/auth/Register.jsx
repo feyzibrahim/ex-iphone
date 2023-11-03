@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SignUpBG from "../../assets/SignUpBG.png";
 import Logo from "../../assets/logoGrey.png";
 import {
@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../../redux/actions/userActions";
 import { Formik, Form } from "formik";
 import * as Yup from "Yup";
-import InputWithIcon from "./InputWithIcon";
-import PasswordInputWithIcon from "./PasswordInputWithIcon";
+import InputWithIcon from "../../components/InputWithIcon";
+import PasswordInputWithIcon from "../../components/PasswordInputWithIcon";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);

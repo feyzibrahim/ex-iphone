@@ -2,7 +2,7 @@ import React from "react";
 
 const ConfirmModal = ({ title, positiveAction, negativeAction }) => {
   return (
-    <div className="w-full h-screen bg-slate-600 absolute top-0 left-0  z-10 bg-opacity-50 flex items-center justify-center">
+    <div className="w-full h-screen bg-slate-600 fixed top-0 left-0 z-10 bg-opacity-50 flex items-center justify-center">
       <div className="px-20 py-5 bg-white rounded-xl text-center">
         <h1>{title}</h1>
         <div className="flex gap-5 mt-5">

@@ -4,7 +4,9 @@ import {
   getUserDataFirst,
   signUpUser,
   logout,
+  editUserProfile,
 } from "../actions/userActions";
+import toast from "react-hot-toast";
 
 const userSlice = createSlice({
   name: "user",
@@ -71,6 +73,21 @@ const userSlice = createSlice({
         state.user = payload;
       })
       .addCase(signUpUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.user = null;
+        state.error = payload;
+      })
+      // Editing User Profile
+      .addCase(editUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editUserProfile.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.user = payload;
+        toast.success("Profile Updated");
+      })
+      .addCase(editUserProfile.rejected, (state, { payload }) => {
         state.loading = false;
         state.user = null;
         state.error = payload;

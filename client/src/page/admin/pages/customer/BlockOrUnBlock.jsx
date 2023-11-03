@@ -1,31 +1,35 @@
 import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { updateOrderStatus } from "../../../../redux/actions/admin/ordersAction";
+import { blockOrUnBlock } from "../../../../redux/actions/admin/customerAction";
 import { useDispatch } from "react-redux";
 
-const UpdateOrder = ({ toggleModal, data }) => {
+const BlockOrUnBlock = ({ toggleModal, data }) => {
   const { id, status } = data;
   const dispatch = useDispatch();
-  const [selectedStatus, setSelectedStatus] = useState(status);
+  const [selectedStatus, setSelectedStatus] = useState(
+    status ? "active" : "blocked"
+  );
 
   const handleSave = () => {
     if (selectedStatus === "") {
       return;
     }
-    dispatch(updateOrderStatus({ id, formData: { status: selectedStatus } }));
+    let isActive = selectedStatus === "active";
+
+    dispatch(blockOrUnBlock({ id, isActive }));
   };
 
   return (
     <div className="w-2/6 bg-white p-5 rounded-lg">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Update Order</h1>
+        <h1 className="text-lg font-semibold">Block User</h1>
         <AiOutlineClose
           className="text-2xl cursor-pointer hover:text-gray-500"
-          onClick={() => toggleModal({})}
+          onClick={() => toggleModal("")}
         />
       </div>
       <div className="flex gap-3 items-center my-2">
-        <p className="py-5">Status</p>
+        <p className="py-5 shrink-0">Choose a Status</p>
         <select
           name="status"
           id="status"
@@ -33,23 +37,11 @@ const UpdateOrder = ({ toggleModal, data }) => {
           value={selectedStatus}
           onChange={(e) => setSelectedStatus(e.target.value)}
         >
-          <option value="pending" className="capitalize">
-            pending
+          <option value="active" className="capitalize">
+            active
           </option>
-          <option value="processing" className="capitalize">
-            processing
-          </option>
-          <option value="shipped" className="capitalize">
-            shipped
-          </option>
-          <option value="delivered" className="capitalize">
-            delivered
-          </option>
-          <option value="cancelled" className="capitalize">
-            cancelled
-          </option>
-          <option value="returned" className="capitalize">
-            returned
+          <option value="blocked" className="capitalize">
+            blocked
           </option>
         </select>
       </div>
@@ -63,4 +55,4 @@ const UpdateOrder = ({ toggleModal, data }) => {
   );
 };
 
-export default UpdateOrder;
+export default BlockOrUnBlock;

@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1d" });
@@ -64,9 +65,45 @@ const logoutUser = async (req, res) => {
   res.status(200).json({ msg: "Logged out Successfully" });
 };
 
+const editUser = async (req, res) => {
+  try {
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    let formData = req.body;
+
+    const profileImgURL = req?.file?.filename;
+    console.log(profileImgURL);
+
+    if (profileImgURL) {
+      formData = { ...formData, profileImgURL: profileImgURL };
+    }
+
+    const user = await User.findOneAndUpdate(
+      { _id },
+      { $set: { ...formData } },
+      { new: true }
+    );
+
+    if (!user) {
+      throw Error("No such User");
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getUserDataFirst,
   signUpUser,
   loginUser,
   logoutUser,
+  editUser,
 };

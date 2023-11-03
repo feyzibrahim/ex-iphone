@@ -1,31 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const config = {
-  headers: {
-    "Content-Type": "multipart/form-data",
-  },
-  withCredentials: true,
-};
-
-const configJson = {
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
-};
-
-const URL = "http://localhost:4000";
-
-const handleError = (error, rejectWithValue) => {
-  if (error.response && error.response.data.error) {
-    console.log(error.response.data.error);
-
-    return rejectWithValue(error.response.data.error);
-  } else {
-    return rejectWithValue(error.message);
-  }
-};
+import { URL } from "../../../Common/links";
+import {
+  config,
+  configMultiPart,
+  handleError,
+} from "../../../Common/configurations";
 
 // Function to Create new Customer
 export const createNewCustomer = createAsyncThunk(
@@ -35,7 +15,7 @@ export const createNewCustomer = createAsyncThunk(
       const { data } = await axios.post(
         `${URL}/admin/product`,
         formData,
-        config
+        configMultiPart
       );
       return data;
     } catch (error) {
@@ -48,7 +28,55 @@ export const getCustomers = createAsyncThunk(
   "customers/getCustomers",
   async (rc, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/customers`, configJson);
+      const { data } = await axios.get(`${URL}/admin/customers`, config);
+      return data.customers;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const deleteCustomer = createAsyncThunk(
+  "customers/deleteCustomer",
+  async (id, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(
+        `${URL}/admin/customer/${id}`,
+        config
+      );
+      return data.customer;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const blockOrUnBlock = createAsyncThunk(
+  "customers/blockOrUnBlock",
+  async ({ id, isActive }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/admin/customer-block-unblock/${id}`,
+        { isActive },
+        config
+      );
+
+      return data.customer;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const getFilteredData = createAsyncThunk(
+  "customers/getFilteredData",
+  async (isActive, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${URL}/admin/customers?isActive=${isActive}`,
+        config
+      );
+
       return data.customers;
     } catch (error) {
       return handleError(error, rejectWithValue);

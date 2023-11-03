@@ -9,8 +9,8 @@ import { loginUser } from "../../redux/actions/userActions";
 
 import { Formik, Form } from "formik";
 import * as Yup from "Yup";
-import InputWithIcon from "./InputWithIcon";
-import PasswordInputWithIcon from "./PasswordInputWithIcon";
+import InputWithIcon from "../../components/InputWithIcon";
+import PasswordInputWithIcon from "../../components/PasswordInputWithIcon";
 
 const Login = () => {
   const { user, loading, error } = useSelector((state) => state.user);

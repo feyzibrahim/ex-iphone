@@ -61,8 +61,8 @@ const ProductDetails = () => {
         setCartLoading(false);
       })
       .catch((error) => {
-        toast.error("Failed to add to cart");
-        console.log(error);
+        const err = error.response.data.error;
+        toast.error(err);
         setCartLoading(false);
       });
   };
@@ -132,9 +132,9 @@ const ProductDetails = () => {
             <p>
               Availability:{" "}
               <span
-                className={`font-semibold ${
+                className={`font-semibold capitalize ${
                   currentPro.status === "published" && "text-green-600"
-                } ${currentPro.status === "out of stock" && "text-red-600"}`}
+                } ${currentPro.status === "low quantity" && "text-red-600"}`}
               >
                 {currentPro.status === "published"
                   ? "In Stock"

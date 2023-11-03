@@ -52,6 +52,7 @@ import Orders from "./page/admin/pages/Order/Orders";
 import OrderDetails from "./page/admin/pages/Order/OrderDetails";
 import OrderHistory from "./page/user/OrderHistory";
 import OrderDetail from "./page/user/OrderDetail";
+import ProfilePage from "./page/user/ProfilePage";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -102,6 +103,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-history" element={<OrderHistory />} />
           <Route path="/order-history/detail/:id" element={<OrderDetail />} />
+          <Route path="/profile" element={<ProfilePage />} />
 
           {/* Admin Routes */}
           {user && user.role === "admin" ? (

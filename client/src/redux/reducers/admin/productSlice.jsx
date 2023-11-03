@@ -4,7 +4,9 @@ import {
   createProduct,
   deleteProducts,
   updateProduct,
+  getProductsWithQuery,
 } from "../../actions/admin/productActions";
+import toast from "react-hot-toast";
 
 const productSlice = createSlice({
   name: "products",
@@ -28,6 +30,21 @@ const productSlice = createSlice({
         state.loading = false;
         state.products = null;
         state.error = payload;
+      })
+      // After applying queries
+      .addCase(getProductsWithQuery.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProductsWithQuery.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.products = payload;
+      })
+      .addCase(getProductsWithQuery.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.products = null;
+        state.error = payload;
+        toast.error(payload);
       })
 
       // Creating new Product

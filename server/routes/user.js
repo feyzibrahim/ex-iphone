@@ -1,10 +1,12 @@
 const express = require("express");
+const upload = require("../middleware/upload");
 
 const {
   signUpUser,
   loginUser,
   getUserDataFirst,
   logoutUser,
+  editUser,
 } = require("../controllers/userController");
 const { getProducts } = require("../controllers/user/productController");
 const {
@@ -39,6 +41,9 @@ const router = express.Router();
 // To get user data on initial page load.
 router.get("/", getUserDataFirst);
 
+// Edit User profile
+router.post("/edit-profile", upload.single("profileImgURL"), editUser);
+
 // Auth
 router.post("/signup", signUpUser);
 router.post("/login", loginUser);
@@ -60,7 +65,7 @@ router.post("/validate-otp", validateOTP);
 // Forget Password
 router.post("/forget-password", forgotPassword);
 router.post("/forget-password-validate-otp", validateForgotOTP);
-
+// Set new password
 router.post("/set-new-password", newPassword);
 
 // Cart

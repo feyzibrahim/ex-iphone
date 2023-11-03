@@ -4,6 +4,7 @@ import { getOrders } from "../../redux/actions/user/userOrderActions";
 import date from "date-and-time";
 import { Link } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
+import StatusComponent from "../../components/StatusComponent";
 
 const OrderHistory = () => {
   const { userOrders, loading, error } = useSelector(
@@ -18,7 +19,9 @@ const OrderHistory = () => {
   return (
     <div className="min-h-screen pt-20 px-5 lg:pt-20 lg:px-40 bg-gray-100">
       <div className="bg-white rounded-lg overflow-x-auto">
-        <h1 className="uppercase text-xl font-semibold p-5">Order History</h1>
+        <h1 className="uppercase text-lg font-semibold px-5 py-3">
+          Order History
+        </h1>
         <table className="w-full min-w-max table-auto">
           <thead>
             <tr className="bg-gray-200 font-semibold">
@@ -34,10 +37,15 @@ const OrderHistory = () => {
               userOrders.map((item, index) => {
                 return (
                   <tr key={index}>
-                    <td className="px-5 py-2">
-                      {item.products[0].productId.name}
+                    <td className="px-5 py-2 font-semibold">
+                      {item.products[0].productId.name}{" "}
+                      <span className="text-gray-500 font-normal">
+                        ({item.totalQuantity}) products
+                      </span>
                     </td>
-                    <td className="px-5 py-2">{item.status}</td>
+                    <td className="px-5 py-2">
+                      <StatusComponent status={item.status} />
+                    </td>
                     <td className="px-5 py-2">
                       {date.format(new Date(item.createdAt), "MMM DD YYYY")}
                     </td>

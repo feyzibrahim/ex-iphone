@@ -119,6 +119,12 @@ UserSchema.statics.login = async function (email, password) {
 
   let user = await this.findOne({ email });
 
+  if (!user.isActive) {
+    throw Error(
+      "Your account is blocked. Contact customer care for further details"
+    );
+  }
+
   if (!user) {
     throw Error("This email is not registered. Please check!");
   }
