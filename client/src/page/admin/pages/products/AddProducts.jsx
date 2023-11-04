@@ -1,29 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import CustomFileInput from "../../Components/CustomFileInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createProduct } from "../../../../redux/actions/admin/productActions";
 import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import BreadCrumbs from "../../Components/BreadCrumbs";
+import toast from "react-hot-toast";
+import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
 
 const AddProducts = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState([
-    { name: "Choose Category", img: "url" },
-    { name: "iPhone", img: "url" },
-    { name: "iMac", img: "url" },
-    { name: "Apple Watch", img: "url" },
-    { name: "MacBook", img: "url" },
-    { name: "iPad", img: "url" },
-    { name: "Air Tags", img: "url" },
-    { name: "Accessories", img: "url" },
-    { name: "Air Pods", img: "url" },
-  ]);
+  const { categories, loading, error } = useSelector(
+    (state) => state.categories
+  );
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
 
   const [statusList, setStatusList] = useState([
     "Draft",
@@ -53,6 +51,19 @@ const AddProducts = () => {
   };
 
   const handleSave = () => {
+    if (stockQuantity <= 0) {
+      toast.error("Quantity Should be greater than 0");
+      return;
+    }
+    if (price <= 0) {
+      toast.error("Price Should be greater than 0");
+      return;
+    }
+    if (markup <= 0) {
+      toast.error("Markup Should be greater than 0");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
@@ -267,18 +278,13 @@ const AddProducts = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
+                <option value="">Choose a category</option>
                 {categories.map((cat, index) => (
-                  <option key={index} value={cat.name}>
+                  <option key={index} value={cat._id}>
                     {cat.name}
                   </option>
                 ))}
               </select>
-              {/* <p className="admin-label">Product Tags</p>
-            <input
-              type="text"
-              placeholder="Type product markup here"
-              className="admin-input"
-            /> */}
             </div>
             <div className="admin-div">
               <h1 className="font-bold">Product Status</h1>

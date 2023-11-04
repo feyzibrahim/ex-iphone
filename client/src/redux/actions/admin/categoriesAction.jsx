@@ -67,8 +67,7 @@ export const updateCategory = createAsyncThunk(
         formData,
         config
       );
-      console.log(data.category);
-      return data;
+      return data.category;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

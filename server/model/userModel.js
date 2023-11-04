@@ -52,7 +52,11 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.statics.signup = async function (userCredentials, role) {
+UserSchema.statics.signup = async function (
+  userCredentials,
+  role,
+  isEmailVerified
+) {
   const { email, password, passwordAgain, firstName, lastName } =
     userCredentials;
 
@@ -100,7 +104,7 @@ UserSchema.statics.signup = async function (userCredentials, role) {
     ...userCredentials,
     isActive: true,
     role,
-    isEmailVerified: false,
+    isEmailVerified,
   });
 
   user.password = "";

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomFileInput from "../../Components/CustomFileInput";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProduct } from "../../../../redux/actions/admin/productActions";
 import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
 import BreadCrumbs from "../../Components/BreadCrumbs";
+import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -16,17 +17,13 @@ const EditProduct = () => {
 
   const navigate = useNavigate();
 
-  const [categories, setCategories] = useState([
-    { name: "Choose Category", img: "url" },
-    { name: "iPhone", img: "url" },
-    { name: "iMac", img: "url" },
-    { name: "Apple Watch", img: "url" },
-    { name: "MacBook", img: "url" },
-    { name: "iPad", img: "url" },
-    { name: "Air Tags", img: "url" },
-    { name: "Accessories", img: "url" },
-    { name: "Air Pods", img: "url" },
-  ]);
+  const { categories, loading, error } = useSelector(
+    (state) => state.categories
+  );
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
 
   const [statusList, setStatusList] = useState([
     "draft",

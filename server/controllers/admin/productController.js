@@ -21,8 +21,8 @@ const getProducts = async (req, res) => {
     if (Object.keys(query).length === 0) {
       products = await Product.find(
         {},
-        { attributes: 0, moreImageURL: 0, category: 0 }
-      );
+        { attributes: 0, moreImageURL: 0 }
+      ).populate("category", { name: 1 });
     }
 
     let status = query.status;
@@ -33,7 +33,7 @@ const getProducts = async (req, res) => {
       }
       products = await Product.find(
         { status },
-        { attributes: 0, moreImageURL: 0, category: 0 }
+        { attributes: 0, moreImageURL: 0 }
       );
 
       if (products.length === 0) {

@@ -53,25 +53,11 @@ const getAdmin = (req, res) => {
 // Creating new Admin if needed for Super Admin
 const addAdmin = async (req, res) => {
   try {
-    // Will be update later
-    let formData = { ...req.body, isActive: true };
-    const files = req?.files;
+    const userCredentials = req.body;
 
-    if (files && files.length > 0) {
-      formData.moreImageURL = [];
-      formData.imageURL = "";
-      files.map((file) => {
-        if (file.fieldname === "imageURL") {
-          formData.imageURL = file.filename;
-        } else {
-          formData.moreImageURL.push(file.filename);
-        }
-      });
-    }
+    const user = await User.signup(userCredentials, "admin", true);
 
-    const admin = await User.create(formData);
-
-    res.status(200).json({ admin });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -1,5 +1,4 @@
 const express = require("express");
-const upload = require("../middleware/upload");
 
 const {
   addAdmin,
@@ -17,7 +16,7 @@ router.get("/admins", getAdmins);
 router.get("/admin/:id", getAdmin);
 router.delete("/admin/:id", deleteAdmin);
 router.patch("/admin/:id", updateAdmin);
-router.post("/admin", upload.any(), addAdmin);
+router.post("/admin", addAdmin);
 router.patch("/admin-block-unblock/:id", blockOrUnBlock);
 
 module.exports = router;

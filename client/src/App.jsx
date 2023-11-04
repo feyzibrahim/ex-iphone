@@ -35,7 +35,7 @@ import AdminHome from "./page/admin/pages/AdminHome";
 import Coupon from "./page/admin/pages/Coupon";
 import Banner from "./page/admin/pages/Banner";
 import Transaction from "./page/admin/pages/Transaction";
-import ManageAdmins from "./page/admin/pages/ManageAdmins";
+import ManageAdmins from "./page/admin/pages/admins/ManageAdmins";
 import Customers from "./page/admin/pages/customer/Customers";
 import Settings from "./page/admin/pages/Settings";
 import Help from "./page/admin/pages/Help";
@@ -53,6 +53,7 @@ import OrderDetails from "./page/admin/pages/Order/OrderDetails";
 import OrderHistory from "./page/user/OrderHistory";
 import OrderDetail from "./page/user/OrderDetail";
 import ProfilePage from "./page/user/ProfilePage";
+import CreateAdmin from "./page/admin/pages/admins/CreateAdmin";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -138,10 +139,12 @@ function AdminRoutes() {
         <Route path="orders" element={<Orders />} />
         <Route path="orders/detail/:id" element={<OrderDetails />} />
 
+        <Route path="manageAdmins" element={<ManageAdmins />} />
+        <Route path="manageAdmins/create" element={<CreateAdmin />} />
+
         <Route path="coupon" element={<Coupon />} />
         <Route path="banner" element={<Banner />} />
         <Route path="transaction" element={<Transaction />} />
-        <Route path="manageAdmins" element={<ManageAdmins />} />
         <Route path="customers" element={<Customers />} />
         <Route path="settings" element={<Settings />} />
         <Route path="help" element={<Help />} />

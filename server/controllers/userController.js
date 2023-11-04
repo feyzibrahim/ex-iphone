@@ -31,7 +31,7 @@ const signUpUser = async (req, res) => {
   try {
     const userCredentials = req.body;
 
-    const user = await User.signup(userCredentials, "user");
+    const user = await User.signup(userCredentials, "user", false);
 
     const token = createToken(user._id);
 
