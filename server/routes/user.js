@@ -21,6 +21,7 @@ const {
   forgotPassword,
   validateForgotOTP,
   newPassword,
+  resentOTP,
 } = require("../controllers/otpController");
 const {
   getCart,
@@ -61,6 +62,7 @@ router.post("/cancel-order/:id", cancelOrder);
 // OTP
 router.get("/send-otp", sendOTP);
 router.post("/validate-otp", validateOTP);
+router.post("/resend-otp", resentOTP);
 
 // Forget Password
 router.post("/forget-password", forgotPassword);

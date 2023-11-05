@@ -2,8 +2,8 @@ const User = require("../model/userModel");
 const OTP = require("../model/otpModel");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
-const mailSender = require("../util/mailSender");
 const bcrypt = require("bcrypt");
+const { sendOTPMail, passwordChangedMail } = require("../util/mailFunction");
 
 const sendOTP = async (req, res) => {
   try {
@@ -98,7 +98,12 @@ const forgotPassword = async (req, res) => {
     const otpExists = await OTP.findOne({ email });
 
     if (otpExists) {
-      throw Error("OTP is already send to your email");
+      res.status(200).json({
+        msg: "OTP is already send to your email Address, If cannot find Try again after 5 minutes",
+        success: true,
+      });
+
+      return;
     }
 
     let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 10000;
@@ -185,13 +190,7 @@ const newPassword = async (req, res) => {
 
     if (user) {
       try {
-        const mailResponse = await mailSender(
-          email,
-          "Email Authentication Notification",
-          `<h1>Your password has been changed</h1>
-           <p>If it is not done by you please contact customer care</p>`
-        );
-        console.log("Email sent successfully: ", mailResponse);
+        passwordChangedMail(email);
       } catch (error) {
         console.log("Error occurred while sending email: ", error);
         throw error;
@@ -204,10 +203,41 @@ const newPassword = async (req, res) => {
   }
 };
 
+const resentOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      throw Error("Email is required");
+    }
+
+    if (!validator.isEmail(email)) {
+      throw Error("Invalid Email");
+    }
+
+    const otpData = await OTP.findOne({ email });
+
+    if (!otpData) {
+      throw Error("No OTP found in this email. Try again...");
+    }
+
+    if (otpData.otp) {
+      sendOTPMail(email, otpData.otp);
+    } else {
+      throw Error("Cannot find OTP");
+    }
+
+    res.status(200).json({ message: "OTP resend successfully", success: true });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   sendOTP,
   validateOTP,
   forgotPassword,
   validateForgotOTP,
   newPassword,
+  resentOTP,
 };
