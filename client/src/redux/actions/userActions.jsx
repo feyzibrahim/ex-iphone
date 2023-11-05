@@ -57,7 +57,7 @@ export const signUpUser = createAsyncThunk(
       const { data } = await axios.post(
         `${URL}/user/signup`,
         userCredentials,
-        config
+        configMultiPart
       );
 
       return data;

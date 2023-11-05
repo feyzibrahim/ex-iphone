@@ -15,7 +15,11 @@ const userSlice = createSlice({
     user: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    updateUserOnOTPValidation: (state, { payload }) => {
+      state.user = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Logout States
@@ -95,4 +99,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { updateUserOnOTPValidation } = userSlice.actions;
 export default userSlice.reducer;

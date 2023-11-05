@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import { useNavigate } from "react-router-dom";
+import StatusComponent from "../../../../components/StatusComponent";
 
 const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
   const navigate = useNavigate();
@@ -34,7 +35,9 @@ const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
       <td className="admin-table-row">{product?.category?.name || ""}</td>
       <td className="admin-table-row">{product.stockQuantity}</td>
       <td className="admin-table-row">{product.price}</td>
-      <td className="admin-table-row capitalize">{product.status}</td>
+      <td className="admin-table-row capitalize">
+        <StatusComponent status={product.status} />
+      </td>
       <td className="admin-table-row">
         {product.createdAt
           ? date.format(new Date(product.createdAt), "MMM DD YYYY")

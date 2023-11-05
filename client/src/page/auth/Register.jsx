@@ -11,10 +11,11 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpUser } from "../../redux/actions/userActions";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "Yup";
 import InputWithIcon from "../../components/InputWithIcon";
 import PasswordInputWithIcon from "../../components/PasswordInputWithIcon";
+import CustomSingleFileInput from "../../components/CustomSingleFileInput";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -38,6 +39,7 @@ const Register = () => {
     password: "",
     passwordAgain: "",
     phoneNumber: "",
+    profileImgURL: null,
   };
 
   const validationSchema = Yup.object().shape({
@@ -69,6 +71,7 @@ const Register = () => {
     formData.append("password", value.password);
     formData.append("passwordAgain", value.passwordAgain);
     formData.append("phoneNumber", value.phoneNumber);
+    formData.append("profileImgURL", value.profileImgURL);
 
     dispatch(signUpUser(formData));
   };
@@ -90,52 +93,64 @@ const Register = () => {
           onSubmit={handleRegister}
           validationSchema={validationSchema}
         >
-          <Form className="w-full">
-            <InputWithIcon
-              icon={<AiOutlineUser />}
-              title="First Name"
-              name="firstName"
-              placeholder="Enter your first name"
-            />
-            <InputWithIcon
-              icon={<AiOutlineUser />}
-              title="Last Name"
-              name="lastName"
-              placeholder="Enter your last name"
-            />
-            <InputWithIcon
-              icon={<AiOutlineMail />}
-              title="Email"
-              name="email"
-              placeholder="Enter your email"
-            />
-            <PasswordInputWithIcon
-              icon={<AiOutlineLock />}
-              title="Password"
-              name="password"
-              placeholder="Enter your password"
-            />
-            <PasswordInputWithIcon
-              icon={<AiOutlineLock />}
-              title="Confirm Password"
-              name="passwordAgain"
-              placeholder="Confirm your password"
-            />
-            <InputWithIcon
-              icon={<AiOutlinePhone />}
-              title="Phone Number"
-              name="phoneNumber"
-              placeholder="Enter your phone number"
-            />
-            <button
-              type="submit"
-              className="btn-blue text-white w-full my-3"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Sign Up"}
-            </button>
-            {error && <p className="my-2 text-red-400">{error}</p>}
-          </Form>
+          {({ values, setFieldValue }) => (
+            <Form className="w-full">
+              <div className="flex justify-center">
+                <CustomSingleFileInput
+                  onChange={(file) => setFieldValue("profileImgURL", file)}
+                />
+                <ErrorMessage
+                  className="text-sm text-red-500"
+                  name="profileImgURL"
+                  component="span"
+                />
+              </div>
+              <InputWithIcon
+                icon={<AiOutlineUser />}
+                title="First Name"
+                name="firstName"
+                placeholder="Enter your first name"
+              />
+              <InputWithIcon
+                icon={<AiOutlineUser />}
+                title="Last Name"
+                name="lastName"
+                placeholder="Enter your last name"
+              />
+              <InputWithIcon
+                icon={<AiOutlineMail />}
+                title="Email"
+                name="email"
+                placeholder="Enter your email"
+              />
+              <PasswordInputWithIcon
+                icon={<AiOutlineLock />}
+                title="Password"
+                name="password"
+                placeholder="Enter your password"
+              />
+              <PasswordInputWithIcon
+                icon={<AiOutlineLock />}
+                title="Confirm Password"
+                name="passwordAgain"
+                placeholder="Confirm your password"
+              />
+              <InputWithIcon
+                icon={<AiOutlinePhone />}
+                title="Phone Number"
+                name="phoneNumber"
+                placeholder="Enter your phone number"
+              />
+              <button
+                type="submit"
+                className="btn-blue text-white w-full my-3"
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Sign Up"}
+              </button>
+              {error && <p className="my-2 text-red-400">{error}</p>}
+            </Form>
+          )}
         </Formik>
         <div className="text-center">
           <p className="my-4">OR</p>

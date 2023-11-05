@@ -46,7 +46,7 @@ router.get("/", getUserDataFirst);
 router.post("/edit-profile", upload.single("profileImgURL"), editUser);
 
 // Auth
-router.post("/signup", signUpUser);
+router.post("/signup", upload.single("profileImgURL"), signUpUser);
 router.post("/login", loginUser);
 router.get("/logout", logoutUser);
 

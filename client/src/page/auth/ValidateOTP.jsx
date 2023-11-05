@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { updateUserOnOTPValidation } from "../../redux/reducers/userSlice";
 
 const ValidateOTP = () => {
+  const dispatch = useDispatch();
+
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -49,9 +52,9 @@ const ValidateOTP = () => {
         }
       )
       .then((data) => {
-        console.log(data);
         setLoading(false);
         navigate("/");
+        dispatch(updateUserOnOTPValidation(data.data.user));
       })
       .catch((error) => {
         setError(error.response.data.message);

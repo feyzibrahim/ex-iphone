@@ -29,7 +29,14 @@ const getUserDataFirst = async (req, res) => {
 
 const signUpUser = async (req, res) => {
   try {
-    const userCredentials = req.body;
+    let userCredentials = req.body;
+
+    const profileImgURL = req?.file?.filename;
+    console.log(profileImgURL);
+
+    if (profileImgURL) {
+      userCredentials = { ...userCredentials, profileImgURL: profileImgURL };
+    }
 
     const user = await User.signup(userCredentials, "user", false);
 
@@ -78,7 +85,6 @@ const editUser = async (req, res) => {
     let formData = req.body;
 
     const profileImgURL = req?.file?.filename;
-    console.log(profileImgURL);
 
     if (profileImgURL) {
       formData = { ...formData, profileImgURL: profileImgURL };
