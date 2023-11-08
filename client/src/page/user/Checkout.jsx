@@ -18,6 +18,9 @@ const Checkout = () => {
 
   // Cart from Redux
   const { cart, loading, error } = useSelector((state) => state.cart);
+  const { totalPrice, shipping, discount, tax } = useSelector(
+    (state) => state.cart
+  );
 
   // Address Selection
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -29,12 +32,146 @@ const Checkout = () => {
   // Additional Note
   const [additionalNotes, setAdditionalNotes] = useState("");
 
+  // Page switching
   const [orderPlacedLoading, setOrderPlacedLoading] = useState(false);
   const [confirmationPage, setConfirmationPage] = useState(false);
   const [orderData, setOrderData] = useState({});
 
+  // Saving the order to db
+
+  const saveOrder = async (response) => {
+    setOrderPlacedLoading(true);
+
+    try {
+      // Make the first POST request to create the order
+      const orderResponse = await axios.post(
+        `${URL}/user/order`,
+        {
+          notes: additionalNotes,
+          address: selectedAddress,
+          paymentMode: selectedPayment,
+        },
+        config
+      );
+
+      const { order } = orderResponse.data;
+
+      // Make the second POST request to verify payment with Razorpay and save that to database
+      await axios.post(
+        `${URL}/user/razor-verify`,
+        { ...response, order: order._id },
+        config
+      );
+
+      // Updating user side
+      setOrderData(order);
+      toast.success("Order Placed");
+      setOrderPlacedLoading(false);
+      setConfirmationPage(true);
+      dispatch(clearCartOnOrderPlaced());
+    } catch (error) {
+      // Error Handling
+      const errorMessage =
+        error.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+      setOrderPlacedLoading(false);
+    }
+  };
+
+  const saveOrderOnCashDelivery = async (response) => {
+    setOrderPlacedLoading(true);
+
+    try {
+      // Make the first POST request to create the order
+      const order = await axios.post(
+        `${URL}/user/order`,
+        {
+          notes: additionalNotes,
+          address: selectedAddress,
+          paymentMode: selectedPayment,
+        },
+        config
+      );
+
+      // Updating user side
+      setOrderData(order.data.order);
+      toast.success("Order Placed");
+      setOrderPlacedLoading(false);
+      setConfirmationPage(true);
+      dispatch(clearCartOnOrderPlaced());
+    } catch (error) {
+      // Error Handling
+      const errorMessage =
+        error.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+      setOrderPlacedLoading(false);
+    }
+  };
+
+  // Razor Pay payment
+  const initiateRazorPayPayment = async () => {
+    // Getting razor-pay secret key
+    const {
+      data: { key },
+    } = await axios.get(`${URL}/user/razor-key`);
+
+    // making razor-pay order
+    const {
+      data: { order },
+    } = await axios.post(
+      `${URL}/user/razor-order`,
+      { amount: parseInt((totalPrice + discount + tax + shipping) / 100) },
+      config
+    );
+
+    // setting razor pay configurations
+    let options = {
+      key: key,
+      amount: parseInt((totalPrice + discount + tax + shipping) / 100),
+      currency: "INR",
+      name: "ex.iphones",
+      description: "Test Transaction",
+      image: "http://localhost:4000/off/logo.png",
+      order_id: order.id,
+      handler: function (response) {
+        saveOrder(response);
+      },
+      prefill: {
+        name: "Gaurav Kumar",
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000",
+      },
+      notes: {
+        address: "Razor pay Corporate Office",
+      },
+      theme: {
+        color: "#2b2b30",
+      },
+    };
+
+    // enabling razor-pay payment screen
+    const razor = new window.Razorpay(options);
+
+    razor.open();
+
+    // If failed toast it.
+    razor.on("payment.failed", function (response) {
+      toast.error(response.error.code);
+      toast.error(response.error.description);
+      toast.error(response.error.source);
+      toast.error(response.error.step);
+      toast.error(response.error.reason);
+      toast.error(response.error.metadata.order_id);
+      toast.error(response.error.metadata.payment_id);
+      setOrderPlacedLoading(false);
+    });
+  };
+
   // Order placing
-  const placeOrder = () => {
+  const placeOrder = async () => {
+    // Validating before placing an order
     if (cart.length === 0) {
       toast.error("Add product to cart");
       return;
@@ -48,30 +185,12 @@ const Checkout = () => {
       return;
     }
 
-    setOrderPlacedLoading(true);
-    // api call
-    axios
-      .post(
-        `${URL}/user/order`,
-        {
-          notes: additionalNotes,
-          address: selectedAddress,
-          paymentMode: selectedPayment,
-        },
-        config
-      )
-      .then(({ data }) => {
-        setOrderData(data.order);
-        toast.success("Order Placed");
-        setOrderPlacedLoading(false);
-        setConfirmationPage(true);
-        dispatch(clearCartOnOrderPlaced());
-      })
-      .catch((err) => {
-        const errorMessage = err.response.data.error;
-        toast.error(errorMessage);
-        setOrderPlacedLoading(false);
-      });
+    if (selectedPayment === "razorPay") {
+      initiateRazorPayPayment();
+      return;
+    }
+
+    saveOrderOnCashDelivery();
   };
 
   return (

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "Yup";
 
-const UpdateOrder = ({ toggleModal, data }) => {
+const UpdateReturnOrder = ({ toggleModal, data }) => {
   const { id, status } = data;
   const dispatch = useDispatch();
 
@@ -49,12 +49,18 @@ const UpdateOrder = ({ toggleModal, data }) => {
               name="status"
               className="capitalize px-5 py-2 w-full bg-gray-300 rounded-lg"
             >
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="returned">Returned</option>
+              <option value="awaiting return approval" className="capitalize">
+                awaiting return approval
+              </option>
+              <option value="awaiting return pickup" className="capitalize">
+                awaiting return pickup
+              </option>
+              <option value="pickup completed" className="capitalize">
+                pickup completed
+              </option>
+              <option value="returned" className="capitalize">
+                returned
+              </option>
             </Field>
             <ErrorMessage
               name="status"
@@ -101,4 +107,4 @@ const UpdateOrder = ({ toggleModal, data }) => {
   );
 };
 
-export default UpdateOrder;
+export default UpdateReturnOrder;

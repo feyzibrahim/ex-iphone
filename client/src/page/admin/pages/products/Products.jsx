@@ -98,7 +98,7 @@ const Products = () => {
             </button>
           </div>
         </div>
-        <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
+        <div className="overflow-x-auto bg-white rounded-lg">
           {products && (
             <table className="w-full min-w-max table-auto ">
               <thead className="font-normal">

@@ -17,7 +17,7 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pt-20 px-5 lg:pt-20 lg:px-40 bg-gray-100">
+    <div className="min-h-screen py-20 px-5 lg:pt-20 lg:px-40 bg-gray-100">
       <div className="bg-white rounded-lg overflow-x-auto">
         <h1 className="uppercase text-lg font-semibold px-5 py-3">
           Order History

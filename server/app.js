@@ -40,6 +40,7 @@ app.use("/super-admin", superAdminRoutes);
 
 // Public Api for accessing images
 app.use("/img", express.static(__dirname + "/public/products/"));
+app.use("/off", express.static(__dirname + "/public/official/"));
 
 mongoose
   .connect(process.env.MONGO_URI)

@@ -44,7 +44,7 @@ const OrderDetails = () => {
     <div className="p-5 w-full overflow-y-auto text-sm">
       <div className="xy-center font-semibold">
         <div>
-          <h1 className="font-bold text-2xl">Orders</h1>
+          <h1 className="font-bold text-2xl">Orders Details</h1>
           <BreadCrumbs list={["Dashboard", "Orders", "Order Details"]} />
         </div>
         <div className="flex">
@@ -218,22 +218,23 @@ const OrderDetails = () => {
               <div className="border-b border-gray-200 pb-2 mb-2">
                 <div className="cart-total-li">
                   <p className="cart-total-li-first">Sub Total</p>
-                  <p className="cart-total-li-second">500048₹</p>
+                  <p className="cart-total-li-second">{orderData.subTotal}₹</p>
                 </div>
                 <div className="cart-total-li">
                   <p className="cart-total-li-first">Shipping</p>
                   <p className="cart-total-li-second">
-                    {/* {shipping === 0 ? "Free" : shipping} */}
-                    Free
+                    {orderData.shipping === 0 ? "Free" : orderData.shipping}
                   </p>
                 </div>
                 <div className="cart-total-li">
                   <p className="cart-total-li-first">Discount</p>
-                  <p className="cart-total-li-second">0₹</p>
+                  <p className="cart-total-li-second">
+                    {orderData.discount || 0}₹
+                  </p>
                 </div>
                 <div className="cart-total-li">
                   <p className="cart-total-li-first">Tax</p>
-                  <p className="cart-total-li-second">0₹</p>
+                  <p className="cart-total-li-second">{orderData.tax || 0}₹</p>
                 </div>
               </div>
               <div className="cart-total-li">

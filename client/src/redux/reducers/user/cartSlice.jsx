@@ -21,7 +21,8 @@ const cartSlice = createSlice({
   reducers: {
     calculateTotalPrice: (state) => {
       let sum = state.cart.reduce(
-        (total, item) => total + item.product.price * item.quantity,
+        (total, item) =>
+          total + (item.product.price + item.product.markup) * item.quantity,
         0
       );
       state.totalPrice = sum;
@@ -107,7 +108,6 @@ const cartSlice = createSlice({
         const { productId } = payload;
 
         state.cart = state.cart.filter((item) => {
-          console.log(item.product._id, productId);
           return item.product._id !== productId;
         });
 

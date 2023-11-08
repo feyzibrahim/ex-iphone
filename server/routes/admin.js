@@ -61,8 +61,30 @@ const {
 
 router.get("/orders", getOrders);
 router.delete("/clear-orders", clearOrder);
-
 router.get("/order/:id", getOrder);
 router.patch("/order-status/:id", updateOrderStatus);
+
+// Return Order controller functions and mounting them to corresponding route
+
+const {
+  getReturnCount,
+  getReturnOrders,
+  getReturnOrder,
+  updateReturnOrderStatus,
+} = require("../controllers/admin/returnController");
+
+router.get("/return-orders-count", getReturnCount);
+router.get("/return-orders", getReturnOrders);
+router.get("/return-order/:id", getReturnOrder);
+router.patch("/return-order-status/:id", updateReturnOrderStatus);
+
+// Payment controller function importing and mounting
+const {
+  getPayments,
+  clearPayments,
+} = require("../controllers/admin/paymentController");
+
+router.get("/payments", getPayments);
+router.get("/clear-payments", clearPayments);
 
 module.exports = router;

@@ -8,12 +8,16 @@ const {
   logoutUser,
   editUser,
 } = require("../controllers/userController");
-const { getProducts } = require("../controllers/user/productController");
+const {
+  getProducts,
+  getProduct,
+} = require("../controllers/user/productController");
 const {
   createOrder,
   getOrders,
   getOrder,
   cancelOrder,
+  requestReturn,
 } = require("../controllers/user/orderController");
 const {
   sendOTP,
@@ -37,6 +41,12 @@ const {
   updateAddress,
 } = require("../controllers/user/addressController");
 
+const {
+  createRazerPayOrder,
+  verifyPayment,
+  getKey,
+} = require("../controllers/user/paymentController");
+
 const router = express.Router();
 
 // To get user data on initial page load.
@@ -52,12 +62,14 @@ router.get("/logout", logoutUser);
 
 // Products
 router.get("/products", getProducts);
+router.get("/product/:id", getProduct);
 
 // Order
 router.post("/order", createOrder);
 router.get("/orders", getOrders);
 router.get("/order/:id", getOrder);
 router.post("/cancel-order/:id", cancelOrder);
+router.post("/request-return/:id", requestReturn);
 
 // OTP
 router.get("/send-otp", sendOTP);
@@ -82,5 +94,10 @@ router.get("/address/:id", getAddress);
 router.post("/address", createAddress);
 router.delete("/address/:id", deleteAddress);
 router.patch("/address/:id", updateAddress);
+
+// RazerPay Payment
+router.post("/razor-order", createRazerPayOrder);
+router.post("/razor-verify", verifyPayment);
+router.get("/razor-key", getKey);
 
 module.exports = router;

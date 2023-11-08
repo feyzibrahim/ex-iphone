@@ -14,7 +14,12 @@ const StatusComponent = ({ status }) => {
     styleVar += "bg-gray-100 text-gray-600";
   }
 
-  if (status === "delivered" || status === "Active" || status === "published") {
+  if (
+    status === "delivered" ||
+    status === "Active" ||
+    status === "published" ||
+    status === "success"
+  ) {
     styleVar += "bg-green-100 text-green-600";
   }
 
@@ -30,7 +35,11 @@ const StatusComponent = ({ status }) => {
     styleVar += "bg-yellow-100 text-yellow-600";
   }
 
-  return <div className={styleVar}>{status}</div>;
+  if (status === "awaiting return approval") {
+    styleVar += "bg-amber-100 text-amber-600";
+  }
+
+  return <span className={styleVar}>{status}</span>;
 };
 
 export default StatusComponent;

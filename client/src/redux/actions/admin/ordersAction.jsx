@@ -48,3 +48,34 @@ export const getOrderWithQuery = createAsyncThunk(
     }
   }
 );
+
+// Return Order Actions
+
+export const getReturnOrders = createAsyncThunk(
+  "orders/getReturnOrders",
+  async (nothing, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${URL}/admin/return-orders`, config);
+
+      return data.orders;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const getReturnOrderWithQuery = createAsyncThunk(
+  "orders/getReturnOrderWithQuery",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        `${URL}/admin/return-orders?status=${formData}`,
+        config
+      );
+
+      return data.orders;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);

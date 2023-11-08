@@ -6,6 +6,7 @@ import productsReducer from "./reducers/admin/productSlice";
 import customerReducer from "./reducers/admin/customerSlice";
 import categoriesReducer from "./reducers/admin/categoriesSlice";
 import ordersSlice from "./reducers/admin/ordersSlice";
+import paymentsReducer from "./reducers/admin/paymentSlice";
 
 // Super Admin
 import adminReducer from "./reducers/superAdmin/adminSlice";
@@ -31,6 +32,7 @@ export const store = configureStore({
     customers: customerReducer,
     categories: categoriesReducer,
     orders: ordersSlice,
+    payments: paymentsReducer,
 
     // Super Admin
     admins: adminReducer,

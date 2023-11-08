@@ -56,6 +56,7 @@ export const updateAddress = createAsyncThunk(
         config
       );
 
+      console.log(data);
       return data.address;
     } catch (error) {
       return handleError(error, rejectWithValue);

@@ -4,30 +4,31 @@ import {
   AiOutlineDelete,
   AiOutlineEdit,
 } from "react-icons/ai";
-import { FiDownload } from "react-icons/fi";
+// import { HiOutlineReceiptRefund } from "react-icons/hi";
+// import { FiDownload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import date from "date-and-time";
 import Modal from "../../../../components/Modal";
+
 import {
-  getOrders,
-  getOrderWithQuery,
+  getReturnOrders,
+  getReturnOrderWithQuery,
 } from "../../../../redux/actions/admin/ordersAction";
 import { BsFilterRight } from "react-icons/bs";
-import UpdateOrder from "./UpdateOrder";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
-import ReturnRequestsButtonInOrders from "./ReturnRequestsButtonInOrders";
+import UpdateReturnOrder from "./UpdateReturnOrder";
 
-const Orders = () => {
+const ReturnRequests = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { orders, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(getReturnOrders());
   }, []);
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
@@ -39,9 +40,9 @@ const Orders = () => {
 
   const handleClick = (value) => {
     if (value === "all") {
-      dispatch(getOrders());
+      dispatch(getReturnOrders());
     } else {
-      dispatch(getOrderWithQuery(value));
+      dispatch(getReturnOrderWithQuery(value));
     }
   };
 
@@ -50,7 +51,7 @@ const Orders = () => {
       {updateModal && (
         <Modal
           tab={
-            <UpdateOrder
+            <UpdateReturnOrder
               toggleModal={toggleUpdateModal}
               data={selectedOrderToUpdate}
             />
@@ -60,27 +61,30 @@ const Orders = () => {
       <div className="p-5 w-full overflow-y-auto text-sm">
         <div className="flex justify-between items-center font-semibold">
           <div>
-            <h1 className="font-bold text-2xl">Orders</h1>
-            <BreadCrumbs list={["Dashboard", "Orders"]} />
+            <h1 className="font-bold text-2xl">Return Requests</h1>
+            <BreadCrumbs list={["Dashboard", "Orders", "Return Requests"]} />
           </div>
-          <div className="flex gap-3">
+          {/* <div className="flex gap-3">
             <button className="admin-button-fl bg-gray-200 text-blue-700">
               <FiDownload />
               Export
             </button>
-            <ReturnRequestsButtonInOrders />
-          </div>
+            <button
+              className="admin-button-fl bg-blue-700 text-white"
+              onClick={() => navigate("return-requests")}
+            >
+              <HiOutlineReceiptRefund />
+              Return Requests
+            </button>
+          </div> */}
         </div>
         <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={[
               "all",
-              "pending",
-              "processing",
-              "shipped",
-              "delivered",
-              "cancelled",
-              "returned",
+              "awaiting return approval",
+              "awaiting return pickup",
+              "pickup completed",
             ]}
             handleClick={handleClick}
           />
@@ -105,7 +109,6 @@ const Orders = () => {
                   <th className="admin-table-head">Order Date</th>
                   <th className="admin-table-head">Customer</th>
                   <th className="admin-table-head">Total</th>
-                  <th className="admin-table-head">Delivery Date</th>
                   <th className="admin-table-head">Status</th>
                   <th className="admin-table-head">Action</th>
                 </tr>
@@ -153,12 +156,6 @@ const Orders = () => {
                         {item.user.firstName} {item.user.lastName}
                       </td>
                       <td className="admin-table-row">{item.totalPrice}₹</td>
-                      <td className="admin-table-row">
-                        {date.format(
-                          new Date(item.deliveryDate),
-                          "MMM DD YYYY"
-                        )}
-                      </td>
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status} />
                       </td>
@@ -200,4 +197,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default ReturnRequests;

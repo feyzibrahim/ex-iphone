@@ -13,11 +13,14 @@ const getCart = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
-    const cart = await Cart.findOne({ user: _id }).populate("items.product", {
-      name: 1,
-      imageURL: 1,
-      price: 1,
-    });
+    const cart = await Cart.findOne({ user: _id })
+      .populate("items.product", {
+        name: 1,
+        imageURL: 1,
+        price: 1,
+        markup: 1,
+      })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ cart });
   } catch (error) {

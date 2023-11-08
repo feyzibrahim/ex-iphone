@@ -1,10 +1,14 @@
 const Product = require("../../model/productModel");
+const mongoose = require("mongoose");
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({
-      status: { $in: ["published", "low quantity"] },
-    });
+    const products = await Product.find(
+      {
+        status: { $in: ["published", "low quantity"] },
+      },
+      { name: 1, imageURL: 1, price: 1, markup: 1 }
+    ).populate("category", { name: 1 });
 
     res.status(200).json({ products });
   } catch (error) {
@@ -12,12 +16,20 @@ const getProducts = async (req, res) => {
   }
 };
 
-const getProduct = (req, res) => {
-  const { id } = req.params;
+const getProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-  console.log(id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
 
-  res.status(200).json({ msg: `Product Number ${id}` });
+    const product = await Product.findOne({ _id: id });
+
+    res.status(200).json({ product });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {

@@ -33,7 +33,9 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
           {item.product.name}
         </div>
       </td>
-      <td className="cart-table-row">{item.product.price}</td>
+      <td className="cart-table-row">
+        {item.product.price + item.product.markup}
+      </td>
       <td className="cart-table-row">
         <Quantity
           count={item.quantity}
@@ -41,7 +43,9 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
           decrement={() => dispatchDecrement(item)}
         />
       </td>
-      <td className="cart-table-row">{item.product.price * item.quantity}</td>
+      <td className="cart-table-row">
+        {(item.product.price + item.product.markup) * item.quantity}
+      </td>
       <td>
         <div
           onClick={() => toggleProductConfirm(item.product._id)}

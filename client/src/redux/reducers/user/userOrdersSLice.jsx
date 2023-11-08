@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getOrders, cancelOrder } from "../../actions/user/userOrderActions";
+import {
+  getOrders,
+  cancelOrder,
+  requestReturn,
+} from "../../actions/user/userOrderActions";
 import toast from "react-hot-toast";
 
 const userOrdersSLice = createSlice({
@@ -41,6 +45,27 @@ const userOrdersSLice = createSlice({
         toast.success("Order Cancelled Successfully");
       })
       .addCase(cancelOrder.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.userOrders = null;
+        state.error = payload;
+      })
+      .addCase(requestReturn.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(requestReturn.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+
+        const index = state.userOrders.findIndex(
+          (item) => item._id === payload._id
+        );
+
+        if (index !== -1) {
+          state.userOrders[index] = payload;
+        }
+        toast.success("Return Request Successfully Sent");
+      })
+      .addCase(requestReturn.rejected, (state, { payload }) => {
         state.loading = false;
         state.userOrders = null;
         state.error = payload;

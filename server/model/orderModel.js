@@ -60,6 +60,34 @@ const ProductSchema = new Schema({
   },
 });
 
+const StatusHistorySchema = new Schema({
+  status: {
+    type: String,
+    enum: [
+      "pending",
+      "processing",
+      "shipped",
+      "delivered",
+      "canceled",
+      "returned",
+      "awaiting return approval",
+      "awaiting return pickup",
+      "pickup completed",
+    ],
+    default: "pending",
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  description: {
+    type: String,
+  },
+  reason: {
+    type: String,
+  },
+});
+
 const OrderSchema = new Schema(
   {
     user: {
@@ -77,9 +105,13 @@ const OrderSchema = new Schema(
         "delivered",
         "canceled",
         "returned",
+        "awaiting return approval",
+        "awaiting return pickup",
+        "pickup completed",
       ],
       default: "pending",
     },
+    statusHistory: [StatusHistorySchema],
     address: AddressSchema,
     deliveryDate: {
       type: Date,
@@ -89,6 +121,19 @@ const OrderSchema = new Schema(
         return currentDate;
       },
     },
+    subTotal: {
+      type: Number,
+    },
+    shipping: {
+      type: Number,
+      default: 0,
+    },
+    discount: {
+      type: Number,
+    },
+    tax: {
+      type: Number,
+    },
     totalPrice: {
       type: Number,
       required: true,
@@ -97,14 +142,11 @@ const OrderSchema = new Schema(
     paymentMode: {
       type: String,
       required: true,
-      enum: ["cashOnDelivery", "razerPay", "myWallet"],
+      enum: ["cashOnDelivery", "razorPay", "myWallet"],
     },
     totalQuantity: {
       type: Number,
       min: 0,
-    },
-    reason: {
-      type: String,
     },
   },
   { timestamps: true }

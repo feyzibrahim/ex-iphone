@@ -32,3 +32,20 @@ export const cancelOrder = createAsyncThunk(
     }
   }
 );
+
+export const requestReturn = createAsyncThunk(
+  "order/requestReturn",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}/user/request-return/${id}`,
+        formData,
+        config
+      );
+
+      return data.order;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);

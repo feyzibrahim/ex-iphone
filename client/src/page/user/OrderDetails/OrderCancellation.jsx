@@ -5,7 +5,7 @@ import * as Yup from "Yup";
 import { cancelOrder } from "../../../redux/actions/user/userOrderActions";
 import { useDispatch } from "react-redux";
 
-const OrderCancellation = ({ closeToggle, id }) => {
+const OrderCancellation = ({ closeToggle, id, loadData }) => {
   const dispatch = useDispatch();
 
   const initialValues = {
@@ -17,8 +17,14 @@ const OrderCancellation = ({ closeToggle, id }) => {
   });
 
   const handleSubmit = (value) => {
-    console.log(value);
-    dispatch(cancelOrder({ formData: value, id: id }));
+    dispatch(cancelOrder({ formData: value, id: id }))
+      .then(() => {
+        loadData();
+        closeToggle();
+      })
+      .catch((error) => {
+        console.error("Error cancelling order: ", error);
+      });
   };
 
   return (

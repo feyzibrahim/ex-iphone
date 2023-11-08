@@ -39,7 +39,7 @@ const AddressEdit = ({ closeToggle, address }) => {
   });
 
   const handleSubmit = (value) => {
-    // console.log(value);
+    console.log({ id: address._id, formData: value });
     dispatch(updateAddress({ id: address._id, formData: value }));
   };
 

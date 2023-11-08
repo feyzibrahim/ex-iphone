@@ -3,19 +3,39 @@ const mongoose = require("mongoose");
 
 function isValidStatus(status) {
   const validStatusValues = [
-    "pending",
-    "processing",
-    "shipped",
-    "delivered",
-    "cancelled",
-    "returned",
+    "awaiting return approval",
+    "awaiting return pickup",
+    "pickup completed",
   ];
 
   return validStatusValues.includes(status);
 }
 
-// Get a single order details
-const getOrder = async (req, res) => {
+// Return count of return orders
+
+const getReturnCount = async (req, res) => {
+  try {
+    const count = await Order.find(
+      {
+        status: {
+          $in: [
+            "awaiting return approval",
+            "awaiting return pickup",
+            "pickup completed",
+          ],
+        },
+      },
+      {}
+    ).count();
+
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Get a single return order details
+const getReturnOrder = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -38,8 +58,8 @@ const getOrder = async (req, res) => {
   }
 };
 
-// Get Orders List
-const getOrders = async (req, res) => {
+// Get Return Orders List
+const getReturnOrders = async (req, res) => {
   try {
     const query = req.query;
     let orders;
@@ -48,12 +68,9 @@ const getOrders = async (req, res) => {
         {
           status: {
             $in: [
-              "pending",
-              "processing",
-              "shipped",
-              "delivered",
-              "canceled",
-              "returned",
+              "awaiting return approval",
+              "awaiting return pickup",
+              "pickup completed",
             ],
           },
         },
@@ -95,7 +112,7 @@ const getOrders = async (req, res) => {
   }
 };
 
-const updateOrderStatus = async (req, res) => {
+const updateReturnOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, description, date } = req.body;
@@ -139,19 +156,9 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
-const clearOrder = async (req, res) => {
-  try {
-    const data = await Order.deleteMany({});
-
-    res.status(200).json({ status: true });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
 module.exports = {
-  getOrders,
-  clearOrder,
-  updateOrderStatus,
-  getOrder,
+  getReturnCount,
+  getReturnOrders,
+  updateReturnOrderStatus,
+  getReturnOrder,
 };

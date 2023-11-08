@@ -52,9 +52,9 @@ const SideNavbar = () => {
           <AiOutlineTags />
           Banner
         </NavLink>
-        <NavLink className="side-nav-link-sp" to="transaction">
+        <NavLink className="side-nav-link-sp" to="payments">
           <BsCreditCard />
-          Transaction
+          Payments
         </NavLink>
         <p className="side-nav-sub-title">User Management</p>
         <NavLink className="side-nav-link-sp" to="manageAdmins">

@@ -5,6 +5,47 @@ const Address = require("../../model/addressModel");
 const Order = require("../../model/orderModel");
 const Products = require("../../model/productModel");
 
+// Just the function increment or decrement product count
+const updateProductList = async (id, count) => {
+  const product = await Products.findOne({ _id: id });
+
+  if (count < 0) {
+    if (product.stockQuantity - count * -1 < 0) {
+      throw Error(`${product.name} doesn't have ${count} stock`);
+    }
+  }
+
+  const updateProduct = await Products.findByIdAndUpdate(
+    id,
+    {
+      $inc: { stockQuantity: count },
+    },
+    { new: true }
+  );
+
+  if (
+    parseInt(updateProduct.stockQuantity) < 5 &&
+    parseInt(updateProduct.stockQuantity) > 0
+  ) {
+    await Products.findByIdAndUpdate(id, {
+      $set: { status: "low quantity" },
+    });
+  }
+
+  if (parseInt(updateProduct.stockQuantity) === 0) {
+    await Products.findByIdAndUpdate(id, {
+      $set: { status: "out of stock" },
+    });
+  }
+
+  if (parseInt(updateProduct.stockQuantity) > 5) {
+    await Products.findByIdAndUpdate(id, {
+      $set: { status: "published" },
+    });
+  }
+};
+
+// Creating an order
 const createOrder = async (req, res) => {
   try {
     const token = req.cookies.user_token;
@@ -29,7 +70,7 @@ const createOrder = async (req, res) => {
     let totalQuantity = 0;
 
     cart.items.map((item) => {
-      sum = sum + item.product.price * item.quantity;
+      sum = sum + (item.product.price + item.product.markup) * item.quantity;
       totalQuantity = totalQuantity + item.quantity;
     });
 
@@ -45,44 +86,20 @@ const createOrder = async (req, res) => {
       user: _id,
       address: addressData,
       products: products,
+      subTotal: sum,
+      tax: sum * 0.08,
       totalPrice: sumWithTax,
       paymentMode,
       totalQuantity,
-    };
-
-    const updateProductList = async (id, count) => {
-      const product = await Products.findOne({ _id: id });
-
-      if (product.stockQuantity - count < 0) {
-        throw Error(`${product.name} doesn't have ${count} stock`);
-      }
-
-      const updateProduct = await Products.findByIdAndUpdate(
-        id,
+      statusHistory: [
         {
-          $inc: { stockQuantity: -count },
+          status: "pending",
         },
-        { new: true }
-      );
-
-      if (
-        parseInt(updateProduct.stockQuantity) < 5 &&
-        parseInt(updateProduct.stockQuantity) > 0
-      ) {
-        await Products.findByIdAndUpdate(id, {
-          $set: { status: "low quantity" },
-        });
-      }
-
-      if (parseInt(updateProduct.stockQuantity) === 0) {
-        await Products.findByIdAndUpdate(id, {
-          $set: { status: "out of stock" },
-        });
-      }
+      ],
     };
 
     const updateProductPromises = products.map((item) => {
-      return updateProductList(item.productId, item.quantity);
+      return updateProductList(item.productId, -item.quantity);
     });
 
     await Promise.all(updateProductPromises);
@@ -116,9 +133,12 @@ const getOrders = async (req, res) => {
         paymentMode: 0,
         deliveryDate: 0,
         user: 0,
+        statusHistory: 0,
         products: { $slice: 1 },
       }
-    ).populate("products.productId", { name: 1 });
+    )
+      .populate("products.productId", { name: 1 })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ orders });
   } catch (error) {
@@ -158,12 +178,65 @@ const cancelOrder = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw Error("Invalid ID!!!");
     }
+
+    const orderDetails = await Order.findById(id).populate(
+      "products.productId"
+    );
+
+    const products = orderDetails.products.map((item) => ({
+      productId: item.productId._id,
+      quantity: item.quantity,
+    }));
+
+    const updateProductPromises = products.map((item) => {
+      return updateProductList(item.productId, item.quantity);
+    });
+
+    await Promise.all(updateProductPromises);
+
     const order = await Order.findByIdAndUpdate(
       id,
       {
         $set: {
-          reason,
           status: "cancelled",
+        },
+        $push: {
+          statusHistory: {
+            status: "cancelled",
+            date: Date.now(),
+            reason: reason,
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json({ order });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const requestReturn = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { reason } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          status: "awaiting return approval",
+        },
+        $push: {
+          statusHistory: {
+            status: "awaiting return approval",
+            date: Date.now(),
+            reason: reason,
+          },
         },
       },
       { new: true }
@@ -179,4 +252,5 @@ module.exports = {
   getOrders,
   getOrder,
   cancelOrder,
+  requestReturn,
 };
