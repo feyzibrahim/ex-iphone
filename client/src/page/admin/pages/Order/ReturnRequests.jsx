@@ -28,7 +28,7 @@ const ReturnRequests = () => {
   const { orders, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    dispatch(getReturnOrders());
+    dispatch(getReturnOrderWithQuery("return request"));
   }, []);
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
@@ -81,9 +81,10 @@ const ReturnRequests = () => {
         <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={[
+              "return request",
               "all",
-              "awaiting return approval",
-              "awaiting return pickup",
+              "return approved",
+              "return rejected",
               "pickup completed",
             ]}
             handleClick={handleClick}

@@ -171,6 +171,7 @@ const Orders = () => {
                               toggleUpdateModal({
                                 id: item._id,
                                 status: item.status,
+                                paymentMode: item.paymentMode,
                               });
                             }}
                           >

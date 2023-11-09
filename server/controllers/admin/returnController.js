@@ -1,10 +1,12 @@
 const Order = require("../../model/orderModel");
 const mongoose = require("mongoose");
+const Payment = require("../../model/paymentModel");
 
 function isValidStatus(status) {
   const validStatusValues = [
-    "awaiting return approval",
-    "awaiting return pickup",
+    "return request",
+    "return approved",
+    "return rejected",
     "pickup completed",
   ];
 
@@ -18,11 +20,7 @@ const getReturnCount = async (req, res) => {
     const count = await Order.find(
       {
         status: {
-          $in: [
-            "awaiting return approval",
-            "awaiting return pickup",
-            "pickup completed",
-          ],
+          $in: ["return request"],
         },
       },
       {}
@@ -68,8 +66,9 @@ const getReturnOrders = async (req, res) => {
         {
           status: {
             $in: [
-              "awaiting return approval",
-              "awaiting return pickup",
+              "return request",
+              "return approved",
+              "return rejected",
               "pickup completed",
             ],
           },
@@ -115,8 +114,7 @@ const getReturnOrders = async (req, res) => {
 const updateReturnOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, description, date } = req.body;
-    console.log(req.body);
+    const { status, description, date, reason, refund } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw Error("Invalid ID!!!");
@@ -133,6 +131,7 @@ const updateReturnOrderStatus = async (req, res) => {
             status,
             description,
             date: new Date(date),
+            ...(reason ? { reason } : {}),
           },
         },
       },
@@ -141,6 +140,17 @@ const updateReturnOrderStatus = async (req, res) => {
 
     if (!updated) {
       throw Error("Something went wrong");
+    }
+
+    if (refund === "yes") {
+      await Payment.findOneAndUpdate(
+        { order: id },
+        {
+          $set: {
+            status: "refunded",
+          },
+        }
+      );
     }
 
     const order = await Order.findById(id, {

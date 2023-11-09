@@ -5,7 +5,7 @@ const getPayments = async (req, res) => {
   try {
     const payments = await Payment.find(
       {},
-      { razorpay_order_id: 0, razorpay_signature: 0 }
+      { order_id: 0, razorpay_signature: 0 }
     )
       .populate("user", { firstName: 1, lastName: 1 })
       .populate("order", { totalPrice: 1 });

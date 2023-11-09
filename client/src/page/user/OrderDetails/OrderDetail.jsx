@@ -109,18 +109,18 @@ const OrderDetail = () => {
             <div className="flex items-center justify-between p-5 border-b">
               <h1 className="uppercase text-xl font-semibold">Order Detail</h1>
               <div className="flex gap-5">
-                {orderData.status !== "cancelled" &&
-                  orderData.status !== "delivered" &&
-                  orderData.status !== "awaiting return approval" && (
-                    <p
-                      className="text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
-                      onClick={toggleCancelModal}
-                    >
-                      Cancel Order <TiCancel />
-                    </p>
-                  )}
-                {orderData.status === "delivered" && (
-                  <>
+                {(orderData.status === "pending" ||
+                  orderData.status === "processing" ||
+                  orderData.status === "shipped") && (
+                  <p
+                    className="text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
+                    onClick={toggleCancelModal}
+                  >
+                    Cancel Order <TiCancel />
+                  </p>
+                )}
+                <>
+                  {orderData.status === "delivered" && (
                     <div>
                       <p
                         className="font-semibold flex items-center gap-1 text-orange-400 cursor-pointer hover:bg-orange-100 px-2 rounded-lg"
@@ -135,15 +135,18 @@ const OrderDetail = () => {
                         )}
                       </p>
                     </div>
-
-                    <p
-                      className="font-semibold flex items-center gap-1 text-blue-400 cursor-pointer hover:bg-blue-100 px-2 rounded-lg"
-                      onClick={toggleReviewModal}
-                    >
-                      Leave a Review <BiMessageSquareDetail />
-                    </p>
-                  </>
-                )}
+                  )}
+                  {orderData.status !== "pending" &&
+                    orderData.status !== "processing" &&
+                    orderData.status !== "shipped" && (
+                      <p
+                        className="font-semibold flex items-center gap-1 text-blue-400 cursor-pointer hover:bg-blue-100 px-2 rounded-lg"
+                        onClick={toggleReviewModal}
+                      >
+                        Leave a Review <BiMessageSquareDetail />
+                      </p>
+                    )}
+                </>
               </div>
             </div>
             <div>
@@ -167,9 +170,10 @@ const OrderDetail = () => {
                 </p>
               </div>
               {orderData.statusHistory &&
-                orderData.status !== "cancelled" &&
-                orderData.status !== "awaiting return approval" &&
-                orderData.status !== "returned" && (
+                (orderData.status === "pending" ||
+                  orderData.status === "processing" ||
+                  orderData.status === "shipped" ||
+                  orderData.status === "delivered") && (
                   <div className="px-5 pt-5 ">
                     <StatusHistoryLoadingBar
                       statusHistory={orderData.statusHistory}

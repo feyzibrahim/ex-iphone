@@ -79,3 +79,20 @@ export const getReturnOrderWithQuery = createAsyncThunk(
     }
   }
 );
+
+export const updateReturnOrderStatus = createAsyncThunk(
+  "orders/updateReturnOrderStatus",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/admin/return-order-status/${id}`,
+        formData,
+        config
+      );
+
+      return data.order;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);

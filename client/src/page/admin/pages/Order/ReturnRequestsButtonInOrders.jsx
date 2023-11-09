@@ -23,9 +23,11 @@ const ReturnRequestsButtonInOrders = () => {
 
   return (
     <div className="relative">
-      <div className="absolute -right-3 -top-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
-        <p>{count}</p>
-      </div>
+      {count !== 0 && (
+        <div className="absolute -right-3 -top-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+          <p>{count}</p>
+        </div>
+      )}
       <button
         className="admin-button-fl bg-blue-700 text-white"
         onClick={() => navigate("return-requests")}

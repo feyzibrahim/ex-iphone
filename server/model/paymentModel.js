@@ -16,7 +16,7 @@ const paymentSchema = new Schema(
       ref: Order,
       required: true,
     },
-    razorpay_payment_id: {
+    payment_id: {
       type: String,
     },
     razorpay_order_id: {

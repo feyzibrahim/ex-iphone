@@ -56,6 +56,7 @@ const verifyPayment = async (req, res) => {
 
     const payment = await Payment.create({
       ...req.body,
+      payment_id: razorpay_payment_id,
       user: _id,
       status: "success",
       paymentMode: "razorPay",

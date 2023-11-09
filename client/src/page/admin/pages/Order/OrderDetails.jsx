@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumbs from "../../Components/BreadCrumbs";
-import { FiDownload } from "react-icons/fi";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import date from "date-and-time";
 
 import { URL } from "../../../../Common/links";
-import { BiCalendar } from "react-icons/bi";
+import { FiDownload } from "react-icons/fi";
+import { BiCalendar, BiHash } from "react-icons/bi";
 import {
   FaRegCreditCard,
   FaShippingFast,
@@ -68,6 +68,15 @@ const OrderDetails = () => {
                 </p>
               </div>
               <div className="xy-center">
+                <div className="tile-row">
+                  <div className="tile-row-icon">
+                    <BiHash />
+                  </div>
+                  Order Id
+                </div>
+                <p>{orderData._id}</p>
+              </div>
+              <div className="xy-center">
                 <div className="tile-row ">
                   <div className="tile-row-icon">
                     <BiCalendar />
@@ -86,15 +95,6 @@ const OrderDetails = () => {
                   Payment Method
                 </div>
                 <p>{orderData.paymentMode}</p>
-              </div>
-              <div className="xy-center">
-                <div className="tile-row">
-                  <div className="tile-row-icon">
-                    <FaShippingFast />
-                  </div>
-                  Shipping Method
-                </div>
-                <p>Delhivey</p>
               </div>
             </div>
             <div className="tile">

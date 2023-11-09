@@ -229,11 +229,11 @@ const requestReturn = async (req, res) => {
       id,
       {
         $set: {
-          status: "awaiting return approval",
+          status: "return request",
         },
         $push: {
           statusHistory: {
-            status: "awaiting return approval",
+            status: "return request",
             date: Date.now(),
             reason: reason,
           },

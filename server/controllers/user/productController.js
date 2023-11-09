@@ -24,7 +24,9 @@ const getProduct = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
-    const product = await Product.findOne({ _id: id });
+    const product = await Product.findOne({ _id: id }).populate("category", {
+      name: 1,
+    });
 
     res.status(200).json({ product });
   } catch (error) {

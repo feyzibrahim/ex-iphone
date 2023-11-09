@@ -10,7 +10,11 @@ const StatusComponent = ({ status }) => {
     styleVar += "bg-orange-100 text-orange-600";
   }
 
-  if (status === "shipped" || status === "unpublished") {
+  if (
+    status === "shipped" ||
+    status === "unpublished" ||
+    status === "return approved"
+  ) {
     styleVar += "bg-gray-100 text-gray-600";
   }
 
@@ -18,7 +22,8 @@ const StatusComponent = ({ status }) => {
     status === "delivered" ||
     status === "Active" ||
     status === "published" ||
-    status === "success"
+    status === "success" ||
+    status === "pickup completed"
   ) {
     styleVar += "bg-green-100 text-green-600";
   }
@@ -26,7 +31,8 @@ const StatusComponent = ({ status }) => {
   if (
     status === "cancelled" ||
     status === "Blocked" ||
-    status === "out of stock"
+    status === "out of stock" ||
+    status === "return rejected"
   ) {
     styleVar += "bg-red-100 text-red-400";
   }
@@ -35,7 +41,7 @@ const StatusComponent = ({ status }) => {
     styleVar += "bg-yellow-100 text-yellow-600";
   }
 
-  if (status === "awaiting return approval") {
+  if (status === "return request" || status === "refunded") {
     styleVar += "bg-amber-100 text-amber-600";
   }
 

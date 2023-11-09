@@ -132,9 +132,7 @@ const Payments = () => {
                         {date.format(new Date(item.createdAt), "MMM DD YYYY")}
                       </td>
                       <td className="admin-table-row">{item.paymentMode}</td>
-                      <td className="admin-table-row">
-                        {item.razorpay_payment_id}
-                      </td>
+                      <td className="admin-table-row">{item.payment_id}</td>
                       <td className="admin-table-row">{item.order._id}</td>
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status || ""} />

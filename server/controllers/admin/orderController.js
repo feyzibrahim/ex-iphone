@@ -1,5 +1,7 @@
 const Order = require("../../model/orderModel");
 const mongoose = require("mongoose");
+const Payment = require("../../model/paymentModel");
+const uuid = require("uuid");
 
 function isValidStatus(status) {
   const validStatusValues = [
@@ -98,8 +100,7 @@ const getOrders = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, description, date } = req.body;
-    console.log(req.body);
+    const { status, description, date, paymentStatus } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw Error("Invalid ID!!!");
@@ -124,6 +125,25 @@ const updateOrderStatus = async (req, res) => {
 
     if (!updated) {
       throw Error("Something went wrong");
+    }
+
+    if (paymentStatus === "yes") {
+      await Payment.create({
+        order: updated._id,
+        payment_id: `cod_${uuid.v4()}`,
+        user: updated.user,
+        status: "success",
+        paymentMode: "cashOnDelivery",
+      });
+    }
+
+    if (paymentStatus === "no") {
+      await Payment.create({
+        order: updated._id,
+        user: updated.user,
+        status: "pending",
+        paymentMode: "cashOnDelivery",
+      });
     }
 
     const order = await Order.findById(id, {
