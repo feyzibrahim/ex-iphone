@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TiCancel } from "react-icons/ti";
 import { BiMessageSquareDetail } from "react-icons/bi";
+import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
 import axios from "axios";
 import { URL } from "../../../Common/links";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import date from "date-and-time";
 import Modal from "../../../components/Modal";
 import StatusComponent from "../../../components/StatusComponent";
@@ -21,6 +22,8 @@ import OrderDates from "./OrderDates";
 
 const OrderDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [orderData, setOrderData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -104,10 +107,20 @@ const OrderDetail = () => {
         />
       )}
       {orderData && (
-        <div className="min-h-screen pt-20 px-5 lg:px-40 bg-gray-100 py-10 ">
+        <div className="min-h-screen bg-gray-100 w-full">
           <div className="bg-white rounded-lg overflow-x-auto">
-            <div className="flex items-center justify-between p-5 border-b">
-              <h1 className="uppercase text-xl font-semibold">Order Detail</h1>
+            <div className="flex items-center justify-between px-5 py-1 border-b">
+              <div className="flex items-center gap-1">
+                <div
+                  className="hover:bg-blue-500 cursor-pointer p-3 rounded-md hover:text-white"
+                  onClick={() => navigate(-1)}
+                >
+                  <BsArrowLeft className="text-xl" />
+                </div>
+                <h1 className="uppercase text-xl font-semibold">
+                  Order Detail
+                </h1>
+              </div>
               <div className="flex gap-5">
                 {(orderData.status === "pending" ||
                   orderData.status === "processing" ||

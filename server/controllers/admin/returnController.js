@@ -61,6 +61,8 @@ const getReturnOrders = async (req, res) => {
   try {
     const query = req.query;
     let orders;
+
+    // getting all return orders when there is no query
     if (Object.keys(query).length === 0) {
       orders = await Order.find(
         {
@@ -84,6 +86,7 @@ const getReturnOrders = async (req, res) => {
         .sort({ createdAt: -1 });
     }
 
+    // getting return orders with query
     let status = query.status;
     if (status) {
       if (!isValidStatus(status)) {
@@ -111,6 +114,7 @@ const getReturnOrders = async (req, res) => {
   }
 };
 
+// Updating the status of return orders
 const updateReturnOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -120,7 +124,7 @@ const updateReturnOrderStatus = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
-    const updated = await Order.findByIdAndUpdate(
+    const updatedOrder = await Order.findByIdAndUpdate(
       id,
       {
         $set: {
@@ -138,11 +142,13 @@ const updateReturnOrderStatus = async (req, res) => {
       { new: true }
     );
 
-    if (!updated) {
+    if (!updatedOrder) {
       throw Error("Something went wrong");
     }
 
+    // If refund is requested initiating a refund for the user
     if (refund === "yes") {
+      // Existing payment is marking as refunded
       await Payment.findOneAndUpdate(
         { order: id },
         {

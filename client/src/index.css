@@ -206,3 +206,9 @@
 .tile-row-icon {
   @apply p-3 bg-gray-100 rounded-full text-xl text-gray-500;
 }
+
+/* Dashboard */
+
+.dashboard-link {
+  @apply text-blue-400 font-semibold hover:underline;
+}

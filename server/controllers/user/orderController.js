@@ -116,6 +116,7 @@ const createOrder = async (req, res) => {
   }
 };
 
+// Get all order details
 const getOrders = async (req, res) => {
   try {
     const token = req.cookies.user_token;
@@ -170,6 +171,7 @@ const getOrder = async (req, res) => {
   }
 };
 
+// Cancelling order
 const cancelOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -216,6 +218,7 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+// Requesting for returning an order
 const requestReturn = async (req, res) => {
   try {
     const { id } = req.params;

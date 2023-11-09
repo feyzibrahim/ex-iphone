@@ -47,6 +47,11 @@ const {
   getKey,
 } = require("../controllers/user/paymentController");
 
+const {
+  getWallet,
+  getWalletTotal,
+} = require("../controllers/user/walletController");
+
 const router = express.Router();
 
 // To get user data on initial page load.
@@ -99,5 +104,9 @@ router.patch("/address/:id", updateAddress);
 router.post("/razor-order", createRazerPayOrder);
 router.post("/razor-verify", verifyPayment);
 router.get("/razor-key", getKey);
+
+// Wallet
+router.get("/wallet", getWallet);
+router.get("/wallet-total", getWalletTotal);
 
 module.exports = router;

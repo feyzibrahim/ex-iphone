@@ -20,7 +20,7 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
       <td className="cart-table-row">
         <div className="flex items-center gap-3 truncate">
           {item.product.imageURL ? (
-            <div className="w-12 h-12">
+            <div className="w-10 h-10">
               <img
                 src={`${URL}/img/${item.product.imageURL}`}
                 alt="asdfas"
@@ -28,7 +28,7 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
               />
             </div>
           ) : (
-            <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+            <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
           )}
           {item.product.name}
         </div>

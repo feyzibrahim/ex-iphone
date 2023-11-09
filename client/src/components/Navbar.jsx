@@ -11,6 +11,7 @@ import {
   AiOutlineHistory,
   AiOutlineLogout,
 } from "react-icons/ai";
+import { RiDashboardLine } from "react-icons/ri";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
@@ -66,7 +67,10 @@ const Navbar = () => {
             <NavLink to="/cart" className="hover:text-blue-400 p-2">
               <AiOutlineShoppingCart className="text-xl" />
             </NavLink>
-            <NavLink to="/wishlist" className="hover:text-blue-400 p-2">
+            <NavLink
+              to="/dashboard/wishlist"
+              className="hover:text-blue-400 p-2"
+            >
               <AiOutlineHeart className="text-xl" />
             </NavLink>
             <button className="hover:text-blue-400" onClick={toggleDropDown}>
@@ -75,14 +79,21 @@ const Navbar = () => {
             {dropDown && (
               <div className="absolute top-10 font-normal w-44 bg-white rounded-lg shadow-2xl">
                 <NavLink
-                  to="/profile"
+                  to="/dashboard/"
+                  className="navbar-drop-ul"
+                  onClick={toggleDropDown}
+                >
+                  <RiDashboardLine className="text-xl" /> Dashboard
+                </NavLink>
+                <NavLink
+                  to="/dashboard/profile"
                   className="navbar-drop-ul"
                   onClick={toggleDropDown}
                 >
                   <AiOutlineUser className="text-xl" /> Profile
                 </NavLink>
                 <NavLink
-                  to="/order-history"
+                  to="/dashboard/order-history"
                   className="navbar-drop-ul"
                   onClick={toggleDropDown}
                 >

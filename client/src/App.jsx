@@ -56,6 +56,13 @@ import Orders from "./page/admin/pages/Order/Orders";
 import OrderDetails from "./page/admin/pages/Order/OrderDetails";
 import ReturnRequests from "./page/admin/pages/Order/ReturnRequests";
 
+import ProfileDashboard from "./page/user/profileDashboard";
+import Dash from "./page/user/profileDashboard/pages/Dash";
+import Wallet from "./page/user/profileDashboard/pages/wallet";
+import Addresses from "./page/user/profileDashboard/pages/addresses";
+import TrackOrder from "./page/user/profileDashboard/pages/trackOrder";
+import WishList from "./page/user/profileDashboard/pages/wishlist";
+
 function App() {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
@@ -101,11 +108,20 @@ function App() {
 
           {/* User Routes */}
           <Route path="/product/:id" element={<ProductDetails />} />
+
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/order-history" element={<OrderHistory />} />
-          <Route path="/order-history/detail/:id" element={<OrderDetail />} />
-          <Route path="/profile" element={<ProfilePage />} />
+
+          <Route path="/dashboard" element={<ProfileDashboard />}>
+            <Route index element={<Dash />} />
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="order-history" element={<OrderHistory />} />
+            <Route path="order-history/detail/:id" element={<OrderDetail />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="addresses" element={<Addresses />} />
+            <Route path="track-order" element={<TrackOrder />} />
+            <Route path="wishlist" element={<WishList />} />
+          </Route>
 
           {/* Admin Routes */}
           {user && user.role === "admin" ? (

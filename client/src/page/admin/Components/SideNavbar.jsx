@@ -28,7 +28,7 @@ const SideNavbar = () => {
       </div>
       <div className="text-gray-600 font-semibold mt-5">
         <p className="side-nav-sub-title">Menu</p>
-        <NavLink className="side-nav-link-sp" to="/">
+        <NavLink className="side-nav-link-sp" to="/admin/">
           <RiDashboardLine />
           Dashboard
         </NavLink>
