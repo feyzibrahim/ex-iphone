@@ -15,10 +15,6 @@ const walletSchema = new mongoose.Schema({
   },
   transactions: [
     {
-      transactionId: {
-        type: mongoose.Schema.Types.ObjectId,
-        default: mongoose.Types.ObjectId,
-      },
       amount: {
         type: Number,
         required: true,

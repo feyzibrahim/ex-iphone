@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import { GiPayMoney } from "react-icons/gi";
-import { BiWallet } from "react-icons/bi";
+
 import axios from "axios";
 import { URL } from "../../Common/links";
 import { config } from "../../Common/configurations";
@@ -12,6 +11,7 @@ import TotalAndSubTotal from "./components/TotalAndSubTotal";
 import Loading from "../../components/Loading";
 import OrderConfirmation from "./components/OrderConfirmation";
 import { clearCartOnOrderPlaced } from "../../redux/reducers/user/cartSlice";
+import CheckoutPaymentOption from "./components/CheckoutPaymentOption";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -21,6 +21,9 @@ const Checkout = () => {
   const { totalPrice, shipping, discount, tax } = useSelector(
     (state) => state.cart
   );
+
+  // Wallet balance
+  const [walletBalance, setWalletBalance] = useState(0);
 
   // Address Selection
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -37,8 +40,40 @@ const Checkout = () => {
   const [confirmationPage, setConfirmationPage] = useState(false);
   const [orderData, setOrderData] = useState({});
 
-  // Saving the order to db
+  // Cash on delivery or wallet balance
+  const saveOrderOnCashDeliveryOrMyWallet = async (response) => {
+    setOrderPlacedLoading(true);
 
+    try {
+      const order = await axios.post(
+        `${URL}/user/order`,
+        {
+          notes: additionalNotes,
+          address: selectedAddress,
+          paymentMode: selectedPayment,
+        },
+        config
+      );
+
+      // Updating user side
+      setOrderData(order.data.order);
+      toast.success("Order Placed");
+      setOrderPlacedLoading(false);
+      setConfirmationPage(true);
+      dispatch(clearCartOnOrderPlaced());
+    } catch (error) {
+      // Error Handling
+      const errorMessage =
+        error.response?.data?.error ||
+        "Something went wrong. Please try again.";
+      toast.error(errorMessage);
+      setOrderPlacedLoading(false);
+    }
+  };
+
+  // Razor Pay payment
+
+  // Saving the order to db
   const saveOrder = async (response) => {
     setOrderPlacedLoading(true);
 
@@ -79,38 +114,7 @@ const Checkout = () => {
     }
   };
 
-  const saveOrderOnCashDelivery = async (response) => {
-    setOrderPlacedLoading(true);
-
-    try {
-      // Make the first POST request to create the order
-      const order = await axios.post(
-        `${URL}/user/order`,
-        {
-          notes: additionalNotes,
-          address: selectedAddress,
-          paymentMode: selectedPayment,
-        },
-        config
-      );
-
-      // Updating user side
-      setOrderData(order.data.order);
-      toast.success("Order Placed");
-      setOrderPlacedLoading(false);
-      setConfirmationPage(true);
-      dispatch(clearCartOnOrderPlaced());
-    } catch (error) {
-      // Error Handling
-      const errorMessage =
-        error.response?.data?.error ||
-        "Something went wrong. Please try again.";
-      toast.error(errorMessage);
-      setOrderPlacedLoading(false);
-    }
-  };
-
-  // Razor Pay payment
+  // Initiating razor pay payment method or window
   const initiateRazorPayPayment = async () => {
     // Getting razor-pay secret key
     const {
@@ -185,12 +189,24 @@ const Checkout = () => {
       return;
     }
 
+    if (selectedPayment === "myWallet") {
+      if (walletBalance < totalPrice + discount + tax + shipping) {
+        toast.error("Not balance in your wallet");
+        return;
+      }
+    }
+
     if (selectedPayment === "razorPay") {
       initiateRazorPayPayment();
       return;
     }
 
-    saveOrderOnCashDelivery();
+    if (
+      selectedPayment === "cashOnDelivery" ||
+      selectedPayment === "myWallet"
+    ) {
+      saveOrderOnCashDeliveryOrMyWallet();
+    }
   };
 
   return (
@@ -210,60 +226,12 @@ const Checkout = () => {
               <h1 className="text-xl font-semibold border-b pb-2 mb-3">
                 Payment Option
               </h1>
-              <div className="flex items-center justify-center py-5">
-                <label className="cursor-pointer" htmlFor="cashOnDelivery">
-                  <div className="border-r px-5  flex flex-col items-center ">
-                    <div className="w-10 h-10 flex items-center justify-center">
-                      <GiPayMoney className="text-2xl" />
-                    </div>
-                    <p className="mb-2 text-sm">Cash On Delivery</p>
-                    <input
-                      type="radio"
-                      name="paymentMode"
-                      id="cashOnDelivery"
-                      value="cashOnDelivery"
-                      onChange={handleSelectedPayment}
-                      checked={selectedPayment === "cashOnDelivery"}
-                    />
-                  </div>
-                </label>
-                <label className="cursor-pointer" htmlFor="razorPay">
-                  <div className="border-r px-5 flex flex-col items-center">
-                    <div className="w-10 h-10">
-                      <img
-                        src="https://d6xcmfyh68wv8.cloudfront.net/assets/razorpay-glyph.svg"
-                        alt="Razor Pay Icon"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                    <p className="mb-2 text-sm">Razer Pay</p>
-                    <input
-                      type="radio"
-                      name="paymentMode"
-                      id="razorPay"
-                      value="razorPay"
-                      onChange={handleSelectedPayment}
-                      checked={selectedPayment === "razorPay"}
-                    />
-                  </div>
-                </label>
-                <label className="cursor-pointer" htmlFor="myWallet">
-                  <div className="px-5 flex flex-col items-center">
-                    <div className="w-10 h-10 flex items-center justify-center">
-                      <BiWallet className="text-2xl" />
-                    </div>
-                    <p className="mb-2 text-sm">My Wallet</p>
-                    <input
-                      type="radio"
-                      name="paymentMode"
-                      id="myWallet"
-                      value="myWallet"
-                      onChange={handleSelectedPayment}
-                      checked={selectedPayment === "myWallet"}
-                    />
-                  </div>
-                </label>
-              </div>
+              <CheckoutPaymentOption
+                handleSelectedPayment={handleSelectedPayment}
+                selectedPayment={selectedPayment}
+                walletBalance={walletBalance}
+                setWalletBalance={setWalletBalance}
+              />
             </div>
 
             <p className="my-1 font-semibold">Additional Notes</p>

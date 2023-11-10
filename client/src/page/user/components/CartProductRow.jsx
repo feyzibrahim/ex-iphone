@@ -4,8 +4,10 @@ import { increment, decrement } from "../../../redux/reducers/user/cartSlice";
 import Quantity from "../components/Quantity";
 import { useDispatch } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const dispatchIncrement = (item) => {
@@ -17,13 +19,16 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
 
   return (
     <tr className={isLast ? "" : "border-b"}>
-      <td className="cart-table-row">
+      <td
+        className="cart-table-row hover:underline cursor-pointer hover:text-blue-500"
+        onClick={() => navigate(`/product/${item.product._id}`)}
+      >
         <div className="flex items-center gap-3 truncate">
           {item.product.imageURL ? (
             <div className="w-10 h-10">
               <img
                 src={`${URL}/img/${item.product.imageURL}`}
-                alt="asdfas"
+                alt="Product"
                 className="h-full w-full object-contain"
               />
             </div>

@@ -3,7 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors"); // Add it back when communicating with react
 const logger = require("morgan");
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const app = express();
 

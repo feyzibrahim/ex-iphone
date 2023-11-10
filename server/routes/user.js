@@ -52,6 +52,13 @@ const {
   getWalletTotal,
 } = require("../controllers/user/walletController");
 
+const {
+  addToWishlist,
+  deleteOneProductFromWishlist,
+  deleteWishlist,
+  getWishlist,
+} = require("../controllers/user/wishlistController");
+
 const router = express.Router();
 
 // To get user data on initial page load.
@@ -108,5 +115,11 @@ router.get("/razor-key", getKey);
 // Wallet
 router.get("/wallet", getWallet);
 router.get("/wallet-total", getWalletTotal);
+
+// Wishlist
+router.get("/wishlist", getWishlist);
+router.post("/wishlist", addToWishlist);
+router.delete("/wishlist-clear/", deleteWishlist);
+router.delete("/wishlist-delete-item/:productId", deleteOneProductFromWishlist);
 
 module.exports = router;

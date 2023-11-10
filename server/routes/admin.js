@@ -87,4 +87,8 @@ const {
 router.get("/payments", getPayments);
 router.get("/clear-payments", clearPayments);
 
+const { clearWallet } = require("../controllers/admin/walletController");
+
+router.get("/clear-wallet", clearWallet);
+
 module.exports = router;

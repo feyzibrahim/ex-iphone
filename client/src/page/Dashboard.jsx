@@ -3,12 +3,16 @@ import SearchBar from "../components/SearchBar";
 import ProductCard from "../components/User/ProductCard";
 import { getUserProducts } from "../redux/actions/user/userProductActions";
 import { useDispatch, useSelector } from "react-redux";
-
+import { getWishlist } from "../redux/actions/user/wishlistActions";
 const Dashboard = () => {
   const { userProducts, loading, error } = useSelector(
     (state) => state.userProducts
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getWishlist());
+  }, []);
 
   useEffect(() => {
     dispatch(getUserProducts());

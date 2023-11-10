@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AiFillStar, AiOutlineStar, AiFillHeart } from "react-icons/ai";
+import {
+  AiFillStar,
+  AiOutlineStar,
+  AiFillHeart,
+  AiOutlineHeart,
+} from "react-icons/ai";
 import axios from "axios";
 
 import DescReview from "./components/DescReview";
 import Quantity from "./components/Quantity";
 import toast from "react-hot-toast";
 import { URL } from "../../Common/links";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist } from "../../redux/actions/user/wishlistActions";
 
 const ProductDetails = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   let [product, setProduct] = useState({});
   let [loading, setLoading] = useState(false);
   let [error, setError] = useState(false);
   let [currentImage, setCurrentImage] = useState("");
 
+  // Adding a product to wishlist
+  const dispatchAddWishlist = () => {
+    dispatch(addToWishlist({ product: id }));
+  };
+
+  // Product loading when the page loads
   const loadProduct = async () => {
     setLoading(true);
     try {
@@ -75,6 +89,12 @@ const ProductDetails = () => {
         setCartLoading(false);
       });
   };
+
+  // Checking if this product exists in the wishlist
+
+  const { wishlist } = useSelector((state) => state.wishlist);
+
+  const isProductInWishlist = wishlist.some((item) => item.product._id === id);
 
   return (
     <div className="px-5 lg:px-40 py-20 bg-gray-100">
@@ -207,9 +227,19 @@ const ProductDetails = () => {
                 <button className="w-full font-semibold hover:bg-blue-500 rounded-lg p-2 bg-blue-700 text-white">
                   Buy Now
                 </button>
-                <button className="border border-gray-500 rounded-lg px-3 hover:bg-white">
-                  <AiFillHeart />
-                </button>
+
+                {isProductInWishlist ? (
+                  <div className="border border-gray-500 rounded-lg p-3">
+                    <AiFillHeart />
+                  </div>
+                ) : (
+                  <button
+                    className="border border-gray-500 rounded-lg px-3 hover:bg-white"
+                    onClick={dispatchAddWishlist}
+                  >
+                    <AiOutlineHeart />
+                  </button>
+                )}
               </div>
             </div>
           </div>

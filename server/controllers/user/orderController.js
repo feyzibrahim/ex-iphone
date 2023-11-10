@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const Address = require("../../model/addressModel");
 const Order = require("../../model/orderModel");
 const Products = require("../../model/productModel");
+const Payment = require("../../model/paymentModel");
+const uuid = require("uuid");
+const Wallet = require("../../model/walletModel");
 
 // Just the function increment or decrement product count
 const updateProductList = async (id, count) => {
@@ -11,7 +14,7 @@ const updateProductList = async (id, count) => {
 
   if (count < 0) {
     if (product.stockQuantity - count * -1 < 0) {
-      throw Error(`${product.name} doesn't have ${count} stock`);
+      throw Error(`${product.name} doesn\'t have ${count} stock`);
     }
   }
 
@@ -56,7 +59,7 @@ const createOrder = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
-    const { address, paymentMode } = req.body;
+    const { address, paymentMode, notes } = req.body;
 
     const addressData = await Address.findOne({ _id: address });
 
@@ -96,6 +99,7 @@ const createOrder = async (req, res) => {
           status: "pending",
         },
       ],
+      ...(notes ? notes : {}),
     };
 
     const updateProductPromises = products.map((item) => {
@@ -108,6 +112,39 @@ const createOrder = async (req, res) => {
 
     if (order) {
       await Cart.findByIdAndDelete(cart._id);
+    }
+
+    // When payment is done using wallet reducing the wallet and creating payment
+    if (paymentMode === "myWallet") {
+      const exists = await Wallet.findOne({ user: _id });
+      if (!exists) {
+        throw Error("No Wallet where found");
+      }
+
+      await Payment.create({
+        order: order._id,
+        payment_id: `wallet_${uuid.v4()}`,
+        user: _id,
+        status: "success",
+        paymentMode: "myWallet",
+      });
+
+      let wallet = {};
+      if (exists) {
+        wallet = await Wallet.findByIdAndUpdate(exists._id, {
+          $inc: {
+            balance: -sumWithTax,
+          },
+          $push: {
+            transactions: {
+              amount: sumWithTax,
+              type: "debit",
+              description: "Product Ordered",
+              order: order._id,
+            },
+          },
+        });
+      }
     }
 
     res.status(200).json({ order });

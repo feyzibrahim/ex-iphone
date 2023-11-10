@@ -1,6 +1,7 @@
 const Order = require("../../model/orderModel");
 const mongoose = require("mongoose");
 const Payment = require("../../model/paymentModel");
+const Wallet = require("../../model/walletModel");
 
 function isValidStatus(status) {
   const validStatusValues = [
@@ -14,7 +15,6 @@ function isValidStatus(status) {
 }
 
 // Return count of return orders
-
 const getReturnCount = async (req, res) => {
   try {
     const count = await Order.find(
@@ -157,6 +157,38 @@ const updateReturnOrderStatus = async (req, res) => {
           },
         }
       );
+
+      // Adding the refund to wallet of user.
+      let wallet = {};
+      const exists = await Wallet.findOne({ user: updatedOrder.user });
+      if (exists) {
+        wallet = await Wallet.findByIdAndUpdate(exists._id, {
+          $inc: {
+            balance: updatedOrder.totalPrice,
+          },
+          $push: {
+            transactions: {
+              amount: updatedOrder.totalPrice,
+              type: "credit",
+              description,
+              order: id,
+            },
+          },
+        });
+      } else {
+        wallet = await Wallet.create({
+          user: updatedOrder.user,
+          balance: updatedOrder.totalPrice,
+          transactions: [
+            {
+              amount: updatedOrder.totalPrice,
+              type: "credit",
+              description,
+              order: id,
+            },
+          ],
+        });
+      }
     }
 
     const order = await Order.findById(id, {

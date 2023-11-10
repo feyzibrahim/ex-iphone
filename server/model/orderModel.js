@@ -150,6 +150,9 @@ const OrderSchema = new Schema(
       type: Number,
       min: 0,
     },
+    notes: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
