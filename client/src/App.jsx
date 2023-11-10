@@ -35,7 +35,7 @@ import OrderDetail from "./page/user/OrderDetails/OrderDetail";
 // Admin
 import AdminDash from "./page/admin/Dashboard";
 import AdminHome from "./page/admin/pages/AdminHome";
-import Coupon from "./page/admin/pages/Coupon";
+import Coupon from "./page/admin/pages/coupon/Coupon";
 import Banner from "./page/admin/pages/Banner";
 import Payments from "./page/admin/pages/payments/Payments";
 import ManageAdmins from "./page/admin/pages/admins/ManageAdmins";

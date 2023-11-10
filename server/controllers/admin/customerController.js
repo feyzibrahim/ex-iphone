@@ -7,6 +7,7 @@ const getCustomers = async (req, res) => {
 
     let customers;
 
+    // Getting all users
     if (Object.keys(query).length === 0) {
       customers = await User.find(
         { role: "user" },
@@ -19,6 +20,7 @@ const getCustomers = async (req, res) => {
         }
       );
     } else {
+      // Fetching only active or not active users
       let { isActive } = query;
 
       customers = await User.find(
@@ -42,6 +44,7 @@ const getCustomers = async (req, res) => {
   }
 };
 
+// Not completed
 const getCustomer = (req, res) => {
   const { id } = req.params;
 
@@ -77,6 +80,7 @@ const addCustomer = async (req, res) => {
   }
 };
 
+// Not completed
 const updateCustomer = (req, res) => {
   const { id } = req.params;
 
@@ -85,6 +89,7 @@ const updateCustomer = (req, res) => {
   res.status(200).json({ msg: `Customer Number ${id} - updated` });
 };
 
+// Delete a user
 const deleteCustomer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -101,7 +106,8 @@ const deleteCustomer = async (req, res) => {
   }
 };
 
-const blockOrUnBlock = async (req, res) => {
+// Block or unblock user
+const blockOrUnBlockCustomer = async (req, res) => {
   try {
     const { id } = req.params;
     const { isActive } = req.body;
@@ -123,5 +129,5 @@ module.exports = {
   addCustomer,
   deleteCustomer,
   updateCustomer,
-  blockOrUnBlock,
+  blockOrUnBlockCustomer,
 };

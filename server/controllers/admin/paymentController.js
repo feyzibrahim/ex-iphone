@@ -16,6 +16,7 @@ const getPayments = async (req, res) => {
   }
 };
 
+// Clearing all payments only for testing
 const clearPayments = async (req, res) => {
   try {
     const data = await Payment.deleteMany({});

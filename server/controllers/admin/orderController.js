@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Payment = require("../../model/paymentModel");
 const uuid = require("uuid");
 
+// Function checking if the passed status is valid or not. Ensuring redundant searches are avoided
 function isValidStatus(status) {
   const validStatusValues = [
     "pending",
@@ -97,6 +98,7 @@ const getOrders = async (req, res) => {
   }
 };
 
+// Updating the status of orders.
 const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -159,6 +161,7 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+// Clearing all orders only for testing
 const clearOrder = async (req, res) => {
   try {
     const data = await Order.deleteMany({});
