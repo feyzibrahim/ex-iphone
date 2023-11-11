@@ -1,8 +1,12 @@
 import React from "react";
 import { URL } from "../../../Common/links";
-import { increment, decrement } from "../../../redux/reducers/user/cartSlice";
+// import { increment, decrement } from "../../../redux/reducers/user/cartSlice";
+import {
+  incrementCount,
+  decrementCount,
+} from "../../../redux/actions/user/cartActions";
 import Quantity from "../components/Quantity";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
@@ -10,11 +14,13 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { cartId } = useSelector((state) => state.cart);
+
   const dispatchIncrement = (item) => {
-    dispatch(increment({ item }));
+    dispatch(incrementCount({ cartId, productId: item.product._id }));
   };
   const dispatchDecrement = (item) => {
-    dispatch(decrement({ item }));
+    dispatch(decrementCount({ cartId, productId: item.product._id }));
   };
 
   return (

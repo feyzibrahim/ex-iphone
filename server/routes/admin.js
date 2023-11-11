@@ -48,7 +48,6 @@ const {
   addCoupon,
   editCoupon,
   deleteCoupon,
-  blockOrUnBlockCoupon,
 } = require("../controllers/admin/couponController");
 
 // Products controller functions mounting them to corresponding route
@@ -98,6 +97,5 @@ router.get("/coupon/:id", getCoupon);
 router.delete("/coupon/:id", deleteCoupon);
 router.patch("/coupon/:id", editCoupon);
 router.post("/coupon", addCoupon);
-router.patch("/coupon-block-unblock/:id", blockOrUnBlockCoupon);
 
 module.exports = router;

@@ -26,7 +26,7 @@ const ProfilePage = () => {
       {showEditProfile && (
         <Modal tab={<EditProfile closeToggle={toggleEditProfile} />} />
       )}
-      <div className="bg-white rounded-lg w-full">
+      <div className="bg-white rounded-lg w-full mx-5 lg:mx-0">
         <h1 className="uppercase text-lg font-semibold px-5 py-3 border-b">
           Profile Settings
         </h1>
@@ -80,11 +80,6 @@ const ProfilePage = () => {
                   }
                   title="Email Verified?"
                   name={user?.isEmailVerified ? "Yes" : "No"}
-                />
-                <InputWithIcon
-                  icon={<AiOutlineWallet />}
-                  title="Wallet Balance"
-                  name={user?.walletBalance || "-"}
                 />
               </div>
               <button

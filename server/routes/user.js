@@ -11,6 +11,7 @@ const {
 const {
   getProducts,
   getProduct,
+  getAvailableQuantity,
 } = require("../controllers/user/productController");
 const {
   createOrder,
@@ -32,6 +33,8 @@ const {
   addToCart,
   deleteCart,
   deleteOneProduct,
+  incrementQuantity,
+  decrementQuantity,
 } = require("../controllers/user/cartController");
 const {
   getAddress,
@@ -59,6 +62,8 @@ const {
   getWishlist,
 } = require("../controllers/user/wishlistController");
 
+const { getCoupons } = require("../controllers/user/couponController");
+
 const router = express.Router();
 
 // To get user data on initial page load.
@@ -75,6 +80,7 @@ router.get("/logout", logoutUser);
 // Products
 router.get("/products", getProducts);
 router.get("/product/:id", getProduct);
+router.get("/product-quantity/:id", getAvailableQuantity);
 
 // Order
 router.post("/order", createOrder);
@@ -99,6 +105,14 @@ router.get("/cart", getCart);
 router.post("/cart", addToCart);
 router.delete("/cart/:id", deleteCart);
 router.delete("/cart/:cartId/item/:productId", deleteOneProduct);
+router.patch(
+  "/cart-increment-quantity/:cartId/item/:productId",
+  incrementQuantity
+);
+router.patch(
+  "/cart-decrement-quantity/:cartId/item/:productId",
+  decrementQuantity
+);
 
 // Address
 router.get("/address", getAddresses);
@@ -121,5 +135,8 @@ router.get("/wishlist", getWishlist);
 router.post("/wishlist", addToWishlist);
 router.delete("/wishlist-clear/", deleteWishlist);
 router.delete("/wishlist-delete-item/:productId", deleteOneProductFromWishlist);
+
+// Coupon
+router.get("/coupons", getCoupons);
 
 module.exports = router;

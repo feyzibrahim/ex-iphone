@@ -34,7 +34,27 @@ const getProduct = async (req, res) => {
   }
 };
 
+const getAvailableQuantity = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    const stockQuantity = await Product.findOne(
+      { _id: id },
+      { stockQuantity: 1 }
+    );
+
+    res.status(200).json({ stockQuantity: stockQuantity.stockQuantity });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getProducts,
   getProduct,
+  getAvailableQuantity,
 };

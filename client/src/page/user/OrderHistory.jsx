@@ -17,12 +17,12 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full ">
-      <div className="bg-white rounded-lg h-full">
+    <div className="min-h-screen w-full  ">
+      <div className="bg-white rounded-lg h-full mx-5 lg:mx-0">
         <h1 className="uppercase text-lg font-semibold px-5 py-3 border-b">
           Order History
         </h1>
-        <div className="p-5">
+        <div className="p-5 overflow-auto">
           <table className="w-full min-w-max table-auto text-sm border">
             <thead>
               <tr className="bg-gray-100 font-semibold">

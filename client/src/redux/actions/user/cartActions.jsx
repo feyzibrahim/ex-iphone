@@ -44,6 +44,36 @@ export const deleteOneProduct = createAsyncThunk(
   }
 );
 
+export const incrementCount = createAsyncThunk(
+  "cart/incrementCount",
+  async ({ cartId, productId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/user/cart-increment-quantity/${cartId}/item/${productId}`
+      );
+
+      return data.updatedItem;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+export const decrementCount = createAsyncThunk(
+  "cart/decrementCount",
+  async ({ cartId, productId }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/user/cart-decrement-quantity/${cartId}/item/${productId}`
+      );
+
+      return data.updatedItem;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
 // export const addToCart = createAsyncThunk(
 //   "cart/addToCart",
 //   async (formData, { rejectWithValue }) => {

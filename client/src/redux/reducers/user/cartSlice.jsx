@@ -3,6 +3,8 @@ import {
   getCart,
   deleteEntireCart,
   deleteOneProduct,
+  decrementCount,
+  incrementCount,
 } from "../../actions/user/cartActions";
 import toast from "react-hot-toast";
 
@@ -27,35 +29,6 @@ const cartSlice = createSlice({
       );
       state.totalPrice = sum;
       state.tax = sum * 0.08;
-    },
-    increment: (state, action) => {
-      const { item } = action.payload;
-      const updatedCart = state.cart.map((cartItem) => {
-        if (cartItem._id === item._id) {
-          return {
-            ...cartItem,
-            quantity: cartItem.quantity + 1,
-          };
-        }
-        return cartItem;
-      });
-      state.cart = updatedCart;
-    },
-    decrement: (state, action) => {
-      const { item } = action.payload;
-      const updatedCart = state.cart.map((cartItem) => {
-        if (cartItem.quantity === 1) {
-          return { ...cartItem };
-        }
-        if (cartItem._id === item._id) {
-          return {
-            ...cartItem,
-            quantity: cartItem.quantity - 1,
-          };
-        }
-        return cartItem;
-      });
-      state.cart = updatedCart;
     },
     clearCartOnOrderPlaced: (state) => {
       state.loading = false;
@@ -117,14 +90,61 @@ const cartSlice = createSlice({
         state.loading = false;
         state.cart = null;
         state.error = payload;
+      })
+
+      // Updating cart on when quantity is increased
+
+      .addCase(incrementCount.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(incrementCount.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        const updatedCart = state.cart.map((cartItem) => {
+          console.log(cartItem.product._id, payload.product);
+          if (cartItem.product._id === payload.product) {
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity + 1,
+            };
+          }
+          return cartItem;
+        });
+        state.cart = updatedCart;
+      })
+      .addCase(incrementCount.rejected, (state, { payload }) => {
+        state.loading = false;
+        // state.cart = null;
+        state.error = payload;
+        toast.error(payload);
+      })
+      .addCase(decrementCount.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(decrementCount.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        const updatedCart = state.cart.map((cartItem) => {
+          console.log(cartItem.product._id, payload.product);
+          if (cartItem.product._id === payload.product) {
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity - 1,
+            };
+          }
+          return cartItem;
+        });
+        state.cart = updatedCart;
+      })
+      .addCase(decrementCount.rejected, (state, { payload }) => {
+        state.loading = false;
+        // state.cart = null;
+        state.error = payload;
+        toast.error(payload);
       });
   },
 });
 
-export const {
-  increment,
-  decrement,
-  calculateTotalPrice,
-  clearCartOnOrderPlaced,
-} = cartSlice.actions;
+export const { calculateTotalPrice, clearCartOnOrderPlaced } =
+  cartSlice.actions;
 export default cartSlice.reducer;

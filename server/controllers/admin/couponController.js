@@ -4,7 +4,21 @@ const mongoose = require("mongoose");
 // Getting all coupons
 const getCoupons = async (req, res) => {
   try {
-    const coupons = await Coupon.find({});
+    const query = req.query;
+
+    let coupons;
+    if (Object.keys(query).length === 0) {
+      coupons = await Coupon.find(
+        {},
+        { description: 0, minimumPurchaseAmount: 0, maximumUses: 0 }
+      );
+    } else {
+      let { isActive } = query;
+      coupons = await Coupon.find(
+        { isActive },
+        { description: 0, minimumPurchaseAmount: 0, maximumUses: 0 }
+      );
+    }
 
     return res.status(200).json({ coupons });
   } catch (error) {
@@ -90,37 +104,10 @@ const deleteCoupon = async (req, res) => {
   }
 };
 
-// Enabling or disabling a coupon
-const blockOrUnBlockCoupon = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { isActive } = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
-    }
-
-    const coupon = await Coupon.findOneAndUpdate(
-      { _id: id },
-      { $set: { isActive } },
-      { new: true }
-    );
-
-    if (!coupon) {
-      throw Error("No such Coupon");
-    }
-
-    res.status(200).json({ coupon });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
-
 module.exports = {
   getCoupons,
   getCoupon,
   addCoupon,
   editCoupon,
   deleteCoupon,
-  blockOrUnBlockCoupon,
 };

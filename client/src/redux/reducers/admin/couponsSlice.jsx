@@ -3,8 +3,8 @@ import {
   getCoupons,
   createCoupon,
   deleteCoupon,
-  blockOrUnBlockCoupon,
   getFilteredCoupon,
+  editCoupon,
 } from "../../actions/admin/couponsAction";
 import toast from "react-hot-toast";
 
@@ -73,10 +73,11 @@ const couponsSlice = createSlice({
         state.coupons = null;
         state.error = payload;
       })
-      .addCase(blockOrUnBlockCoupon.pending, (state) => {
+
+      .addCase(editCoupon.pending, (state) => {
         state.loading = true;
       })
-      .addCase(blockOrUnBlockCoupon.fulfilled, (state, { payload }) => {
+      .addCase(editCoupon.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
         const index = state.coupons.findIndex(
@@ -86,9 +87,8 @@ const couponsSlice = createSlice({
         if (index !== -1) {
           state.coupons[index] = payload;
         }
-        toast.success("Coupon Updated");
       })
-      .addCase(blockOrUnBlockCoupon.rejected, (state, { payload }) => {
+      .addCase(editCoupon.rejected, (state, { payload }) => {
         state.loading = false;
         state.coupons = null;
         state.error = payload;

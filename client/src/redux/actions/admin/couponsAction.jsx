@@ -20,6 +20,23 @@ export const createCoupon = createAsyncThunk(
   }
 );
 
+// Editing the existing coupon
+export const editCoupon = createAsyncThunk(
+  "coupons/editCoupon",
+  async ({ id, formData }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.patch(
+        `${URL}/admin/coupon/${id}`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
 export const getCoupons = createAsyncThunk(
   "coupons/getCoupons",
   async (rc, { rejectWithValue }) => {
@@ -37,23 +54,6 @@ export const deleteCoupon = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const { data } = await axios.delete(`${URL}/admin/coupon/${id}`, config);
-      return data.coupon;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const blockOrUnBlockCoupon = createAsyncThunk(
-  "coupons/blockOrUnBlockCoupon",
-  async ({ id, isActive }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${URL}/admin/coupon-block-unblock/${id}`,
-        { isActive },
-        config
-      );
-
       return data.coupon;
     } catch (error) {
       return handleError(error, rejectWithValue);

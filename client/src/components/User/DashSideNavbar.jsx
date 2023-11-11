@@ -7,13 +7,14 @@ import {
   AiOutlineWallet,
   AiOutlineLogout,
 } from "react-icons/ai";
+import { TiTicket } from "react-icons/ti";
 import { MdTrackChanges } from "react-icons/md";
 import { BiUser, BiHistory } from "react-icons/bi";
 import { GiMailbox } from "react-icons/gi";
 
 const DashSideNavbar = () => {
   return (
-    <div className="w-1/5 bg-white h-fit shrink-0 rounded">
+    <div className="w-1/5 bg-white h-fit shrink-0 rounded hidden lg:block">
       <NavLink className="side-nav-link-sp" to="/dashboard/">
         <RiDashboardLine />
         Dashboard
@@ -41,6 +42,10 @@ const DashSideNavbar = () => {
       <NavLink className="side-nav-link-sp" to="wallet">
         <AiOutlineWallet />
         Wallet
+      </NavLink>
+      <NavLink className="side-nav-link-sp" to="find-coupons">
+        <TiTicket />
+        Find Coupons
       </NavLink>
       <NavLink className="side-nav-link-sp" to="/">
         <AiOutlineLogout />

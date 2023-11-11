@@ -2,14 +2,11 @@ import React from "react";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
+import { useNavigate } from "react-router-dom";
 
-const TableRow = ({
-  index,
-  length,
-  coupon,
-  toggleDeleteModal,
-  toggleBlockUnBlockModal,
-}) => {
+const TableRow = ({ index, length, coupon, toggleDeleteModal }) => {
+  const navigate = useNavigate();
+
   const isLast = index === length - 1;
 
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
@@ -36,10 +33,7 @@ const TableRow = ({
             className="hover:text-gray-500"
             onClick={(e) => {
               e.stopPropagation();
-              toggleBlockUnBlockModal({
-                id: coupon._id,
-                status: coupon.isActive,
-              });
+              navigate(`edit/${coupon._id}`);
             }}
           >
             <AiOutlineEdit />

@@ -9,8 +9,8 @@ const Dash = () => {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="min-h-screen">
-      <div className="flex justify-between w-full gap-5">
+    <div className="min-h-screen px-5 lg:px-0">
+      <div className="flex flex-col lg:flex-row justify-between w-full gap-5">
         <div className="bg-blue-100 w-full p-4 flex gap-3 items-center rounded">
           <div className="p-3 bg-white text-blue-400 text-lg">
             <FaRocket />
@@ -47,7 +47,7 @@ const Dash = () => {
       <h1 className="text-lg font-semibold mt-5 mb-2">
         Hello, {user.firstName} {user.lastName}
       </h1>
-      <p className="w-3/5  text-gray-500">
+      <p className="lg:w-3/5  text-gray-500">
         From your account dashboard. you can easily check & view your{" "}
         <Link className="dashboard-link" to="order-history">
           Recent Orders
@@ -65,7 +65,7 @@ const Dash = () => {
           Account Details.
         </Link>
       </p>
-      <div className="flex justify-between gap-5 mt-5">
+      <div className="flex flex-col lg:flex-row justify-between gap-5 mt-5">
         <div className="bg-white w-full p-5 border rounded">
           <h1>Account Info</h1>
           <p></p>

@@ -38,9 +38,6 @@ const UserSchema = new Schema(
       type: Boolean,
       required: true,
     },
-    walletBalance: {
-      type: Number,
-    },
     profileImgURL: {
       type: String,
     },

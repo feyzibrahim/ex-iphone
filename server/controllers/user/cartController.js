@@ -138,9 +138,83 @@ const deleteOneProduct = async (req, res) => {
   }
 };
 
+const incrementQuantity = async (req, res) => {
+  try {
+    const { cartId, productId } = req.params;
+
+    let cart = await Cart.findOne({ _id: cartId });
+
+    let [product] = cart.items.filter((item) => {
+      return item.product.toString() === productId;
+    });
+
+    let productOriginalData = await Products.findById(product.product, {
+      stockQuantity: 1,
+    });
+
+    if (product.quantity + 1 > productOriginalData.stockQuantity) {
+      throw Error("Insufficient Products");
+    }
+
+    cart = await Cart.findOneAndUpdate(
+      { "items.product": productId, _id: cartId },
+      {
+        $inc: {
+          "items.$.quantity": 1,
+        },
+      },
+      { new: true }
+    );
+
+    let [dataToSend] = cart.items.filter((item) => {
+      return item.product.toString() === productId;
+    });
+
+    return res.status(200).json({ updatedItem: dataToSend });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const decrementQuantity = async (req, res) => {
+  try {
+    const { cartId, productId } = req.params;
+
+    let cart = await Cart.findOne({ _id: cartId });
+
+    let [product] = cart.items.filter((item) => {
+      return item.product.toString() === productId;
+    });
+
+    if (product.quantity < 2) {
+      throw Error("At-least 1 quantity is required");
+    }
+
+    cart = await Cart.findOneAndUpdate(
+      { "items.product": productId, _id: cartId },
+      {
+        $inc: {
+          "items.$.quantity": -1,
+        },
+      },
+      { new: true }
+    );
+
+    let [dataToSend] = cart.items.filter((item) => {
+      return item.product.toString() === productId;
+    });
+
+    return res.status(200).json({ updatedItem: dataToSend });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCart,
   addToCart,
   deleteCart,
   deleteOneProduct,
+  incrementQuantity,
+  decrementQuantity,
 };

@@ -12,6 +12,7 @@ import DescReview from "./components/DescReview";
 import Quantity from "./components/Quantity";
 import toast from "react-hot-toast";
 import { URL } from "../../Common/links";
+import { config } from "../../Common/configurations";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../redux/actions/user/wishlistActions";
 
@@ -52,8 +53,17 @@ const ProductDetails = () => {
 
   let [count, setCount] = useState(1);
 
-  const increment = () => {
-    setCount((c) => c + 1);
+  const increment = async () => {
+    const { data } = await axios.get(
+      `${URL}/user/product-quantity/${id}`,
+      config
+    );
+
+    if (data.stockQuantity > count) {
+      setCount((c) => c + 1);
+    } else {
+      toast.error("Quantity Insufficient");
+    }
   };
 
   const decrement = () => {
@@ -67,17 +77,12 @@ const ProductDetails = () => {
     setCartLoading(true);
     await axios
       .post(
-        `http://localhost:4000/user/cart`,
+        `${URL}/user/cart`,
         {
           product: id,
           quantity: count,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
+        config
       )
       .then((data) => {
         toast.success("Added to cart");
