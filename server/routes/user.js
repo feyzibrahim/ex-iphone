@@ -62,7 +62,10 @@ const {
   getWishlist,
 } = require("../controllers/user/wishlistController");
 
-const { getCoupons } = require("../controllers/user/couponController");
+const {
+  getCoupons,
+  applyCoupon,
+} = require("../controllers/user/couponController");
 
 const router = express.Router();
 
@@ -138,5 +141,6 @@ router.delete("/wishlist-delete-item/:productId", deleteOneProductFromWishlist);
 
 // Coupon
 router.get("/coupons", getCoupons);
+router.post("/coupon-apply", applyCoupon);
 
 module.exports = router;

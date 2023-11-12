@@ -5,6 +5,7 @@ import {
   getCart,
   deleteEntireCart,
   deleteOneProduct,
+  applyCoupon,
 } from "../../redux/actions/user/cartActions";
 import { calculateTotalPrice } from "../../redux/reducers/user/cartSlice";
 import ConfirmModel from "../../components/ConfirmModal";
@@ -14,30 +15,41 @@ import CartProductRow from "./components/CartProductRow";
 import TotalAndSubTotal from "./components/TotalAndSubTotal";
 
 const Cart = () => {
-  const { cart, loading, error, cartId } = useSelector((state) => state.cart);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { cart, loading, error, cartId, couponCode } = useSelector(
+    (state) => state.cart
+  );
 
+  const [inputCouponCode, setInputCouponCode] = useState("");
+
+  // Fetching entire cart on page load
   useEffect(() => {
     dispatch(getCart());
   }, []);
 
+  // Calculating the total with the data and updating it when ever there is a change
   useEffect(() => {
     dispatch(calculateTotalPrice());
+    setInputCouponCode(couponCode);
   }, [cart]);
 
+  // Applying coupon to cart
+
+  const dispatchApplyCoupon = () => {
+    if (inputCouponCode.trim() !== "") {
+      // console.log();
+      dispatch(applyCoupon(inputCouponCode.trim()));
+    }
+  };
+
+  // Deleting entire cart
   const deleteCart = () => {
     toggleConfirm();
     dispatch(deleteEntireCart(cartId));
   };
 
-  const [productId, setProductId] = useState("");
-  const dispatchDeleteProduct = () => {
-    dispatch(deleteOneProduct({ cartId, productId }));
-    toggleProductConfirm("");
-  };
-
+  // Modal for deleting entire cart
   const [showConfirm, setShowConfirm] = useState(false);
   const toggleConfirm = () => {
     if (cart.length > 0) {
@@ -47,6 +59,14 @@ const Cart = () => {
     }
   };
 
+  // Deleting one product
+  const [productId, setProductId] = useState("");
+  const dispatchDeleteProduct = () => {
+    dispatch(deleteOneProduct({ cartId, productId }));
+    toggleProductConfirm("");
+  };
+
+  // Modal for deleting one product from cart
   const [showProductConfirm, setShowProductConfirm] = useState(false);
   const toggleProductConfirm = (id) => {
     setProductId(id);
@@ -141,8 +161,15 @@ const Cart = () => {
                 type="text"
                 className="w-full py-2 px-3 rounded border border-gray-200"
                 placeholder="Enter Coupon Code"
+                value={inputCouponCode}
+                onChange={(e) => setInputCouponCode(e.target.value)}
               />
-              <button className="btn-blue-border my-3">Apply Coupon</button>
+              <button
+                className="btn-blue-border my-3"
+                onClick={dispatchApplyCoupon}
+              >
+                Apply Coupon
+              </button>
             </div>
           </div>
         </div>

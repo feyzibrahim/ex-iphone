@@ -18,9 +18,19 @@ const Checkout = () => {
 
   // Cart from Redux
   const { cart, loading, error } = useSelector((state) => state.cart);
-  const { totalPrice, shipping, discount, tax } = useSelector(
+  const { totalPrice, shipping, discount, tax, couponType } = useSelector(
     (state) => state.cart
   );
+
+  let offer = 0;
+
+  if (couponType === "percentage") {
+    offer = (totalPrice * discount) / 100;
+  } else {
+    offer = discount;
+  }
+
+  const finalTotal = totalPrice + shipping + tax - offer;
 
   // Wallet balance
   const [walletBalance, setWalletBalance] = useState(0);
@@ -126,14 +136,14 @@ const Checkout = () => {
       data: { order },
     } = await axios.post(
       `${URL}/user/razor-order`,
-      { amount: parseInt((totalPrice + discount + tax + shipping) / 100) },
+      { amount: parseInt(finalTotal / 100) },
       config
     );
 
     // setting razor pay configurations
     let options = {
       key: key,
-      amount: parseInt((totalPrice + discount + tax + shipping) / 100),
+      amount: parseInt(finalTotal / 100),
       currency: "INR",
       name: "ex.iphones",
       description: "Test Transaction",

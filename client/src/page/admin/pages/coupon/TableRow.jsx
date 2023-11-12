@@ -23,8 +23,8 @@ const TableRow = ({ index, length, coupon, toggleDeleteModal }) => {
         <StatusComponent status={coupon.isActive ? "Active" : "Blocked"} />
       </td>
       <td className="admin-table-row">
-        {coupon.createdAt
-          ? date.format(new Date(coupon.createdAt), "MMM DD YYYY")
+        {coupon.expirationDate
+          ? date.format(new Date(coupon.expirationDate), "MMM DD YYYY")
           : "No Data"}
       </td>
       <td className="admin-table-row">

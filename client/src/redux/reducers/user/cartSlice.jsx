@@ -5,6 +5,7 @@ import {
   deleteOneProduct,
   decrementCount,
   incrementCount,
+  applyCoupon,
 } from "../../actions/user/cartActions";
 import toast from "react-hot-toast";
 
@@ -16,9 +17,11 @@ const cartSlice = createSlice({
     error: null,
     cartId: "",
     totalPrice: 0,
-    discount: 0,
     shipping: 0,
     tax: 0,
+    discount: 0,
+    couponType: "",
+    couponCode: "",
   },
   reducers: {
     calculateTotalPrice: (state) => {
@@ -27,8 +30,8 @@ const cartSlice = createSlice({
           total + (item.product.price + item.product.markup) * item.quantity,
         0
       );
-      state.totalPrice = sum;
       state.tax = sum * 0.08;
+      state.totalPrice = sum;
     },
     clearCartOnOrderPlaced: (state) => {
       state.loading = false;
@@ -36,9 +39,11 @@ const cartSlice = createSlice({
       state.cart = [];
       state.cartId = "";
       state.totalPrice = 0;
-      state.discount = 0;
       state.shipping = 0;
       state.tax = 0;
+      state.discount = 0;
+      state.couponType = "";
+      state.couponCode = "";
     },
   },
   extraReducers: (builder) => {
@@ -51,6 +56,9 @@ const cartSlice = createSlice({
         state.error = null;
         state.cart = payload.cart?.items || [];
         state.cartId = payload.cart?._id || "";
+        state.discount = payload.cart?.discount || "";
+        state.couponType = payload.cart?.type || "";
+        state.couponCode = payload.cart?.couponCode || "";
       })
       .addCase(getCart.rejected, (state, { payload }) => {
         state.loading = false;
@@ -114,7 +122,6 @@ const cartSlice = createSlice({
       })
       .addCase(incrementCount.rejected, (state, { payload }) => {
         state.loading = false;
-        // state.cart = null;
         state.error = payload;
         toast.error(payload);
       })
@@ -125,7 +132,6 @@ const cartSlice = createSlice({
         state.loading = false;
         state.error = null;
         const updatedCart = state.cart.map((cartItem) => {
-          console.log(cartItem.product._id, payload.product);
           if (cartItem.product._id === payload.product) {
             return {
               ...cartItem,
@@ -138,9 +144,25 @@ const cartSlice = createSlice({
       })
       .addCase(decrementCount.rejected, (state, { payload }) => {
         state.loading = false;
-        // state.cart = null;
         state.error = payload;
         toast.error(payload);
+      })
+
+      // Applying coupon
+      .addCase(applyCoupon.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(applyCoupon.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.discount = payload.discount;
+        state.couponType = payload.couponType;
+        state.couponCode = payload.couponCode;
+        toast.success("Coupon Applied");
+      })
+      .addCase(applyCoupon.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
       });
   },
 });
