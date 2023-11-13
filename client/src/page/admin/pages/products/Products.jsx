@@ -100,17 +100,17 @@ const Products = () => {
         </div>
         <div className="overflow-x-auto bg-white rounded-lg">
           {products && (
-            <table className="w-full min-w-max table-auto ">
+            <table className="w-full">
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
-                  <th className="admin-table-head">Name</th>
-                  <th className="admin-table-head w-60">Description</th>
-                  <th className="admin-table-head">Category</th>
-                  <th className="admin-table-head">Quantity</th>
-                  <th className="admin-table-head">Price</th>
-                  <th className="admin-table-head">Status</th>
-                  <th className="admin-table-head">Added</th>
-                  <th className="admin-table-head">Action</th>
+                  <th className="admin-table-head w-3/12">Name</th>
+                  <th className="admin-table-head w-3/12">Description</th>
+                  <th className="admin-table-head w-1/12">Category</th>
+                  <th className="admin-table-head w-1/12">Quantity</th>
+                  <th className="admin-table-head w-1/12">Price</th>
+                  <th className="admin-table-head w-1/12">Status</th>
+                  <th className="admin-table-head w-1/12">Added</th>
+                  <th className="admin-table-head w-1/12">Action</th>
                 </tr>
               </thead>
               <tbody>

@@ -12,7 +12,6 @@ const FindCoupons = () => {
   useEffect(() => {
     const loadData = async () => {
       const { data } = await axios.get(`${URL}/user/coupons`, config);
-      console.log(data);
       setCoupons(data.coupons);
     };
     loadData();

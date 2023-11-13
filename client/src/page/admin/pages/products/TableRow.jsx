@@ -14,8 +14,8 @@ const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
     <tr
       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
     >
-      <td className="admin-table-row flex items-center gap-2">
-        <div className="w-10 h-10 overflow-clip flex justify-center items-center">
+      <td className="admin-table-row flex items-center gap-2 ">
+        <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
           {product.imageURL ? (
             <img
               src={`http://localhost:4000/img/${product.imageURL}`}
@@ -26,8 +26,7 @@ const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
             <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
           )}
         </div>
-
-        {product.name}
+        <p className="line-clamp-1">{product.name}</p>
       </td>
       <td className="admin-table-row">
         <div className="line-clamp-2">{product.description}</div>

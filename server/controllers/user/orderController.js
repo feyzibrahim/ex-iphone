@@ -7,6 +7,7 @@ const Products = require("../../model/productModel");
 const Payment = require("../../model/paymentModel");
 const uuid = require("uuid");
 const Wallet = require("../../model/walletModel");
+const Coupon = require("../../model/couponModel");
 
 // Just the function increment or decrement product count
 const updateProductList = async (id, count) => {
@@ -77,7 +78,13 @@ const createOrder = async (req, res) => {
       totalQuantity = totalQuantity + item.quantity;
     });
 
-    const sumWithTax = sum + sum * 0.08;
+    let sumWithTax = sum + sum * 0.08;
+    if (cart.discount && cart.type === "percentage") {
+      const discountAmount = (sum * cart.discount) / 100;
+      sumWithTax -= discountAmount;
+    } else if (cart.discount && cart.type === "fixed") {
+      sumWithTax -= cart.discount;
+    }
 
     const products = cart.items.map((item) => ({
       productId: item.product._id,
@@ -100,6 +107,10 @@ const createOrder = async (req, res) => {
         },
       ],
       ...(notes ? notes : {}),
+      ...(cart.coupon ? { coupon: cart.coupon } : {}),
+      ...(cart.couponCode ? { couponCode: cart.couponCode } : {}),
+      ...(cart.discount ? { discount: cart.discount } : {}),
+      ...(cart.type ? { couponType: cart.type } : {}),
     };
 
     const updateProductPromises = products.map((item) => {
@@ -145,6 +156,15 @@ const createOrder = async (req, res) => {
           },
         });
       }
+    }
+
+    if (cart.coupon) {
+      await Coupon.findOneAndUpdate(
+        { _id: cart.coupon },
+        {
+          $inc: { used: 1 },
+        }
+      );
     }
 
     res.status(200).json({ order });

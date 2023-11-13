@@ -16,8 +16,6 @@ const CheckoutPaymentOption = ({
       const { data } = await axios.get(`${URL}/user/wallet-total`, config);
 
       setWalletBalance(data.balance);
-
-      console.log(data);
     };
     fetchWalletBalance();
   }, []);

@@ -5,9 +5,12 @@ import { config, handleError } from "../../../Common/configurations";
 
 export const getUserProducts = createAsyncThunk(
   "products/getUserProducts",
-  async (rc, { rejectWithValue }) => {
+  async (searchParams, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/user/products`, config);
+      const { data } = await axios.get(
+        `${URL}/user/products?${searchParams}`,
+        config
+      );
       return data.products;
     } catch (error) {
       return handleError(error, rejectWithValue);

@@ -99,6 +99,21 @@ export const applyCoupon = createAsyncThunk(
   }
 );
 
+// Removing existing coupon of a cart
+
+export const removeCoupon = createAsyncThunk(
+  "cart/removeCoupon",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${URL}/user/coupon-remove`, config);
+
+      return data;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
 // export const addToCart = createAsyncThunk(
 //   "cart/addToCart",
 //   async (formData, { rejectWithValue }) => {

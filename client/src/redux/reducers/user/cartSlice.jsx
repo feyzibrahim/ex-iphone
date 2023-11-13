@@ -6,6 +6,7 @@ import {
   decrementCount,
   incrementCount,
   applyCoupon,
+  removeCoupon,
 } from "../../actions/user/cartActions";
 import toast from "react-hot-toast";
 
@@ -147,7 +148,6 @@ const cartSlice = createSlice({
         state.error = payload;
         toast.error(payload);
       })
-
       // Applying coupon
       .addCase(applyCoupon.pending, (state) => {
         state.loading = true;
@@ -161,6 +161,23 @@ const cartSlice = createSlice({
         toast.success("Coupon Applied");
       })
       .addCase(applyCoupon.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload;
+        toast.error(payload);
+      })
+      // Removing coupon
+      .addCase(removeCoupon.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(removeCoupon.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.discount = 0;
+        state.couponType = "";
+        state.couponCode = "";
+        toast.success("Coupon Removed");
+      })
+      .addCase(removeCoupon.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload;
       });

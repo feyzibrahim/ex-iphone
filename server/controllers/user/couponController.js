@@ -32,6 +32,10 @@ const applyCoupon = async (req, res) => {
       throw Error("Coupon not found!!");
     }
 
+    if (coupon.used === coupon.maximumUses) {
+      throw Error("Coupon Usage Limit Reached");
+    }
+
     const token = req.cookies.user_token;
 
     const { _id } = jwt.verify(token, process.env.SECRET);
@@ -84,7 +88,37 @@ const applyCoupon = async (req, res) => {
   }
 };
 
+const removeCoupon = async (req, res) => {
+  try {
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    await Cart.findOneAndUpdate(
+      { user: _id },
+      {
+        $set: {
+          coupon: null,
+          couponCode: null,
+          discount: null,
+          type: null,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getCoupons,
   applyCoupon,
+  removeCoupon,
 };

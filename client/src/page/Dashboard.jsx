@@ -1,22 +1,101 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ProductCard from "../components/User/ProductCard";
 import { getUserProducts } from "../redux/actions/user/userProductActions";
 import { useDispatch, useSelector } from "react-redux";
 import { getWishlist } from "../redux/actions/user/wishlistActions";
+import { useSearchParams } from "react-router-dom";
+import { BiTrash } from "react-icons/bi";
+import SortButton from "../components/SortButton";
+
 const Dashboard = () => {
   const { userProducts, loading, error } = useSelector(
     (state) => state.userProducts
   );
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getWishlist());
-  }, []);
+  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filters, setFilters] = useState({
+    category: [],
+    price: "",
+    search: "",
+    sort: "",
+  });
 
   useEffect(() => {
-    dispatch(getUserProducts());
+    const categoryParam = searchParams.get("category");
+    const priceParam = searchParams.get("price");
+    const searchParam = searchParams.get("search");
+    const sortParam = searchParams.get("sort");
+
+    setFilters({
+      category: categoryParam ? categoryParam.split(",") : [],
+      price: priceParam || "",
+      search: searchParam || "",
+      sort: sortParam || "",
+    });
+    setSearch(searchParam || "");
   }, []);
+
+  const handleClick = (param, value) => {
+    let updatedFilters;
+
+    if (param === "category") {
+      const newCategories = filters.category.includes(value)
+        ? filters.category.filter((item) => item !== value)
+        : [...filters.category, value];
+
+      updatedFilters = { ...filters, category: newCategories };
+    } else {
+      updatedFilters = { ...filters, [param]: value };
+    }
+
+    console.log(updatedFilters);
+
+    setFilters(updatedFilters);
+
+    const params = new URLSearchParams();
+
+    if (updatedFilters.category.length > 0) {
+      params.append("category", updatedFilters.category.join(","));
+    }
+
+    if (updatedFilters.price) {
+      params.append("price", updatedFilters.price);
+    }
+    if (updatedFilters.search) {
+      params.append("search", updatedFilters.search);
+    }
+    if (updatedFilters.sort) {
+      params.append("sort", updatedFilters.sort);
+    }
+
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    const params = new URLSearchParams();
+
+    params.delete("category");
+    params.delete("price");
+    params.delete("search");
+
+    setSearchParams(params);
+
+    setFilters({
+      category: [],
+      price: "",
+      search: "",
+    });
+    setSearch("");
+  };
+
+  useEffect(() => {
+    dispatch(getWishlist());
+    dispatch(getUserProducts(searchParams));
+  }, [searchParams]);
 
   return (
     <div className="w-full flex pt-20 px-5 lg:p-20 bg-gray-100 text-gray-500 font-semibold">
@@ -25,44 +104,131 @@ const Dashboard = () => {
         <ul className="hidden lg:block">
           <li className="uppercase">Category</li>
           <li className="category-li">
-            <input type="radio" name="category" /> iPhone
+            <input
+              type="checkbox"
+              name="category"
+              value="iPhone"
+              checked={filters.category.includes("653cd76485d84b451a7729f2")}
+              onChange={() =>
+                handleClick("category", "653cd76485d84b451a7729f2")
+              }
+            />{" "}
+            iPhone
           </li>
           <li className="category-li">
-            <input type="radio" name="category" /> iMac
+            <input
+              type="checkbox"
+              name="category"
+              value="iMac"
+              checked={filters.category.includes("65454ccb36cb81ada69f65ed")}
+              onChange={() =>
+                handleClick("category", "65454ccb36cb81ada69f65ed")
+              }
+            />{" "}
+            iMac
           </li>
           <li className="category-li">
-            <input type="radio" name="category" /> Macbook
+            <input
+              type="checkbox"
+              name="category"
+              value="macbook"
+              checked={filters.category.includes("65454c3436cb81ada69f65e7")}
+              onChange={() =>
+                handleClick("category", "65454c3436cb81ada69f65e7")
+              }
+            />{" "}
+            Macbook
           </li>
           <li className="uppercase">Price Range</li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> All Price
+            <input
+              type="radio"
+              name="priceRange"
+              value=""
+              checked={filters.price === ""}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            All Price
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> Under 10000₹
+            <input
+              type="radio"
+              name="priceRange"
+              value="Under 25000"
+              checked={filters.price === "Under 25000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            Under 25000₹
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> 10000₹ - 20000₹
+            <input
+              type="radio"
+              name="priceRange"
+              value="25000-50000"
+              checked={filters.price === "25000-50000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            25000₹ - 50000₹
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> 20000₹ - 30000₹
+            <input
+              type="radio"
+              name="priceRange"
+              value="50000-100000"
+              checked={filters.price === "50000-100000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            50000₹ - 100000₹
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> 30000₹ - 40000₹
+            <input
+              type="radio"
+              name="priceRange"
+              value="100000-150000"
+              checked={filters.price === "100000-150000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            100000₹ - 150000₹
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> 40000₹ - 50000₹
+            <input
+              type="radio"
+              name="priceRange"
+              value="200000-300000"
+              checked={filters.price === "200000-300000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            200000₹ - 300000₹
           </li>
           <li className="category-li">
-            <input type="radio" name="priceRange" /> Above 50000₹{" "}
+            <input
+              type="radio"
+              name="priceRange"
+              value="Above 300000"
+              checked={filters.price === "Above 300000"}
+              onChange={(e) => handleClick("price", e.target.value)}
+            />{" "}
+            Above 300000₹{" "}
+          </li>
+          <li>
+            <button
+              onClick={clearFilters}
+              className=" bg-blue-100 hover:bg-red-200 active:bg-red-300 outline-none px-5 py-2 rounded font-semibold flex items-center gap-2"
+            >
+              <BiTrash />
+              <p className="text-xs">Clear All filters</p>
+            </button>
           </li>
         </ul>
       </div>
       <div className="w-full lg:w-4/5">
         <div className="flex  gap-5 items-center justify-between">
-          <SearchBar />
-          <div className="shrink-0 border border-gray-300 py-2 px-3 rounded-lg">
-            Sort By: Popular
-          </div>
+          <SearchBar
+            handleClick={handleClick}
+            search={search}
+            setSearch={setSearch}
+          />
+          <SortButton handleClick={handleClick} />
           <div className="shrink-0 hidden lg:block">40/4000 Results Loaded</div>
         </div>
         <div className="flex flex-wrap -mx-2  mt-5">

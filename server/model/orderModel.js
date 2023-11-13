@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./userModel");
 const Product = require("./productModel");
+const Coupon = require("./couponModel");
 
 const { Schema } = mongoose;
 
@@ -151,6 +152,19 @@ const OrderSchema = new Schema(
       min: 0,
     },
     notes: {
+      type: String,
+    },
+    coupon: {
+      type: Schema.Types.ObjectId,
+      ref: Coupon,
+    },
+    couponCode: {
+      type: String,
+    },
+    discount: {
+      type: Number,
+    },
+    couponType: {
       type: String,
     },
   },

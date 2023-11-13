@@ -107,7 +107,7 @@ const ProductDetails = () => {
         <>
           <div className="lg:flex gap-10 justify-center">
             {/* Product Images */}
-            <div className="lg:w-1/2 bg-white p-5 rounded flex flex-col items-center">
+            <div className="lg:w-1/2 bg-white p-5 rounded flex flex-col items-center h-fit">
               <div className="w-80 h-80 lg:w-96 lg:h-96 flex">
                 {currentImage && (
                   <img
@@ -131,7 +131,7 @@ const ProductDetails = () => {
             /> */}
               </div>
 
-              <div className="flex gap-5 mt-5">
+              <div className="flex gap-1 lg:gap-5 mt-5">
                 {product.moreImageURL &&
                   product.moreImageURL.map((image, i) => (
                     <div
@@ -205,7 +205,7 @@ const ProductDetails = () => {
                 </span>
               </p>
               {product.attributes &&
-                product.attributes.slice(0, 5).map((at, index) => (
+                product.attributes.slice(0, 4).map((at, index) => (
                   <div key={index}>
                     <p className="font-semibold text-gray-500 text-sm">
                       {at.name}

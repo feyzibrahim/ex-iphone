@@ -12,6 +12,7 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { RiDashboardLine } from "react-icons/ri";
+// import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
@@ -108,6 +109,9 @@ const Navbar = () => {
                 </button>
               </div>
             )}
+            {/* <button className="sm:hidden hover:text-blue-400 p-2">
+              <GiHamburgerMenu />
+            </button> */}
           </>
         ) : (
           <>
