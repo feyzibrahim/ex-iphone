@@ -20,16 +20,18 @@
   );
 }
 
+.btn-blue {
+  @apply bg-blue-600 px-3 lg:px-12 py-3 rounded-lg hover:bg-blue-700;
+}
 .btn-blue-no-pad {
   @apply bg-blue-600 rounded-lg hover:bg-blue-700;
 }
 
-.btn-blue {
-  @apply bg-blue-600 px-3 lg:px-12 py-3 rounded-lg hover:bg-blue-700;
-}
-
 .btn-red {
   @apply bg-red-500 px-3 lg:px-12 py-3 rounded-lg hover:bg-red-600 active:bg-red-700;
+}
+.btn-red-no-pad {
+  @apply bg-red-500 rounded-lg hover:bg-red-600 active:bg-red-700;
 }
 
 .btn-blue-border {

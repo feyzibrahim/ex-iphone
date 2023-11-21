@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  AiOutlineCalendar,
-  AiOutlineDelete,
-  AiOutlineEdit,
-} from "react-icons/ai";
+import { AiOutlineCalendar, AiOutlineEdit } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import BreadCrumbs from "../../Components/BreadCrumbs";
@@ -19,6 +15,7 @@ import UpdateOrder from "./UpdateOrder";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import ReturnRequestsButtonInOrders from "./ReturnRequestsButtonInOrders";
+import ExportModal from "../../Components/ExportModal/ExportModal";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -37,6 +34,7 @@ const Orders = () => {
     setSelectedOrderToUpdate(data);
   };
 
+  // Filtering with status
   const handleClick = (value) => {
     if (value === "all") {
       dispatch(getOrders());
@@ -45,8 +43,17 @@ const Orders = () => {
     }
   };
 
+  // Export Modal
+  const [showExportModal, setShowExportModal] = useState(false);
+  const toggleExportModal = () => {
+    setShowExportModal(!showExportModal);
+  };
+
   return (
     <>
+      {showExportModal && (
+        <Modal tab={<ExportModal toggleExportModal={toggleExportModal} />} />
+      )}
       {updateModal && (
         <Modal
           tab={
@@ -64,7 +71,10 @@ const Orders = () => {
             <BreadCrumbs list={["Dashboard", "Orders"]} />
           </div>
           <div className="flex gap-3">
-            <button className="admin-button-fl bg-gray-200 text-blue-700">
+            <button
+              className="admin-button-fl bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-blue-700"
+              onClick={toggleExportModal}
+            >
               <FiDownload />
               Export
             </button>
@@ -101,7 +111,7 @@ const Orders = () => {
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
                   <th className="admin-table-head">No:</th>
-                  <th className="admin-table-head">Product</th>
+                  <th className="admin-table-head w-64">Product</th>
                   <th className="admin-table-head">Order Date</th>
                   <th className="admin-table-head">Customer</th>
                   <th className="admin-table-head">Total</th>
@@ -124,7 +134,7 @@ const Orders = () => {
                     >
                       <td className="admin-table-row">{index + 1}</td>
                       <td className="admin-table-row flex items-center gap-2">
-                        <div className="w-10 h-10 overflow-clip flex justify-center items-center">
+                        <div className="w-10 h-10 overflow-clip flex justify-center items-center  shrink-0">
                           {item.products[0].productId.imageURL ? (
                             <img
                               src={`http://localhost:4000/img/${item.products[0].productId.imageURL}`}
@@ -163,7 +173,7 @@ const Orders = () => {
                         <StatusComponent status={item.status} />
                       </td>
                       <td className="admin-table-row">
-                        <div className="flex items-center gap-2 text-lg">
+                        <div className="flex items-center text-lg">
                           <span
                             className="hover:text-gray-500"
                             onClick={(e) => {
@@ -176,12 +186,6 @@ const Orders = () => {
                             }}
                           >
                             <AiOutlineEdit />
-                          </span>
-                          <span
-                            className="hover:text-gray-500"
-                            onClick={() => {}}
-                          >
-                            <AiOutlineDelete />
                           </span>
                         </div>
                       </td>

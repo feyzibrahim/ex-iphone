@@ -106,7 +106,7 @@ const ReturnRequests = () => {
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
                   <th className="admin-table-head">No:</th>
-                  <th className="admin-table-head">Product</th>
+                  <th className="admin-table-head w-20">Product</th>
                   <th className="admin-table-head">Order Date</th>
                   <th className="admin-table-head">Customer</th>
                   <th className="admin-table-head">Total</th>

@@ -30,6 +30,7 @@ const {
   getOrder,
   clearOrder,
   updateOrderStatus,
+  generateOrderExcel,
 } = require("../controllers/admin/orderController");
 const {
   getReturnCount,
@@ -49,6 +50,7 @@ const {
   editCoupon,
   deleteCoupon,
 } = require("../controllers/admin/couponController");
+const { generateExcel } = require("../controllers/admin/reportController");
 
 // Products controller functions mounting them to corresponding route
 router.get("/products", getProducts);
@@ -77,6 +79,7 @@ router.get("/orders", getOrders);
 router.delete("/clear-orders", clearOrder);
 router.get("/order/:id", getOrder);
 router.patch("/order-status/:id", updateOrderStatus);
+router.patch("/order-generate-excel", generateOrderExcel); // Generating Excel
 
 // Return Order controller functions mounting them to corresponding route
 router.get("/return-orders-count", getReturnCount);
@@ -97,5 +100,8 @@ router.get("/coupon/:id", getCoupon);
 router.delete("/coupon/:id", deleteCoupon);
 router.patch("/coupon/:id", editCoupon);
 router.post("/coupon", addCoupon);
+
+// Generate Orders Excel
+router.get("/generateReport", generateExcel);
 
 module.exports = router;

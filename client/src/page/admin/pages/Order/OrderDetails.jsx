@@ -167,7 +167,7 @@ const OrderDetails = () => {
                 <thead>
                   <tr>
                     <td className="admin-table-head">No:</td>
-                    <td className="admin-table-head">Product</td>
+                    <td className="admin-table-head w-64">Product</td>
                     <td className="admin-table-head">Quantity</td>
                     <td className="admin-table-head">Price</td>
                     <td className="admin-table-head">Total</td>
@@ -188,7 +188,7 @@ const OrderDetails = () => {
                           <td className="admin-table-row">{index + 1}</td>
                           <td className="admin-table-row">
                             <div className="flex items-center gap-2">
-                              <div className="w-10 h-10 overflow-clip flex justify-center items-center">
+                              <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
                                 {item.productId.imageURL ? (
                                   <img
                                     src={`${URL}/img/${item.productId.imageURL}`}
@@ -199,7 +199,9 @@ const OrderDetails = () => {
                                   <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
                                 )}
                               </div>
-                              {item.productId.name}
+                              <p className="line-clamp-2">
+                                {item.productId.name}
+                              </p>
                             </div>
                           </td>
                           <td className="admin-table-row">{item.quantity}</td>
