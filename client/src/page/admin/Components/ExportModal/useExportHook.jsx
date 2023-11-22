@@ -18,21 +18,6 @@ const useExportHook = () => {
     setSelectedType(value);
   };
 
-  const handleDownload = () => {
-    let query = "?";
-
-    if (startingDate) {
-      query += `startingDate=${startingDate}`;
-    }
-    if (endingDate) {
-      query += `&endingDate=${endingDate}`;
-    }
-
-    if (selectedType === "excel") {
-      downloadExcel(query);
-    }
-  };
-
   // Download Excel
   const downloadExcel = async (query) => {
     try {
@@ -57,6 +42,84 @@ const useExportHook = () => {
     } catch (error) {
       setLoading(false);
       console.error("Error downloading Excel:", error.message);
+    }
+  };
+  // Download PDF
+  const downloadPDF = async (query) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${URL}/admin/order-generate-pdf${query}`,
+        {
+          responseType: "arraybuffer",
+          ...config,
+        }
+      );
+
+      if (response.data) {
+        setLoading(false);
+      }
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "orders.pdf";
+      link.click();
+    } catch (error) {
+      setLoading(false);
+      console.error("Error downloading PDF:", error.message);
+    }
+  };
+
+  // Download CSV
+  const downloadCSV = async (query) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${URL}/admin/order-generate-csv${query}`,
+        {
+          responseType: "blob",
+          ...config,
+        }
+      );
+
+      if (response.data) {
+        setLoading(false);
+      }
+
+      const blob = new Blob([response.data], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "orders.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error downloading PDF:", error.message);
+    }
+  };
+
+  const handleDownload = () => {
+    let query = "?";
+
+    if (startingDate) {
+      query += `startingDate=${startingDate}`;
+    }
+    if (endingDate) {
+      query += `&endingDate=${endingDate}`;
+    }
+
+    if (selectedType === "excel") {
+      downloadExcel(query);
+    }
+
+    if (selectedType === "pdf") {
+      downloadPDF(query);
+    }
+
+    if (selectedType === "csv") {
+      downloadCSV(query);
     }
   };
 

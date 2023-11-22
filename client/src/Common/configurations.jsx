@@ -21,3 +21,36 @@ export const handleError = (error, rejectWithValue) => {
     return rejectWithValue(error.message);
   }
 };
+
+export const lineChartNoDecoration = {
+  plugins: {
+    legend: { display: false },
+  },
+  scales: {
+    x: {
+      display: false,
+    },
+    y: {
+      display: false,
+    },
+  },
+};
+
+export const lineChartNoGridNoLegend = {
+  maintainAspectRatio: false,
+  plugins: {
+    legend: false,
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        display: false,
+      },
+    },
+  },
+};

@@ -113,15 +113,15 @@ const ExportModal = ({ toggleExportModal }) => {
         </div>
         <div
           className={`border-2 py-1 px-3 my-2 rounded flex gap-2 items-center cursor-pointer ${
-            selectedType === "CSV" ? "border-blue-400" : ""
+            selectedType === "csv" ? "border-blue-400" : ""
           }`}
-          onClick={() => changeSelectedType("CSV")}
+          onClick={() => changeSelectedType("csv")}
         >
           <input
             type="radio"
             name="chosenType"
             id="chosenType"
-            checked={selectedType === "CSV"}
+            checked={selectedType === "csv"}
             onChange={() => {}}
           />
           <p>CSV</p>
