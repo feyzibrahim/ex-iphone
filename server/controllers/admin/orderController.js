@@ -173,7 +173,10 @@ const clearOrder = async (req, res) => {
   }
 };
 
+// Generating Excel sheet for orders.
 const generateOrderExcel = async (req, res) => {
+  const { startingDate, endingDate } = req.query;
+
   try {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Orders");
@@ -193,7 +196,19 @@ const generateOrderExcel = async (req, res) => {
       { header: "Total Price", key: "totalPrice" },
     ];
 
-    const orders = await Order.find({}).populate([
+    // Filtering based on dates. If they are provided along the URL as query
+    const filter = {};
+    if (startingDate) {
+      const date = new Date(startingDate);
+      filter.createdAt = { $gte: date };
+    }
+    if (endingDate) {
+      const date = new Date(endingDate);
+      filter.createdAt = { ...filter.createdAt, $lte: date };
+    }
+
+    // Fetching all the orders
+    const orders = await Order.find(filter).populate([
       "user",
       "address",
       "statusHistory",

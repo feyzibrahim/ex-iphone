@@ -50,12 +50,6 @@ const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
           >
             <AiOutlineEdit />
           </span>
-          <span
-            className="hover:text-gray-500"
-            onClick={() => toggleConfirmDelete(product._id)}
-          >
-            <AiOutlineDelete />
-          </span>
         </div>
       </td>
     </tr>

@@ -79,7 +79,7 @@ router.get("/orders", getOrders);
 router.delete("/clear-orders", clearOrder);
 router.get("/order/:id", getOrder);
 router.patch("/order-status/:id", updateOrderStatus);
-router.patch("/order-generate-excel", generateOrderExcel); // Generating Excel
+router.get("/order-generate-excel", generateOrderExcel); // Generating Excel
 
 // Return Order controller functions mounting them to corresponding route
 router.get("/return-orders-count", getReturnCount);

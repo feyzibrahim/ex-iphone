@@ -1,5 +1,4 @@
 import React from "react";
-
 import useExportHook from "./useExportHook";
 
 const ExportModal = ({ toggleExportModal }) => {
@@ -8,24 +7,28 @@ const ExportModal = ({ toggleExportModal }) => {
     handleDownload,
     selectedType,
     changeSelectedType,
-    selectedDate,
+    selectedDateType,
     changeSelectedDate,
+    startingDate,
+    setStartingDate,
+    endingDate,
+    setEndingDate,
   } = useExportHook();
 
   if (loading) {
     return (
-      <div className="px-10 py-5 w-1/3 bg-white rounded-lg h-3/5 flex justify-center items-center">
+      <div className="px-10 py-5 lg:w-1/3 w-4/5 md:w-1/2 bg-white rounded-lg h-3/5 flex justify-center items-center">
         <p>Loading</p>
       </div>
     );
   }
 
   return (
-    <div className={`px-10 py-5 w-1/3 bg-white rounded-lg`}>
+    <div className={`px-10 py-5 lg:w-1/3 w-4/5 md:w-1/2 bg-white rounded-lg`}>
       <h1 className="my-5 font-semibold text-xl">Export Orders</h1>
       <div
         className={`border-2 py-1 px-3 my-2 rounded flex gap-2 items-center cursor-pointer ${
-          selectedDate === "all" ? "border-blue-400" : ""
+          selectedDateType === "all" ? "border-blue-400" : ""
         }`}
         onClick={() => changeSelectedDate("all")}
       >
@@ -33,13 +36,14 @@ const ExportModal = ({ toggleExportModal }) => {
           type="radio"
           name="chosenDate"
           id="chosenDate"
-          checked={selectedDate === "all"}
+          checked={selectedDateType === "all"}
+          onChange={() => {}}
         />
         <p>All</p>
       </div>
       <div
         className={`border-2 py-1 px-3 my-2 rounded flex gap-2 items-center cursor-pointer ${
-          selectedDate === "custom" ? "border-blue-400" : ""
+          selectedDateType === "custom" ? "border-blue-400" : ""
         }`}
         onClick={() => changeSelectedDate("custom")}
       >
@@ -47,11 +51,12 @@ const ExportModal = ({ toggleExportModal }) => {
           type="radio"
           name="chosenDate"
           id="chosenDate"
-          checked={selectedDate === "custom"}
+          checked={selectedDateType === "custom"}
+          onChange={() => {}}
         />
         <p>Choose Date</p>
       </div>
-      {selectedDate === "custom" && (
+      {selectedDateType === "custom" && (
         <div>
           <p>Starting Date</p>
           <input
@@ -59,6 +64,8 @@ const ExportModal = ({ toggleExportModal }) => {
             name="date"
             id="date"
             className="border-2 py-1 px-3 my-2 rounded flex gap-2 items-center w-full"
+            value={startingDate}
+            onChange={(e) => setStartingDate(e.target.value)}
           />
           <p>Ending Date</p>
           <input
@@ -66,6 +73,8 @@ const ExportModal = ({ toggleExportModal }) => {
             name="date"
             id="date"
             className="border-2 py-1 px-3 my-2 rounded flex gap-2 items-center w-full"
+            value={endingDate}
+            onChange={(e) => setEndingDate(e.target.value)}
           />
         </div>
       )}
@@ -83,6 +92,7 @@ const ExportModal = ({ toggleExportModal }) => {
             name="chosenType"
             id="chosenType"
             checked={selectedType === "excel"}
+            onChange={() => {}}
           />
           <p>Excel</p>
         </div>
@@ -97,6 +107,7 @@ const ExportModal = ({ toggleExportModal }) => {
             name="chosenType"
             id="chosenType"
             checked={selectedType === "pdf"}
+            onChange={() => {}}
           />
           <p>PDF</p>
         </div>
@@ -111,6 +122,7 @@ const ExportModal = ({ toggleExportModal }) => {
             name="chosenType"
             id="chosenType"
             checked={selectedType === "CSV"}
+            onChange={() => {}}
           />
           <p>CSV</p>
         </div>

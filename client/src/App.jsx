@@ -90,7 +90,7 @@ function App() {
             element={
               user ? (
                 user.role === "admin" ? (
-                  <Navigate to="/admin" />
+                  <Navigate to="/admin/" />
                 ) : (
                   <Dashboard />
                 )

@@ -5,10 +5,12 @@ import { useState } from "react";
 
 const useExportHook = () => {
   const [loading, setLoading] = useState(false);
+  const [startingDate, setStartingDate] = useState("");
+  const [endingDate, setEndingDate] = useState("");
 
-  const [selectedDate, setSelectedDate] = useState("all");
+  const [selectedDateType, setSelectedDateType] = useState("all");
   const changeSelectedDate = (value) => {
-    setSelectedDate(value);
+    setSelectedDateType(value);
   };
 
   const [selectedType, setSelectedType] = useState("excel");
@@ -16,13 +18,32 @@ const useExportHook = () => {
     setSelectedType(value);
   };
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
+    let query = "?";
+
+    if (startingDate) {
+      query += `startingDate=${startingDate}`;
+    }
+    if (endingDate) {
+      query += `&endingDate=${endingDate}`;
+    }
+
+    if (selectedType === "excel") {
+      downloadExcel(query);
+    }
+  };
+
+  // Download Excel
+  const downloadExcel = async (query) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${URL}/admin/generateReport`, {
-        responseType: "blob",
-        ...config,
-      });
+      const response = await axios.get(
+        `${URL}/admin/order-generate-excel${query}`,
+        {
+          responseType: "blob",
+          ...config,
+        }
+      );
 
       if (response.data) {
         setLoading(false);
@@ -34,6 +55,7 @@ const useExportHook = () => {
       downloadLink.download = "orders.xlsx";
       downloadLink.click();
     } catch (error) {
+      setLoading(false);
       console.error("Error downloading Excel:", error.message);
     }
   };
@@ -43,8 +65,12 @@ const useExportHook = () => {
     handleDownload,
     selectedType,
     changeSelectedType,
-    selectedDate,
+    selectedDateType,
     changeSelectedDate,
+    startingDate,
+    setStartingDate,
+    endingDate,
+    setEndingDate,
   };
 };
 
