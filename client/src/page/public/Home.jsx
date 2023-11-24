@@ -9,6 +9,7 @@ import fourIphones from "../../assets/fourIphone.png";
 import NewIphone from "../../components/HomeComponents/NewIphone";
 import AppleWatchCollection from "../../components/HomeComponents/AppleWatchCollection";
 import { useSelector } from "react-redux";
+import ImageSlider from "../../components/HomeComponents/ImageSlider";
 
 const Home = () => {
   const { loading } = useSelector((state) => state.user);
@@ -68,6 +69,10 @@ const Home = () => {
       {/* New iPhones Listing */}
       <NewIphone />
 
+      {/* Image Slideshow */}
+
+      <ImageSlider />
+
       {/* Apple Watch Listing */}
       <AppleWatchCollection />
 
@@ -99,10 +104,6 @@ const Home = () => {
             <img src={NewsLetter} alt="Newsletter Icon" />
           </div>
         </div>
-      </div>
-
-      <div className="flex justify-center py-20">
-        <div class="w-0 h-0 border-t-[75px] border-t-red-500 border-r-[50px] border-r-transparent"></div>
       </div>
     </div>
   );

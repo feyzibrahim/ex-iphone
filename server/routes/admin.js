@@ -55,7 +55,6 @@ const {
   deleteCoupon,
 } = require("../controllers/admin/couponController");
 const { generateExcel } = require("../controllers/admin/reportController");
-
 const {
   readRevenueData,
   readUserCount,
@@ -63,6 +62,11 @@ const {
   readProfitData,
   readMostSoldProducts,
 } = require("../controllers/admin/dashController");
+const {
+  addBanners,
+  readBanners,
+  deleteBanner,
+} = require("../controllers/admin/bannerController");
 
 // Products controller functions mounting them to corresponding route
 router.get("/products", getProducts);
@@ -124,5 +128,10 @@ router.get("/sales-report", readSalesData);
 router.get("/profit-report", readProfitData);
 router.get("/user-count", readUserCount);
 router.get("/most-sold-product", readMostSoldProducts);
+
+// Banner Controllers
+router.post("/banners", upload.any(), addBanners);
+router.get("/banners", readBanners);
+router.delete("/banner/:id", deleteBanner);
 
 module.exports = router;

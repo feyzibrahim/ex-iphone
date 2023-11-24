@@ -41,7 +41,7 @@ import WishList from "./page/user/profileDashboard/pages/wishlist";
 // Admin
 import AdminDash from "./page/admin/Dashboard";
 import AdminHome from "./page/admin/pages/AdminHome";
-import Banner from "./page/admin/pages/Banner";
+import Banner from "./page/admin/pages/banner/Banner";
 import Payments from "./page/admin/pages/payments/Payments";
 import Settings from "./page/admin/pages/Settings";
 import Help from "./page/admin/pages/Help";
