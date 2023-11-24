@@ -7,6 +7,7 @@ import DraggableItem from "./DraggableItem";
 import useBannerHooks from "./useBannerHooks";
 import { URL } from "@common/links";
 import { AiOutlineDelete } from "react-icons/ai";
+import ConfirmModal from "../../../../components/ConfirmModal";
 
 const Banner = () => {
   const {
@@ -16,10 +17,21 @@ const Banner = () => {
     deleteBanner,
     showUpdateButton,
     fileUpload,
+    fileUploadLoading,
+    updateTheNewList,
+    showDeleteModal,
+    toggleDeleteModal,
   } = useBannerHooks();
 
   return (
     <DndProvider backend={HTML5Backend}>
+      {showDeleteModal && (
+        <ConfirmModal
+          title="Confirm Delete?"
+          negativeAction={toggleDeleteModal}
+          positiveAction={deleteBanner}
+        />
+      )}
       <div className="p-5 w-full overflow-x-auto">
         <div className="text-sm font-semibold">
           <h1 className="font-bold text-2xl">Banner</h1>
@@ -27,18 +39,26 @@ const Banner = () => {
         </div>
 
         <div className="w-full bg-white p-5 rounded-lg mb-5">
-          <div className="flex justify-between mb-2">
-            <h1 className="capitalize font-bold mb-3 text-gray-500">
-              Upload new one
-            </h1>
-            <button
-              className="btn-blue-no-pad px-2 text-white"
-              onClick={fileUpload}
-            >
-              Upload
-            </button>
-          </div>
-          <CustomFileInput onChange={handleSingleImageInput} />
+          {fileUploadLoading ? (
+            <div className="h-56 flex items-center justify-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-between mb-2">
+                <h1 className="capitalize font-bold mb-3 text-gray-500">
+                  Upload new one
+                </h1>
+                <button
+                  className="btn-blue-no-pad px-2 text-white"
+                  onClick={fileUpload}
+                >
+                  Upload
+                </button>
+              </div>
+              <CustomFileInput onChange={handleSingleImageInput} />
+            </>
+          )}
         </div>
 
         <div className="w-full bg-white p-5 rounded-lg">
@@ -47,7 +67,10 @@ const Banner = () => {
               Current banner
             </h1>
             {showUpdateButton && (
-              <button className="btn-blue-no-pad px-2 text-white">
+              <button
+                className="btn-blue-no-pad px-2 text-white"
+                onClick={updateTheNewList}
+              >
                 Update
               </button>
             )}
@@ -69,7 +92,7 @@ const Banner = () => {
                     className="w-full h-full object-cover rounded-xl hover:shadow-xl"
                   />
                   <div
-                    onClick={() => deleteBanner(item)}
+                    onClick={() => toggleDeleteModal(item)}
                     className="w-10 h-10 bg-white rounded-full hover:bg-gray-200 active:bg-gray-400 cursor-pointer absolute top-2 right-2 flex items-center justify-center text-xl text-gray-500 hover:text-gray-800"
                   >
                     <AiOutlineDelete />

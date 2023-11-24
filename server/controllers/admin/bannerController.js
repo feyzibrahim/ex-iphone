@@ -5,8 +5,6 @@ const addBanners = async (req, res) => {
   try {
     const files = req?.files;
 
-    console.log(files);
-
     let filesNames = [];
 
     if (files && files.length > 0) {
@@ -71,8 +69,36 @@ const deleteBanner = async (req, res) => {
   }
 };
 
+// Updating the listing order
+const updateBannerOrder = async (req, res) => {
+  try {
+    const { images } = req.body;
+
+    const exists = await Banner.findOne();
+
+    if (!exists) {
+      throw Error("No Banner Collection in the DB");
+    }
+
+    const banners = await Banner.findByIdAndUpdate(
+      exists._id,
+      {
+        $set: {
+          images: images,
+        },
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({ banners });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   addBanners,
   readBanners,
   deleteBanner,
+  updateBannerOrder,
 };

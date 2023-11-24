@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 const useBannerHooks = () => {
   const [items, setItems] = useState([]);
+  const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [showUpdateButton, setShowUpdateButton] = useState(false);
 
   // Drag option for images
@@ -23,14 +24,16 @@ const useBannerHooks = () => {
     setImageURL(img);
   };
 
+  // Banner Image Upload function
   const fileUpload = async () => {
     if (imageURL === "") {
       toast.error("Please Upload Image");
       return;
     }
+    setFileUploadLoading(true);
 
+    // Form data for passing images
     const formData = new FormData();
-
     for (const file of imageURL) {
       formData.append("images", file);
     }
@@ -40,6 +43,10 @@ const useBannerHooks = () => {
       formData,
       configMultiPart
     );
+    if (data) {
+      setFileUploadLoading(false);
+      setImageURL("");
+    }
     setItems(data.banners.images);
   };
 
@@ -52,10 +59,45 @@ const useBannerHooks = () => {
     loadData();
   }, []);
 
+  // Confirming deletion using modal
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  let [idToBeDeleted, setId] = useState("");
+  const toggleDeleteModal = (id) => {
+    setId(id);
+    setShowDeleteModal(!showDeleteModal);
+  };
+
   // Deleting a banner
-  const deleteBanner = async (id) => {
-    const { data } = await axios.delete(`${URL}/admin/banner/${id}`, config);
-    setItems(data.banners.images);
+  const deleteBanner = async () => {
+    if (idToBeDeleted === "") {
+      toast.error("Image id is wrong");
+      return;
+    }
+
+    const { data } = await axios.delete(
+      `${URL}/admin/banner/${idToBeDeleted}`,
+      config
+    );
+
+    if (data) {
+      setItems(data.banners.images);
+      toggleDeleteModal();
+    }
+  };
+
+  // Updating the new order of banners to server
+  const updateTheNewList = async () => {
+    const { data } = await axios.patch(
+      `${URL}/admin/banners`,
+      { images: items },
+      config
+    );
+
+    if (data) {
+      setItems(data.banners.images);
+      toast.success("List Updated");
+      setShowUpdateButton(false);
+    }
   };
 
   return {
@@ -65,6 +107,10 @@ const useBannerHooks = () => {
     deleteBanner,
     showUpdateButton,
     fileUpload,
+    fileUploadLoading,
+    updateTheNewList,
+    showDeleteModal,
+    toggleDeleteModal,
   };
 };
 

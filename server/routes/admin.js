@@ -66,6 +66,7 @@ const {
   addBanners,
   readBanners,
   deleteBanner,
+  updateBannerOrder,
 } = require("../controllers/admin/bannerController");
 
 // Products controller functions mounting them to corresponding route
@@ -132,6 +133,7 @@ router.get("/most-sold-product", readMostSoldProducts);
 // Banner Controllers
 router.post("/banners", upload.any(), addBanners);
 router.get("/banners", readBanners);
+router.patch("/banners/", updateBannerOrder);
 router.delete("/banner/:id", deleteBanner);
 
 module.exports = router;
