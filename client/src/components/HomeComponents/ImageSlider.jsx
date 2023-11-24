@@ -1,7 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { URL } from "@common/links";
+import { config } from "@common/configurations";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ImageSlider = () => {
-  return <div>ImageSlider</div>;
+  const [items, setItems] = useState([]);
+  // Initial data loading
+  const loadData = async () => {
+    const { data } = await axios.get(`${URL}/admin/banners`, config);
+    setItems(data.banners.images);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  };
+
+  return (
+    <div className="w-full px-20">
+      <Slider {...settings}>
+        {items &&
+          items.map((item) => (
+            <div key={item}>
+              <img
+                src={`${URL}/img/${item}`}
+                alt="oskfjii"
+                className="w-full h-full object-center"
+              />
+            </div>
+          ))}
+      </Slider>
+    </div>
+  );
 };
 
 export default ImageSlider;

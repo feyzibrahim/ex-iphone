@@ -214,3 +214,21 @@
 .dashboard-link {
   @apply text-blue-400 font-semibold hover:underline;
 }
+
+/* Custom styles for the arrow marks */
+.slick-prev,
+.slick-next {
+  font-size: 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  padding-top: 3px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+/* Hover effect for the arrows */
+.slick-prev:hover,
+.slick-next:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Darker background on hover */
+}

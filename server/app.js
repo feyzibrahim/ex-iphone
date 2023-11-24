@@ -32,11 +32,13 @@ app.use(logger("dev"));
 const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const superAdminRoutes = require("./routes/superAdmin");
+const publicRoutes = require("./routes/public");
 
 // Mounting the routes
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superAdminRoutes);
+app.use("/public", publicRoutes);
 
 // Public Api for accessing images
 app.use("/img", express.static(__dirname + "/public/products/"));
