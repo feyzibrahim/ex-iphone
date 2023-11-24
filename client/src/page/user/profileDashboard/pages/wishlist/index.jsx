@@ -58,12 +58,12 @@ const WishList = () => {
                     return (
                       <tr key={index}>
                         <td
-                          className="px-5 py-3 flex items-center hover:underline cursor-pointer hover:text-blue-500"
+                          className="px-5 py-3 flex gap-3 items-center hover:underline cursor-pointer hover:text-blue-500 w-96"
                           onClick={() =>
                             navigate(`/product/${item.product._id}`)
                           }
                         >
-                          <div className="w-10 h-10 overflow-clip flex justify-center items-center">
+                          <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
                             {item.product.imageURL ? (
                               <img
                                 src={`http://localhost:4000/img/${item.product.imageURL}`}
@@ -74,7 +74,7 @@ const WishList = () => {
                               <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
                             )}
                           </div>
-                          {item.product.name}
+                          <p className="line-clamp-1">{item.product.name}</p>
                         </td>
                         <td className="px-5 py-3">
                           ₹{item.product.price + item.product.markup}

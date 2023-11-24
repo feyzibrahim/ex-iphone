@@ -16,7 +16,7 @@ const TotalAndSubTotal = () => {
     offer = discount;
   }
 
-  const finalTotal = totalPrice + shipping + tax - offer;
+  const finalTotal = totalPrice + shipping + parseInt(tax) - offer;
 
   return (
     <>
@@ -33,7 +33,7 @@ const TotalAndSubTotal = () => {
         </div>
         <div className="cart-total-li">
           <p className="cart-total-li-first">Tax</p>
-          <p className="cart-total-li-second">{tax}₹</p>
+          <p className="cart-total-li-second">{parseInt(tax)}₹</p>
         </div>
         <div className="cart-total-li">
           <p className="cart-total-li-first">Discount</p>

@@ -78,7 +78,7 @@ const createOrder = async (req, res) => {
       totalQuantity = totalQuantity + item.quantity;
     });
 
-    let sumWithTax = sum + sum * 0.08;
+    let sumWithTax = parseInt(sum + sum * 0.08);
     if (cart.discount && cart.type === "percentage") {
       const discountAmount = (sum * cart.discount) / 100;
       sumWithTax -= discountAmount;
@@ -89,7 +89,9 @@ const createOrder = async (req, res) => {
     const products = cart.items.map((item) => ({
       productId: item.product._id,
       quantity: item.quantity,
-      price: item.product.price + item.product.markup,
+      totalPrice: item.product.price + item.product.markup,
+      price: item.product.price,
+      markup: item.product.markup,
     }));
 
     let orderData = {
@@ -97,7 +99,7 @@ const createOrder = async (req, res) => {
       address: addressData,
       products: products,
       subTotal: sum,
-      tax: sum * 0.08,
+      tax: parseInt(sum * 0.08),
       totalPrice: sumWithTax,
       paymentMode,
       totalQuantity,

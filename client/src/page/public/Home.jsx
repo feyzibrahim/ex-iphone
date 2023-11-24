@@ -100,6 +100,10 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <div className="flex justify-center py-20">
+        <div class="w-0 h-0 border-t-[75px] border-t-red-500 border-r-[50px] border-r-transparent"></div>
+      </div>
     </div>
   );
 };

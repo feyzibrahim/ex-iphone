@@ -112,7 +112,7 @@ const OrderDetail = () => {
             <div className="flex items-center justify-between px-5 py-1 border-b">
               <div className="flex items-center gap-1">
                 <div
-                  className="hover:bg-blue-500 cursor-pointer p-3 rounded-md hover:text-white"
+                  className="cursor-pointer p-3 rounded-md hover:text-gray-500 hover:shadow-lg"
                   onClick={() => navigate(-1)}
                 >
                   <BsArrowLeft className="text-xl" />

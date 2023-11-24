@@ -29,9 +29,9 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
         className="cart-table-row hover:underline cursor-pointer hover:text-blue-500"
         onClick={() => navigate(`/product/${item.product._id}`)}
       >
-        <div className="flex items-center gap-3 truncate">
+        <div className="flex items-center gap-3 w-full">
           {item.product.imageURL ? (
-            <div className="w-10 h-10">
+            <div className="w-10 h-10 shrink-0">
               <img
                 src={`${URL}/img/${item.product.imageURL}`}
                 alt="Product"
@@ -41,7 +41,7 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
           ) : (
             <div className="w-10 h-10 bg-gray-200 rounded-lg"></div>
           )}
-          {item.product.name}
+          <p className="line-clamp-1">{item.product.name}</p>
         </div>
       </td>
       <td className="cart-table-row">

@@ -45,7 +45,7 @@ const StatusComponent = ({ status }) => {
     styleVar += "bg-amber-100 text-amber-600";
   }
 
-  return <span className={styleVar}>{status}</span>;
+  return <p className={`${styleVar}`}>{status}</p>;
 };
 
 export default StatusComponent;

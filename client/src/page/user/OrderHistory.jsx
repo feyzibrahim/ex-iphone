@@ -38,11 +38,13 @@ const OrderHistory = () => {
                 userOrders.map((item, index) => {
                   return (
                     <tr key={index}>
-                      <td className="px-5 py-2 font-semibold">
-                        {item.products[0].productId.name}{" "}
-                        <span className="text-gray-500 font-normal">
+                      <td className="px-5 py-2 font-semibold flex items-center">
+                        <p className="w-60 line-clamp-1">
+                          {item.products[0].productId.name}{" "}
+                        </p>
+                        <p className="text-gray-500 font-normal">
                           ({item.totalQuantity}) products
-                        </span>
+                        </p>
                       </td>
                       <td className="px-5 py-2">
                         <StatusComponent status={item.status} />

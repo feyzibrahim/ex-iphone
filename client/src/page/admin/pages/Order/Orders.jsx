@@ -125,6 +125,7 @@ const Orders = () => {
                     : "p-4 border-b border-gray-200 ";
                   return (
                     <OrderTableRow
+                      key={index}
                       index={index}
                       item={item}
                       toggleUpdateModal={toggleUpdateModal}

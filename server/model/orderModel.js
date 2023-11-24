@@ -55,7 +55,15 @@ const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  totalPrice: {
+    type: Number,
+    required: true,
+  },
   price: {
+    type: Number,
+    required: true,
+  },
+  markup: {
     type: Number,
     required: true,
   },

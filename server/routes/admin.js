@@ -56,6 +56,14 @@ const {
 } = require("../controllers/admin/couponController");
 const { generateExcel } = require("../controllers/admin/reportController");
 
+const {
+  readRevenueData,
+  readUserCount,
+  readSalesData,
+  readProfitData,
+  readMostSoldProducts,
+} = require("../controllers/admin/dashController");
+
 // Products controller functions mounting them to corresponding route
 router.get("/products", getProducts);
 router.get("/product/:id", getProduct);
@@ -109,5 +117,12 @@ router.post("/coupon", addCoupon);
 
 // Generate Orders Excel
 router.get("/generateReport", generateExcel);
+
+// Admin Dashboard data | Chart data
+router.get("/revenue-report", readRevenueData);
+router.get("/sales-report", readSalesData);
+router.get("/profit-report", readProfitData);
+router.get("/user-count", readUserCount);
+router.get("/most-sold-product", readMostSoldProducts);
 
 module.exports = router;

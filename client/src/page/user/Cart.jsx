@@ -106,11 +106,11 @@ const Cart = () => {
               <table className="w-full table-auto">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="cart-table-header w-5/12">Products</th>
-                    <th className="cart-table-header w-2/12">Price</th>
-                    <th className="cart-table-header w-2/12">Quantity</th>
-                    <th className="cart-table-header w-2/12">Total</th>
-                    <th className="cart-table-header w-1/12"></th>
+                    <th className="cart-table-header">Products</th>
+                    <th className="cart-table-header">Price</th>
+                    <th className="cart-table-header">Quantity</th>
+                    <th className="cart-table-header">Total</th>
+                    <th className="cart-table-header"></th>
                   </tr>
                 </thead>
                 <tbody>

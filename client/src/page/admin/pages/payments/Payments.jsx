@@ -92,7 +92,7 @@ const Payments = () => {
           </div>
         </div>
         {payments && payments.length > 0 ? (
-          <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
+          <div className="overflow-x-auto bg-white rounded-lg">
             <table className="w-full min-w-max table-auto">
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
@@ -101,7 +101,7 @@ const Payments = () => {
                   <th className="admin-table-head">Total Price</th>
                   <th className="admin-table-head">Date</th>
                   <th className="admin-table-head">Payment Mode</th>
-                  <th className="admin-table-head">Payment Id</th>
+                  <th className="admin-table-head w-60">Payment Id</th>
                   <th className="admin-table-head">Order Id</th>
                   <th className="admin-table-head">Status</th>
                   {/* <th className="admin-table-head">Action</th> */}
@@ -132,7 +132,9 @@ const Payments = () => {
                         {date.format(new Date(item.createdAt), "MMM DD YYYY")}
                       </td>
                       <td className="admin-table-row">{item.paymentMode}</td>
-                      <td className="admin-table-row">{item.payment_id}</td>
+                      <td className="admin-table-row">
+                        <p className="line-clamp-1">{item.payment_id}</p>
+                      </td>
                       <td className="admin-table-row">{item.order._id}</td>
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status || ""} />

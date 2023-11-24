@@ -29,9 +29,11 @@ const OrderDetailsProductRow = ({ length, index, item }) => {
           </div>
         </div>
       </td>
-      <td className="admin-table-row">{item.price}</td>
+      <td className="admin-table-row">{item.price + item.markup}</td>
       <td className="admin-table-row">{item.quantity}</td>
-      <td className="admin-table-row">{item.price * item.quantity}</td>
+      <td className="admin-table-row">
+        {item.price + item.markup * item.quantity}
+      </td>
     </tr>
   );
 };
