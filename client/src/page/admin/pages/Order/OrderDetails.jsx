@@ -40,6 +40,23 @@ const OrderDetails = () => {
     loadInitialData();
   }, []);
 
+  // Downloading invoice
+  const handleGenerateInvoice = async () => {
+    try {
+      const response = await axios.get(`${URL}/admin/order-invoice/${id}`, {
+        responseType: "blob",
+      });
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "invoice.pdf";
+      link.click();
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+    }
+  };
+
   return (
     <div className="p-5 w-full overflow-y-auto text-sm">
       <div className="xy-center font-semibold">
@@ -49,8 +66,8 @@ const OrderDetails = () => {
         </div>
         <div className="flex">
           <button
-            className="admin-button-fl bg-blue-700 text-white"
-            onClick={() => {}}
+            className="admin-button-fl bg-blue-700 hover:bg-blue-500 active:bg-blue-400 text-white"
+            onClick={handleGenerateInvoice}
           >
             <FiDownload />
             Invoice

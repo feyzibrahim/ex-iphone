@@ -2,6 +2,7 @@ const Order = require("../../model/orderModel");
 const mongoose = require("mongoose");
 const Payment = require("../../model/paymentModel");
 const uuid = require("uuid");
+const { generateInvoicePDF } = require("../Common/invoicePDFGenFunctions");
 
 // Function checking if the passed status is valid or not. Ensuring redundant searches are avoided
 function isValidStatus(status) {
@@ -161,6 +162,25 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+// Generating pdf invoices
+const generateOrderInvoice = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findById(id).populate("products.productId");
+
+    const pdfBuffer = await generateInvoicePDF(order);
+
+    // Set headers for the response
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+
+    res.status(200).end(pdfBuffer);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 // Clearing all orders only for testing
 const clearOrder = async (req, res) => {
   try {
@@ -177,4 +197,5 @@ module.exports = {
   clearOrder,
   updateOrderStatus,
   getOrder,
+  generateOrderInvoice,
 };
