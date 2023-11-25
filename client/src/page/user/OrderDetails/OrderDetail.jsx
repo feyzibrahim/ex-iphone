@@ -3,20 +3,20 @@ import { TiCancel } from "react-icons/ti";
 import { BiMessageSquareDetail } from "react-icons/bi";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
+import { FiDownload } from "react-icons/fi";
+
 import axios from "axios";
 import { URL } from "../../../Common/links";
 import { useNavigate, useParams } from "react-router-dom";
 import date from "date-and-time";
 import Modal from "../../../components/Modal";
 import StatusComponent from "../../../components/StatusComponent";
-
 import OrderDetailsProductRow from "./OrderDetailsProductRow";
 import OrderCancellation from "./OrderCancellation";
 import OrderHistoryAddress from "./OrderHistoryAddress";
 import ProductReview from "./ProductReview";
 import StatusHistoryLoadingBar from "./StatusHistoryLoadingBar";
 import ReturnProduct from "./ReturnProduct";
-
 import { getStatusDate } from "../../../Common/functions";
 import OrderDates from "./OrderDates";
 
@@ -71,6 +71,23 @@ const OrderDetail = () => {
     setReturnModal(!returnModal);
   };
 
+  // Downloading invoice
+  const handleGenerateInvoice = async () => {
+    try {
+      const response = await axios.get(`${URL}/user/order-invoice/${id}`, {
+        responseType: "blob",
+      });
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "invoice.pdf";
+      link.click();
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+    }
+  };
+
   return (
     <>
       {cancelModal && (
@@ -112,7 +129,7 @@ const OrderDetail = () => {
             <div className="flex items-center justify-between px-5 py-1 border-b">
               <div className="flex items-center gap-1">
                 <div
-                  className="cursor-pointer p-3 rounded-md hover:text-gray-500 hover:shadow-lg"
+                  className="cursor-pointer p-3 rounded-md text-gray-500 hover:text-black hover:shadow-lg"
                   onClick={() => navigate(-1)}
                 >
                   <BsArrowLeft className="text-xl" />
@@ -162,6 +179,7 @@ const OrderDetail = () => {
                 </>
               </div>
             </div>
+            {/* Total Price, Order ID, and product count, order placement date */}
             <div>
               <div className="p-5 m-5 bg-gray-200 rounded-lg flex items-center justify-between">
                 <div>
@@ -176,12 +194,26 @@ const OrderDetail = () => {
                 </div>
                 <h1 className="text-3xl font-bold">{orderData.totalPrice}₹</h1>
               </div>
+              {/* Expected Date and status component */}
               <div className="px-5 pb-5 border-b flex items-center justify-between">
-                <OrderDates orderData={orderData} />
-                <p>
+                <div>
+                  <OrderDates orderData={orderData} />
+                  <div className="flex gap-1">
+                    <p className="text-gray-500">Payment Mode</p>
+                    <p>{orderData.paymentMode}</p>
+                    <button
+                      className="btn-blue-no-pad px-2 text-white flex items-center gap-2 active:bg-blue-800"
+                      onClick={handleGenerateInvoice}
+                    >
+                      <FiDownload /> Invoice
+                    </button>
+                  </div>
+                </div>
+                <div>
                   <StatusComponent status={orderData.status} />
-                </p>
+                </div>
               </div>
+              {/* Order Status representation */}
               {orderData.statusHistory &&
                 (orderData.status === "pending" ||
                   orderData.status === "processing" ||
@@ -193,6 +225,7 @@ const OrderDetail = () => {
                     />
                   </div>
                 )}
+              {/* Product table */}
               <div className="px-5 w-full border-b mt-3">
                 <h1 className="text-lg font-semibold pb-3">
                   Products{" "}
@@ -200,6 +233,7 @@ const OrderDetail = () => {
                     ({orderData.totalQuantity})
                   </span>
                 </h1>
+                {/* Product table */}
                 <table className="w-full table-auto">
                   <thead>
                     <tr className="bg-gray-100 border border-gray-300">
@@ -221,6 +255,7 @@ const OrderDetail = () => {
                       ))}
                   </tbody>
                 </table>
+                {/* Order Total and charges */}
                 <div className="flex w-full flex-row-reverse">
                   <div className="w-1/4 bg-gray-100  p-5">
                     <div className="border-b border-gray-200 pb-2 mb-2">
@@ -256,6 +291,7 @@ const OrderDetail = () => {
                   </div>
                 </div>
               </div>
+              {/* ShippingAddress, BillingAddress and Order Notes */}
               <div className="p-5 font-semibold lg:flex justify-center">
                 {orderData.address && (
                   <OrderHistoryAddress

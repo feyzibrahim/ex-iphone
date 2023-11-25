@@ -8,6 +8,7 @@ const Payment = require("../../model/paymentModel");
 const uuid = require("uuid");
 const Wallet = require("../../model/walletModel");
 const Coupon = require("../../model/couponModel");
+const { generateInvoicePDF } = require("./orderPDFGenFunctions");
 
 // Just the function increment or decrement product count
 const updateProductList = async (id, count) => {
@@ -309,10 +310,30 @@ const requestReturn = async (req, res) => {
   }
 };
 
+// Generating pdf invoices
+const generateOrderInvoice = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const order = await Order.findById(id).populate("products.productId");
+
+    const pdfBuffer = await generateInvoicePDF(order);
+
+    // Set headers for the response
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+
+    res.status(200).end(pdfBuffer);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getOrders,
   getOrder,
   cancelOrder,
   requestReturn,
+  generateOrderInvoice,
 };

@@ -19,6 +19,7 @@ const {
   getOrder,
   cancelOrder,
   requestReturn,
+  generateOrderInvoice,
 } = require("../controllers/user/orderController");
 const {
   sendOTP,
@@ -92,6 +93,7 @@ router.get("/orders", getOrders);
 router.get("/order/:id", getOrder);
 router.post("/cancel-order/:id", cancelOrder);
 router.post("/request-return/:id", requestReturn);
+router.get("/order-invoice/:id", generateOrderInvoice);
 
 // OTP
 router.get("/send-otp", sendOTP);

@@ -32,11 +32,11 @@ const ImageSlider = () => {
       <Slider {...settings}>
         {items &&
           items.map((item) => (
-            <div key={item}>
+            <div key={item} className="lg:h-[80vh]">
               <img
                 src={`${URL}/img/${item}`}
                 alt="oskfjii"
-                className="w-full h-full object-center"
+                className="w-full h-full object-cover"
               />
             </div>
           ))}
