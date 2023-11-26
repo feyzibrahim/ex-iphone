@@ -22,7 +22,7 @@ const SideNavbar = () => {
   };
 
   return (
-    <div className="hidden lg:block px-5 py-3 flex-shrink-0 border-r border-r-gray-300">
+    <>
       <div className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100">
         <ExIphoneLogo />
       </div>
@@ -82,7 +82,7 @@ const SideNavbar = () => {
           Logout
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

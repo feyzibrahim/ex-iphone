@@ -84,7 +84,7 @@ const Banner = () => {
                 moveItem={moveItem}
               >
                 <div
-                  className={`h-52 w-full rounded-xl bg-gray-100 flex items-center justify-center relative`}
+                  className={`h-52 rounded-xl bg-gray-100 flex items-center justify-center relative`}
                 >
                   <img
                     src={`${URL}/img/${item}`}

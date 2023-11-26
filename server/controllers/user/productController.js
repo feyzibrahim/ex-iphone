@@ -52,7 +52,14 @@ const getProducts = async (req, res) => {
         status: { $in: ["published", "low quantity"] },
         ...filter,
       },
-      { name: 1, imageURL: 1, price: 1, markup: 1 }
+      {
+        name: 1,
+        imageURL: 1,
+        price: 1,
+        markup: 1,
+        numberOfReviews: 1,
+        rating: 1,
+      }
     )
       .sort(sortOptions)
       .populate("category", { name: 1 });

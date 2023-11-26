@@ -57,6 +57,12 @@ const productsSchema = new Schema(
     isActive: {
       type: Boolean,
     },
+    rating: {
+      type: Number,
+    },
+    numberOfReviews: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

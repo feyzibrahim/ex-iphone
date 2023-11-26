@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  AiFillStar,
-  AiOutlineStar,
-  AiFillHeart,
-  AiOutlineHeart,
-} from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
 
 import DescReview from "./components/DescReview";
@@ -15,6 +10,7 @@ import { URL } from "../../Common/links";
 import { config } from "../../Common/configurations";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../redux/actions/user/wishlistActions";
+import ProductDetailsStarAndRating from "./components/ProductDetailsStarAndRating";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -96,9 +92,7 @@ const ProductDetails = () => {
   };
 
   // Checking if this product exists in the wishlist
-
   const { wishlist } = useSelector((state) => state.wishlist);
-
   const isProductInWishlist = wishlist.some((item) => item.product._id === id);
 
   return (
@@ -154,19 +148,12 @@ const ProductDetails = () => {
             </div>
             {/* Product Details */}
             <div className="lg:w-1/2">
-              <div className="flex text-sm items-center gap-1 mt-4 ">
-                <span className="text-yellow-400 flex gap-1">
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                  <AiFillStar />
-                </span>
-                <AiOutlineStar />
-                <p className="font-semibold">
-                  4.7 Star Rating{" "}
-                  <span className="text-gray-500">(20 User Feedback)</span>
-                </p>
-              </div>
+              {product.numberOfReviews > 0 && (
+                <ProductDetailsStarAndRating
+                  numberOfReviews={product.numberOfReviews}
+                  rating={product.rating}
+                />
+              )}
               <h1 className="text-2xl font-bold my-2">{product.name}</h1>
 
               <div className="flex gap-3 text-gray-500">
@@ -248,7 +235,7 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
-          <DescReview description={product.description} />
+          <DescReview product={product} id={id} />
         </>
       ) : (
         <p>No Details</p>

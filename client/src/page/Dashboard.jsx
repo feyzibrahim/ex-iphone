@@ -231,15 +231,10 @@ const Dashboard = () => {
           <SortButton handleClick={handleClick} />
           <div className="shrink-0 hidden lg:block">40/4000 Results Loaded</div>
         </div>
-        <div className="flex flex-wrap -mx-2  mt-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-5">
           {userProducts &&
             userProducts.map((pro, index) => (
-              <div
-                key={index}
-                className="w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4 px-2 mb-4"
-              >
-                <ProductCard product={pro} />
-              </div>
+              <ProductCard product={pro} key={index} />
             ))}
         </div>
       </div>

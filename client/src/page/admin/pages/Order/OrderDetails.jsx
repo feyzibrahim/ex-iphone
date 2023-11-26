@@ -80,9 +80,9 @@ const OrderDetails = () => {
             <div className="tile">
               <div className="flex items-center justify-between">
                 <h1 className="text-lg font-bold line-clamp-1">Order #</h1>
-                <p>
+                <div>
                   <StatusComponent status={orderData.status} />
-                </p>
+                </div>
               </div>
               <div className="xy-center">
                 <div className="tile-row">

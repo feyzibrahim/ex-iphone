@@ -1,6 +1,7 @@
 import React from "react";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import RatingStars from "./RatingStars";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
@@ -18,16 +19,14 @@ const ProductCard = ({ product }) => {
           className="object-contain w-full h-full"
         />
       </div>
-      <div className="flex text-sm items-center gap-1 mt-4 ">
-        <span className="text-yellow-400 flex gap-1">
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-          <AiFillStar />
-        </span>
-        <AiOutlineStar />
-        <p>(928)</p>
-      </div>
+      {product.numberOfReviews > 0 ? (
+        <RatingStars
+          numberOfReviews={product.numberOfReviews}
+          rating={product.rating}
+        />
+      ) : (
+        <div className="h-9"></div>
+      )}
       <p className="font-bold  text-gray-800 line-clamp-1">{product.name}</p>
       <p className="font-semibold text-md text-blue-500">
         <span className="text-gray-500 line-through">

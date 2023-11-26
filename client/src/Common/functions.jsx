@@ -1,4 +1,5 @@
 import date from "date-and-time";
+import { formatDistanceToNow } from "date-fns";
 
 export const getStatusDate = (status, statusHistory) => {
   const filteredStatus = statusHistory.find((item) => item.status === status);
@@ -14,4 +15,8 @@ export const getStatusReason = (status, statusHistory) => {
   const filteredStatus = statusHistory.find((item) => item.status === status);
 
   return filteredStatus.reason;
+};
+
+export const timeAgo = (date) => {
+  return formatDistanceToNow(new Date(date), { addSuffix: true });
 };

@@ -69,6 +69,14 @@ const {
   removeCoupon,
 } = require("../controllers/user/couponController");
 
+const {
+  createNewReview,
+  readProductReviews,
+  readProductReview,
+  deleteReview,
+  editReview,
+} = require("../controllers/user/reviewController");
+
 const router = express.Router();
 
 // To get user data on initial page load.
@@ -146,5 +154,12 @@ router.delete("/wishlist-delete-item/:productId", deleteOneProductFromWishlist);
 router.get("/coupons", getCoupons);
 router.post("/coupon-apply", applyCoupon);
 router.get("/coupon-remove", removeCoupon);
+
+// Reviews
+router.get("/reviews/:id", readProductReviews);
+router.get("/review/:id", readProductReview);
+router.post("/review", createNewReview);
+router.delete("/review/:id", deleteReview);
+router.patch("/review/:id", editReview);
 
 module.exports = router;
