@@ -1,42 +1,95 @@
-import React from "react";
-import { AiOutlineClose } from "react-icons/ai";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState } from "react";
+import { AiFillStar, AiOutlineClose, AiOutlineStar } from "react-icons/ai";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "Yup";
-import { cancelOrder } from "../../../redux/actions/user/userOrderActions";
-import { useDispatch } from "react-redux";
+import axios from "axios";
+import { URL } from "../../../Common/links";
+import { config } from "../../../Common/configurations";
+import toast from "react-hot-toast";
 
-const ProductReview = ({ closeToggle, id, loadData }) => {
-  const dispatch = useDispatch();
+const StarRating = () => {
+  const [rating, setRating] = useState(0);
+  const { setFieldValue } = useFormikContext();
+  const handleStarClick = (value) => {
+    setRating(value);
+    setFieldValue("rating", value);
+  };
 
+  const renderStars = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          onClick={() => handleStarClick(i)}
+          className={`cursor-pointer text-xl mr-1 ${
+            i <= rating ? "text-yellow-400" : "text-gray-300"
+          }`}
+        >
+          {i <= rating ? <AiFillStar /> : <AiOutlineStar />}
+        </span>
+      );
+    }
+    return stars;
+  };
+
+  return <div className="flex">{renderStars()}</div>;
+};
+
+const ProductReview = ({ closeToggle, id, reviewProduct, loadReview }) => {
   const initialValues = {
-    rating: 0,
-    feedback: "",
+    rating: "",
+    title: "",
+    body: "",
   };
 
   const validationSchema = Yup.object().shape({
     rating: Yup.number().required("Rating is required"),
-    feedback: Yup.string(),
+    title: Yup.string(),
+    body: Yup.string(),
   });
 
-  const handleSubmit = (value) => {
-    dispatch(cancelOrder({ formData: value, id: id }))
-      .then(() => {
-        loadData();
-        closeToggle();
-      })
-      .catch((error) => {
-        console.error("Error cancelling order: ", error);
-      });
+  const handleSubmit = async (value) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}/user/review`,
+        { ...value, order: id, product: reviewProduct._id },
+        config
+      );
+      toast.success("Review Published");
+      closeToggle();
+      loadReview();
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   };
 
   return (
     <div className="bg-gray-100 w-5/6 lg:w-2/6 shadow-2xl overflow-y-auto rounded-lg">
       <div className="bg-white pt-5 pb-3 px-5 flex items-center justify-between">
-        <h1 className="font-bold text-lg ">Write a Review</h1>
+        <h1 className="font-bold text-lg">Write a Review</h1>
         <AiOutlineClose
           className="text-xl cursor-pointer"
           onClick={closeToggle}
         />
+      </div>
+      <div className="px-5 pt-5 flex items-center gap-5">
+        <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
+          {reviewProduct.imageURL ? (
+            <img
+              src={`${URL}/img/${reviewProduct.imageURL}`}
+              alt="img"
+              className="object-contain w-full h-full"
+            />
+          ) : (
+            <div className="w-10 h-1w-10 bg-slate-300 rounded-md"></div>
+          )}
+        </div>
+        <div>
+          <p className="lg:text-lg font-semibold line-clamp-1">
+            {reviewProduct.name}
+          </p>
+        </div>
       </div>
       <div className="p-5">
         <Formik
@@ -48,25 +101,38 @@ const ProductReview = ({ closeToggle, id, loadData }) => {
             <label htmlFor="rating">
               <p>Rating</p>
 
-              <Field name="rating" className="w-full px-5 py-2 rounded mt-2" />
+              <Field name="rating" as={StarRating} />
               <ErrorMessage
                 className="text-sm text-red-500"
                 name="rating"
                 component="span"
               />
             </label>
-            <label htmlFor="feedback">
-              <p>Feedback</p>
+            <label htmlFor="title">
+              <p className="mt-3">Title</p>
+              <Field
+                name="title"
+                className="w-full py-2 px-5 rounded mt-2"
+                placeholder="Write down your review Title"
+              />
+              <ErrorMessage
+                className="text-sm text-red-500"
+                name="title"
+                component="span"
+              />
+            </label>
+            <label htmlFor="body">
+              <p className="mt-3">Feedback</p>
 
               <Field
-                name="feedback"
+                name="body"
                 as="textarea"
                 className="h-36 lg:h-52 w-full p-5 rounded mt-2"
                 placeholder="Write down your feedback about our product & services"
               />
               <ErrorMessage
                 className="text-sm text-red-500"
-                name="feedback"
+                name="body"
                 component="span"
               />
             </label>

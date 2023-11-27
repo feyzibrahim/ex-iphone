@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateUserOnOTPValidation } from "../../redux/reducers/userSlice";
+import toast from "react-hot-toast";
 
 const ValidateOTP = () => {
   const dispatch = useDispatch();
@@ -84,10 +85,80 @@ const ValidateOTP = () => {
     }
   }, [user]);
 
+  // OTP Timer
+  const [minutes, setMinutes] = useState(4);
+  const [seconds, setSeconds] = useState(59);
+
+  const [resendSeconds, setResendSeconds] = useState(30);
+  const [resendLoading, setResendLoading] = useState(false);
+
+  // OTP 5 Minute Timer function
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds - 1);
+      }
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          toast.error("OTP Expired");
+          setOTPExpired(true);
+        } else {
+          setSeconds(59);
+          setMinutes(minutes - 1);
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [seconds]);
+
+  const handleResending = async () => {
+    if (resendSeconds === 0) {
+      setResendLoading(true);
+      await axios
+        .post(
+          `${URL}/user/resend-otp`,
+          {
+            email: "aodifajio",
+          },
+          config
+        )
+        .then(({ data }) => {
+          if (data.success) {
+            toast.success(data.message);
+            setResendLoading(false);
+          }
+        })
+        .catch(({ response }) => {
+          setError(response.data.error);
+          toast.error(response.data.error);
+          setResendLoading(false);
+        });
+
+      setResendSeconds(30);
+    } else {
+      toast.error(`Please wait ${resendSeconds} seconds before resending OTP`);
+    }
+  };
+
+  useEffect(() => {
+    const resendTimerInterval = setInterval(() => {
+      if (resendSeconds > 0) {
+        setResendSeconds(resendSeconds - 1);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(resendTimerInterval);
+    };
+  }, [resendSeconds]);
+
   return (
     <div className="flex justify-center items-center h-screen">
       <form
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/6"
         onSubmit={handleSubmit}
       >
         <div className="mb-4">
@@ -111,6 +182,32 @@ const ValidateOTP = () => {
               />
             ))}
           </div>
+        </div>
+        <div className="my-5 flex justify-between">
+          {resendLoading ? (
+            <p>loading...</p>
+          ) : (
+            <button
+              className={
+                resendSeconds === 0
+                  ? "text-blue-500 hover:underline cursor-pointer "
+                  : "text-gray-500"
+              }
+              disabled={resendSeconds !== 0}
+              onClick={handleResending}
+            >
+              {resendSeconds === 0
+                ? "Resend OTP?"
+                : `Resend OTP in ${resendSeconds}s`}
+            </button>
+          )}
+          <p>
+            OTP will expire in{" "}
+            <span className="px-2 border border-gray-500 rounded">
+              {minutes < 10 ? `0${minutes}` : minutes}:
+              {seconds < 10 ? `0${seconds}` : seconds}
+            </span>
+          </p>
         </div>
         {error && <p>{error}</p>}
         <div className="flex items-center justify-center">

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BiBadgeCheck, BiCheckShield, BiPhoneCall } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
 import { RiSecurePaymentLine } from "react-icons/ri";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { URL } from "../../../Common/links";
-import { timeAgo } from "../../../Common/functions";
+import ReviewRow from "./ReviewRow";
+import { renderStars } from "../../../Common/functions";
 
 const DescReview = ({ product, id }) => {
   // Toggle between description and Reviews
@@ -14,33 +14,7 @@ const DescReview = ({ product, id }) => {
     setDescriptionOrReview(!descriptionOrReview);
   };
 
-  // Rendering stars based on the review
-  const renderStars = (rating) => {
-    const filledStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    const stars = [];
-
-    for (let i = 1; i <= filledStars; i++) {
-      stars.push(<AiFillStar key={i} className="text-yellow-400" />);
-    }
-
-    if (hasHalfStar) {
-      stars.push(<AiOutlineStar key="half" className="text-yellow-400" />);
-    }
-
-    const remainingStars = 5 - filledStars - (hasHalfStar ? 1 : 0);
-    for (let i = 1; i <= remainingStars; i++) {
-      stars.push(
-        <AiOutlineStar key={`empty-${i}`} className="text-yellow-400" />
-      );
-    }
-
-    return stars;
-  };
-
   // Loading data
-
   const [reviews, setReviews] = useState([]);
   const [error, setError] = useState(null);
   const [ratingCount, setRatingCount] = useState([]);
@@ -158,7 +132,7 @@ const DescReview = ({ product, id }) => {
             <>
               <div className="flex flex-col lg:flex-row gap-5">
                 <div className="bg-blue-50 py-10 px-20 flex flex-col items-center gap-3 rounded">
-                  <h1 className="text-5xl font-semibold">{product.rating}</h1>
+                  <h1 className="text-5xl font-semibold">{product.rating}.0</h1>
                   <div className="flex text-xl">
                     {renderStars(product.rating)}
                   </div>
@@ -176,12 +150,14 @@ const DescReview = ({ product, id }) => {
                       const width = parseInt(
                         (item / product.numberOfReviews) * 100
                       );
+                      console.log(width);
                       return (
                         <div className="flex items-center gap-5" key={index}>
                           <div className="flex">{renderStars(index + 1)}</div>
                           <div className="h-1 bg-gray-200 rounded-full w-96">
                             <div
-                              className={`h-1 bg-yellow-400 rounded-full w-[${width}%]`}
+                              className={`h-1 bg-yellow-400 rounded-full`}
+                              style={{ width: `${width}%` }}
                             ></div>
                           </div>
                           <div className="flex gap-2 text-xs font-semibold">
@@ -198,34 +174,7 @@ const DescReview = ({ product, id }) => {
                 <div>
                   {reviews &&
                     reviews.map((review) => (
-                      <div key={review._id} className="py-2">
-                        {/* Review Header */}
-                        <div className="flex items-center gap-2">
-                          <div className="w-10 h-10 rounded-full overflow-hidden">
-                            <img
-                              src={`${URL}/img/${review.user.profileImgURL}`}
-                              alt="User Profile"
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <h1>
-                              {review.user.firstName} {review.user.lastName} •{" "}
-                              <span className="text-gray-500 capitalize">
-                                {timeAgo(review.createdAt)}
-                              </span>
-                            </h1>
-                            <div className="flex gap-1">
-                              {renderStars(review.rating)}
-                            </div>
-                          </div>
-                        </div>
-                        {/* Review Body */}
-                        <div className="py-2">
-                          <h1 className="font-semibold">{review.title}</h1>
-                          <p className="text-gray-500">{review.body}</p>
-                        </div>
-                      </div>
+                      <ReviewRow review={review} key={review._id} />
                     ))}
                 </div>
               </div>

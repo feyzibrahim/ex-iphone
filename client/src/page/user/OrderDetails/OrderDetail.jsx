@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TiCancel } from "react-icons/ti";
-import { BiMessageSquareDetail } from "react-icons/bi";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { FiDownload } from "react-icons/fi";
 
 import axios from "axios";
 import { URL } from "../../../Common/links";
+import { config } from "../../../Common/configurations";
 import { useNavigate, useParams } from "react-router-dom";
 import date from "date-and-time";
 import Modal from "../../../components/Modal";
@@ -19,23 +19,20 @@ import StatusHistoryLoadingBar from "./StatusHistoryLoadingBar";
 import ReturnProduct from "./ReturnProduct";
 import { getStatusDate } from "../../../Common/functions";
 import OrderDates from "./OrderDates";
+import YourReview from "./YourReview";
 
 const OrderDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [orderData, setOrderData] = useState({});
+  const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    loadData();
-  }, [id]);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${URL}/user/order/${id}`);
+      const res = await axios.get(`${URL}/user/order/${id}`, config);
 
       if (res) {
         setOrderData(res.data.order);
@@ -63,8 +60,10 @@ const OrderDetail = () => {
     setCancelModal(!cancelModal);
   };
   const [reviewModal, setReviewModal] = useState(false);
-  const toggleReviewModal = () => {
+  const [reviewProduct, setReviewProduct] = useState(null);
+  const toggleReviewModal = (reviewPro) => {
     setReviewModal(!reviewModal);
+    setReviewProduct(reviewPro);
   };
   const [returnModal, setReturnModal] = useState(false);
   const toggleReturnModal = () => {
@@ -88,8 +87,13 @@ const OrderDetail = () => {
     }
   };
 
+  useEffect(() => {
+    loadData();
+  }, [id]);
+
   return (
     <>
+      {/* Order Cancellation Modal */}
       {cancelModal && (
         <Modal
           tab={
@@ -101,17 +105,20 @@ const OrderDetail = () => {
           }
         />
       )}
+      {/* Review Modal */}
       {reviewModal && (
         <Modal
           tab={
             <ProductReview
               closeToggle={toggleReviewModal}
               id={id}
-              loadData={loadData}
+              reviewProduct={reviewProduct}
+              loadReview={loadReview}
             />
           }
         />
       )}
+      {/* Return Modal */}
       {returnModal && (
         <Modal
           tab={
@@ -166,16 +173,6 @@ const OrderDetail = () => {
                       </p>
                     </div>
                   )}
-                  {orderData.status !== "pending" &&
-                    orderData.status !== "processing" &&
-                    orderData.status !== "shipped" && (
-                      <p
-                        className="font-semibold flex items-center gap-1 text-blue-400 cursor-pointer hover:bg-blue-100 px-2 rounded-lg"
-                        onClick={toggleReviewModal}
-                      >
-                        Leave a Review <BiMessageSquareDetail />
-                      </p>
-                    )}
                 </>
               </div>
             </div>
@@ -237,10 +234,15 @@ const OrderDetail = () => {
                 <table className="w-full table-auto">
                   <thead>
                     <tr className="bg-gray-100 border border-gray-300">
-                      <td className="px-5 py-2 w-3/6">Products</td>
-                      <td className="px-5 py-2 w-1/6">Price</td>
-                      <td className="px-5 py-2 w-1/6">Quantity</td>
-                      <td className="px-5 py-2 w-1/6">Sub-Total</td>
+                      <td className="py-2 px-1 w-4/12">Products</td>
+                      <td className="py-2 px-1 w-1/12">Price</td>
+                      <td className="py-2 px-1 w-1/12">Quantity</td>
+                      <td className="py-2 px-1 w-1/12">Sub-Total</td>
+                      {orderData.status !== "pending" &&
+                        orderData.status !== "processing" &&
+                        orderData.status !== "shipped" && (
+                          <td className="py-2 px-1 w-2/12">Review</td>
+                        )}
                     </tr>
                   </thead>
                   <tbody>
@@ -251,6 +253,8 @@ const OrderDetail = () => {
                           item={item}
                           length={orderData.products.length}
                           key={index}
+                          status={orderData.status}
+                          toggleReviewModal={toggleReviewModal}
                         />
                       ))}
                   </tbody>
@@ -315,6 +319,7 @@ const OrderDetail = () => {
               </div>
             </div>
           </div>
+          <YourReview id={id} products={orderData.products} />
         </div>
       )}
     </>

@@ -19,6 +19,7 @@ import cartReducer from "./reducers/user/cartSlice";
 import addressReducer from "./reducers/user/addressSlice";
 import walletReducer from "./reducers/user/walletSlice";
 import wishlistReducer from "./reducers/user/wishlistSlice";
+import reviewReducer from "./reducers/user/reviewSlice";
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     address: addressReducer,
     wallet: walletReducer,
     wishlist: wishlistReducer,
+    reviews: reviewReducer,
 
     // Admin Side
     products: productsReducer,

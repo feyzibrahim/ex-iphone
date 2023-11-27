@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Product = require("../../model/productModel");
 
+// Creating a new review for each product
 const createNewReview = async (req, res) => {
   try {
     const token = req.cookies.user_token;
@@ -59,6 +60,7 @@ const createNewReview = async (req, res) => {
   }
 };
 
+// Reading all the review from product details page
 const readProductReviews = async (req, res) => {
   try {
     const { id } = req.params;
@@ -81,6 +83,7 @@ const readProductReviews = async (req, res) => {
   }
 };
 
+// General Review Reading
 const readProductReview = async (req, res) => {
   try {
     const { id } = req.params;
@@ -107,6 +110,41 @@ const readProductReview = async (req, res) => {
   }
 };
 
+// Read user reviews on order history page
+const readOrderReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid user Id!!!");
+    }
+
+    const reviews = await Review.find({ order: id, user: _id }).populate(
+      "user",
+      {
+        firstName: 1,
+        lastName: 1,
+        profileImgURL: 1,
+      }
+    );
+    if (!reviews) {
+      throw Error("No Review Found");
+    }
+
+    res.status(200).json({ reviews });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Deleting a review
 const deleteReview = async (req, res) => {
   try {
     const { id } = req.params;
@@ -126,17 +164,47 @@ const deleteReview = async (req, res) => {
   }
 };
 
+// Editing the review
 const editReview = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
-    }
 
     const body = req.body;
 
-    const review = await Review.findByIdAndUpdate(
-      id,
+    const existingReview = await Review.findOne({
+      _id: id,
+    });
+
+    if (!existingReview) {
+      throw Error("Review not found");
+    }
+
+    const product = await Product.findOne({ _id: body.product });
+    if (!product) {
+      throw Error("Product not found");
+    }
+
+    // Calculate the change in rating
+    const ratingChange = body.rating - existingReview.rating;
+
+    // Update the product rating and number of reviews
+    const newRating =
+      (product.rating * product.numberOfReviews + ratingChange) /
+      product.numberOfReviews;
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      body.product,
+      {
+        $set: {
+          rating: newRating,
+        },
+      },
+      { new: true }
+    );
+
+    // Update the review
+    const updatedReview = await Review.findByIdAndUpdate(
+      existingReview._id,
       {
         $set: {
           ...body,
@@ -145,11 +213,7 @@ const editReview = async (req, res) => {
       { new: true }
     );
 
-    if (!review) {
-      throw Error("No review found");
-    }
-
-    res.status(200).json({ review });
+    res.status(200).json({ review: updatedReview });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -161,4 +225,5 @@ module.exports = {
   readProductReview,
   deleteReview,
   editReview,
+  readOrderReview,
 };
