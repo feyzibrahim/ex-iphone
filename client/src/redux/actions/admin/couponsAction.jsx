@@ -39,9 +39,12 @@ export const editCoupon = createAsyncThunk(
 
 export const getCoupons = createAsyncThunk(
   "coupons/getCoupons",
-  async (rc, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/coupons`, config);
+      const { data } = await axios.get(
+        `${URL}/admin/coupons?${queries}`,
+        config
+      );
       return data.coupons;
     } catch (error) {
       return handleError(error, rejectWithValue);
@@ -55,22 +58,6 @@ export const deleteCoupon = createAsyncThunk(
     try {
       const { data } = await axios.delete(`${URL}/admin/coupon/${id}`, config);
       return data.coupon;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getFilteredCoupon = createAsyncThunk(
-  "coupons/getFilteredCoupon",
-  async (isActive, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(
-        `${URL}/admin/coupons?isActive=${isActive}`,
-        config
-      );
-
-      return data.coupons;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

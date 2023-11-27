@@ -2,40 +2,21 @@ import React, { useEffect, useState } from "react";
 import { BsCaretRightFill, BsFilterRight } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineCalendar } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getCustomers,
-  getFilteredData,
-} from "../../../../redux/actions/admin/customerAction";
+import { getCustomers } from "../../../../redux/actions/admin/customerAction";
 import TableRow from "./TableRow";
-import ConfirmModal from "../../../../components/ConfirmModal";
-import { deleteCustomer } from "../../../../redux/actions/admin/customerAction";
 import BlockOrUnBlock from "./BlockOrUnBlock";
 import Modal from "../../../../components/Modal";
 import FilterArray from "../../Components/FilterArray";
+import SearchBar from "../../../../components/SearchBar";
+import Pagination from "../../../../components/Pagination";
 
 const Customers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { customers, loading, error } = useSelector((state) => state.customers);
-
-  useEffect(() => {
-    dispatch(getCustomers());
-  }, []);
-
-  const [deleteId, setDeleteId] = useState("");
-  const [deleteModal, setDeleteModal] = useState(false);
-  const toggleDeleteModal = (id) => {
-    setDeleteModal(!deleteModal);
-    setDeleteId(id);
-  };
-
-  const dispatchDeleteAction = () => {
-    dispatch(deleteCustomer(deleteId));
-    toggleDeleteModal("");
-  };
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
@@ -44,23 +25,29 @@ const Customers = () => {
     setSelectedOrderToUpdate(data);
   };
 
-  const dispatchFilter = (status) => {
-    if (status === "all") {
-      dispatch(getCustomers());
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
     } else {
-      dispatch(getFilteredData(status === "active"));
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
     }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
+
+  useEffect(() => {
+    dispatch(getCustomers(searchParams));
+  }, [searchParams]);
 
   return (
     <>
-      {deleteModal && (
-        <ConfirmModal
-          negativeAction={toggleDeleteModal}
-          title="Confirm Delete?"
-          positiveAction={dispatchDeleteAction}
-        />
-      )}
       {blockUnBlockModal && (
         <Modal
           tab={
@@ -72,6 +59,11 @@ const Customers = () => {
         />
       )}
       <div className="p-5 w-full overflow-y-auto">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         <div className="flex justify-between items-center text-xs font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Customers</h1>
@@ -100,7 +92,7 @@ const Customers = () => {
         <div className="lg:flex justify-between items-center text-xs font-semibold">
           <FilterArray
             list={["all", "active", "blocked"]}
-            handleClick={dispatchFilter}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
@@ -135,7 +127,6 @@ const Customers = () => {
                       isLast={isLast}
                       customer={customer}
                       key={index}
-                      toggleDeleteModal={toggleDeleteModal}
                       toggleBlockUnBlockModal={toggleBlockUnBlockModal}
                     />
                   );
@@ -143,6 +134,14 @@ const Customers = () => {
               </tbody>
             </table>
           )}
+        </div>
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            page={page}
+            number={10}
+            totalNumber={customers.length}
+          />
         </div>
       </div>
     </>

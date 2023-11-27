@@ -1,10 +1,10 @@
 import React from "react";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import { useNavigate } from "react-router-dom";
 import StatusComponent from "../../../../components/StatusComponent";
 
-const TableRow = ({ index, length, product, toggleConfirmDelete }) => {
+const TableRow = ({ index, length, product }) => {
   const navigate = useNavigate();
 
   const isLast = index === length - 1;

@@ -3,12 +3,7 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
 
-const TableRow = ({
-  isLast,
-  admin,
-  toggleDeleteModal,
-  toggleBlockUnBlockModal,
-}) => {
+const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
 
   return (
@@ -52,12 +47,6 @@ const TableRow = ({
             }}
           >
             <AiOutlineEdit />
-          </span>
-          <span
-            className="hover:text-gray-500"
-            onClick={() => toggleDeleteModal(admin._id)}
-          >
-            <AiOutlineDelete />
           </span>
         </div>
       </td>

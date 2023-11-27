@@ -7,7 +7,6 @@ import { getWishlist } from "../redux/actions/user/wishlistActions";
 import { useSearchParams } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
 import SortButton from "../components/SortButton";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import Pagination from "../components/Pagination";
 
 const Dashboard = () => {
@@ -246,7 +245,7 @@ const Dashboard = () => {
         </div>
         <Pagination
           handleClick={handleClick}
-          number={userProducts.length}
+          number={4}
           page={page}
           totalNumber={totalAvailableProducts}
         />

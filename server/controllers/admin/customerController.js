@@ -3,40 +3,46 @@ const User = require("../../model/userModel");
 // Getting all Customer to list on admin dashboard
 const getCustomers = async (req, res) => {
   try {
-    const query = req.query;
+    const { status, search, page = 1, limit = 10 } = req.query;
 
-    let customers;
+    let filter = {};
 
-    // Getting all users
-    if (Object.keys(query).length === 0) {
-      customers = await User.find(
-        { role: "user" },
-        {
-          password: 0,
-          dateOfBirth: 0,
-          role: 0,
-          walletBalance: 0,
-          isEmailVerified: 0,
-        }
-      );
-    } else {
-      // Fetching only active or not active users
-      let { isActive } = query;
-
-      customers = await User.find(
-        { role: "user", isActive },
-        {
-          password: 0,
-          dateOfBirth: 0,
-          role: 0,
-          walletBalance: 0,
-          isEmailVerified: 0,
-        }
-      );
-      if (customers.length === 0) {
-        throw Error(`No ${isActive ? "active" : "blocked"} users`);
+    if (status) {
+      if (status === "active") {
+        filter.isActive = true;
+      } else {
+        filter.isActive = false;
       }
     }
+
+    if (search) {
+      if (search.includes(" ")) {
+        const [firstName, lastName] = search.split(" ");
+        filter.firstName = { $regex: new RegExp(firstName, "i") };
+        filter.lastName = { $regex: new RegExp(lastName, "i") };
+      } else {
+        filter.$or = [
+          { firstName: { $regex: new RegExp(search, "i") } },
+          { lastName: { $regex: new RegExp(search, "i") } },
+        ];
+      }
+    }
+
+    const skip = (page - 1) * limit;
+
+    // Getting all users
+    const customers = await User.find(
+      { role: "user", ...filter },
+      {
+        password: 0,
+        dateOfBirth: 0,
+        role: 0,
+        walletBalance: 0,
+        isEmailVerified: 0,
+      }
+    )
+      .skip(skip)
+      .limit(limit);
 
     res.status(200).json({ customers });
   } catch (error) {

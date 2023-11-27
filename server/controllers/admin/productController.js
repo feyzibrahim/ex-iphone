@@ -16,32 +16,28 @@ function isValidStatus(status) {
 // Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
   try {
-    const query = req.query;
-    let products;
-    if (Object.keys(query).length === 0) {
-      products = await Product.find(
-        {},
-        { attributes: 0, moreImageURL: 0 }
-      ).populate("category", { name: 1 });
-    }
+    const { status, search, page = 1, limit = 10 } = req.query;
 
-    let status = query.status;
+    let filter = {};
 
     if (status) {
-      if (!isValidStatus(status)) {
-        throw Error("Not a valid query");
-      }
-      products = await Product.find(
-        { status },
-        { attributes: 0, moreImageURL: 0 }
-      );
-
-      if (products.length === 0) {
-        throw Error(`No ${status} products`);
-      }
+      filter.status = status;
     }
+    if (search) {
+      filter.name = { $regex: new RegExp(search, "i") };
+    }
+    const skip = (page - 1) * limit;
+    const products = await Product.find(filter, {
+      attributes: 0,
+      moreImageURL: 0,
+    })
+      .skip(skip)
+      .limit(limit)
+      .populate("category", { name: 1 });
 
-    res.status(200).json({ products });
+    const totalAvailableProducts = await Product.countDocuments(filter);
+
+    res.status(200).json({ products, totalAvailableProducts });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

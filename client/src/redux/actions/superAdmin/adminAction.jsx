@@ -23,9 +23,12 @@ export const createNewAdmin = createAsyncThunk(
 
 export const getAdmins = createAsyncThunk(
   "admins/getAdmins",
-  async (rc, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/super-admin/admins`, config);
+      const { data } = await axios.get(
+        `${URL}/super-admin/admins?${queries}`,
+        config
+      );
       return data.admins;
     } catch (error) {
       return handleError(error, rejectWithValue);
@@ -62,22 +65,6 @@ export const blockOrUnBlock = createAsyncThunk(
       console.log(data);
 
       return data.admin;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getFilteredData = createAsyncThunk(
-  "admins/getFilteredData",
-  async (isActive, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(
-        `${URL}/super-admin/admins?isActive=${isActive}`,
-        config
-      );
-
-      return data.admins;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

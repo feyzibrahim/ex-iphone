@@ -4,22 +4,18 @@ import {
   AiOutlineDelete,
   AiOutlineEdit,
 } from "react-icons/ai";
-// import { HiOutlineReceiptRefund } from "react-icons/hi";
-// import { FiDownload } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import date from "date-and-time";
 import Modal from "../../../../components/Modal";
 
-import {
-  getReturnOrders,
-  getReturnOrderWithQuery,
-} from "../../../../redux/actions/admin/ordersAction";
+import { getReturnOrders } from "../../../../redux/actions/admin/ordersAction";
 import { BsFilterRight } from "react-icons/bs";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import UpdateReturnOrder from "./UpdateReturnOrder";
+import SearchBar from "../../../../components/SearchBar";
 
 const ReturnRequests = () => {
   const dispatch = useDispatch();
@@ -27,23 +23,33 @@ const ReturnRequests = () => {
 
   const { orders, loading, error } = useSelector((state) => state.orders);
 
+  // Filtering
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
+    } else {
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
   useEffect(() => {
-    dispatch(getReturnOrderWithQuery("return request"));
-  }, []);
+    dispatch(getReturnOrders(searchParams));
+  }, [searchParams]);
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [updateModal, setUpdateModal] = useState(false);
   const toggleUpdateModal = (data) => {
     setUpdateModal(!updateModal);
     setSelectedOrderToUpdate(data);
-  };
-
-  const handleClick = (value) => {
-    if (value === "all") {
-      dispatch(getReturnOrders());
-    } else {
-      dispatch(getReturnOrderWithQuery(value));
-    }
   };
 
   return (
@@ -59,35 +65,27 @@ const ReturnRequests = () => {
         />
       )}
       <div className="p-5 w-full overflow-y-auto text-sm">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Return Requests</h1>
             <BreadCrumbs list={["Dashboard", "Orders", "Return Requests"]} />
           </div>
-          {/* <div className="flex gap-3">
-            <button className="admin-button-fl bg-gray-200 text-blue-700">
-              <FiDownload />
-              Export
-            </button>
-            <button
-              className="admin-button-fl bg-blue-700 text-white"
-              onClick={() => navigate("return-requests")}
-            >
-              <HiOutlineReceiptRefund />
-              Return Requests
-            </button>
-          </div> */}
         </div>
         <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={[
-              "return request",
               "all",
+              "return request",
               "return approved",
               "return rejected",
               "pickup completed",
             ]}
-            handleClick={handleClick}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
@@ -106,7 +104,7 @@ const ReturnRequests = () => {
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
                   <th className="admin-table-head">No:</th>
-                  <th className="admin-table-head w-20">Product</th>
+                  <th className="admin-table-head">Product</th>
                   <th className="admin-table-head">Order Date</th>
                   <th className="admin-table-head">Customer</th>
                   <th className="admin-table-head">Total</th>
@@ -140,7 +138,7 @@ const ReturnRequests = () => {
                           )}
                         </div>
                         <div>
-                          <p className="line-clamp-1 mb-1 font-semibold">
+                          <p className="line-clamp-1 mb-1 font-semibold w-40">
                             {item.products[0].productId.name}
                           </p>
                           <p className="font-semibold text-gray-500">

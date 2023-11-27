@@ -15,7 +15,11 @@ const FilterArray = ({ list, handleClick }) => {
           }
           onClick={() => {
             setActiveStatusFilter(status);
-            handleClick(status);
+            if (status === "all") {
+              handleClick("status", "");
+            } else {
+              handleClick("status", status);
+            }
           }}
         >
           {status.charAt(0).toUpperCase() + status.slice(1)}

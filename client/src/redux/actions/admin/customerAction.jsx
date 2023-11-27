@@ -26,9 +26,12 @@ export const createNewCustomer = createAsyncThunk(
 
 export const getCustomers = createAsyncThunk(
   "customers/getCustomers",
-  async (rc, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/customers`, config);
+      const { data } = await axios.get(
+        `${URL}/admin/customers?${queries}`,
+        config
+      );
       return data.customers;
     } catch (error) {
       return handleError(error, rejectWithValue);
@@ -62,22 +65,6 @@ export const blockOrUnBlock = createAsyncThunk(
       );
 
       return data.customer;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getFilteredData = createAsyncThunk(
-  "customers/getFilteredData",
-  async (isActive, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(
-        `${URL}/admin/customers?isActive=${isActive}`,
-        config
-      );
-
-      return data.customers;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

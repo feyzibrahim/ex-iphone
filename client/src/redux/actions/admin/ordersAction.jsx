@@ -5,9 +5,12 @@ import { config, handleError } from "../../../Common/configurations";
 
 export const getOrders = createAsyncThunk(
   "orders/getOrders",
-  async (nothing, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/orders`, config);
+      const { data } = await axios.get(
+        `${URL}/admin/orders?${queries}`,
+        config
+      );
 
       return data.orders;
     } catch (error) {
@@ -53,23 +56,10 @@ export const getOrderWithQuery = createAsyncThunk(
 
 export const getReturnOrders = createAsyncThunk(
   "orders/getReturnOrders",
-  async (nothing, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${URL}/admin/return-orders`, config);
-
-      return data.orders;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getReturnOrderWithQuery = createAsyncThunk(
-  "orders/getReturnOrderWithQuery",
-  async (formData, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `${URL}/admin/return-orders?status=${formData}`,
+        `${URL}/admin/return-orders?${queries}`,
         config
       );
 

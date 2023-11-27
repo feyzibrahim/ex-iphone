@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineCalendar, AiOutlinePlus } from "react-icons/ai";
 import BreadCrumbs from "../../Components/BreadCrumbs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import FilterArray from "../../Components/FilterArray";
 import { BsFilterRight } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,19 +9,16 @@ import TableRow from "./TableRow";
 import {
   getCoupons,
   deleteCoupon,
-  getFilteredCoupon,
 } from "../../../../redux/actions/admin/couponsAction";
 import ConfirmModel from "../../../../components/ConfirmModal";
 import Loading from "../../../../components/Loading";
+import SearchBar from "../../../../components/SearchBar";
 
 const Coupon = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { coupons, loading, error } = useSelector((state) => state.coupons);
-  useEffect(() => {
-    dispatch(getCoupons());
-  }, []);
 
   const [showDeleteModel, setShowDeleteModel] = useState(false);
   const [idToBeDeleted, setIdToBeDeleted] = useState("");
@@ -36,14 +33,27 @@ const Coupon = () => {
     toggleDeleteModel("");
   };
 
-  // Listing filtered data
-  const dispatchFilter = (status) => {
-    if (status === "all") {
-      dispatch(getCoupons());
+  // Filtering
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
     } else {
-      dispatch(getFilteredCoupon(status === "active"));
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
     }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
+
+  useEffect(() => {
+    dispatch(getCoupons(searchParams));
+  }, [searchParams]);
 
   if (!coupons) {
     if (loading) {
@@ -61,6 +71,11 @@ const Coupon = () => {
         />
       )}
       <div className="p-5 w-full overflow-y-auto">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         {/* Header */}
         <div className="flex justify-between items-center text-sm font-semibold">
           <div>
@@ -68,10 +83,6 @@ const Coupon = () => {
             <BreadCrumbs list={["Dashboard", "Coupon List"]} />
           </div>
           <div className="flex gap-3">
-            {/* <button className="admin-button-fl bg-gray-200 text-blue-700">
-            <FiDownload />
-            Export
-          </button> */}
             <button
               className="admin-button-fl bg-blue-700 text-white"
               onClick={() => navigate("create")}
@@ -85,7 +96,7 @@ const Coupon = () => {
         <div className="lg:flex justify-between items-center font-semibold text-sm">
           <FilterArray
             list={["all", "active", "blocked"]}
-            handleClick={dispatchFilter}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">

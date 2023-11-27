@@ -4,7 +4,6 @@ import {
   createNewCustomer,
   deleteCustomer,
   blockOrUnBlock,
-  getFilteredData,
 } from "../../actions/admin/customerAction";
 import toast from "react-hot-toast";
 
@@ -30,20 +29,7 @@ const customerSlice = createSlice({
         state.customers = null;
         state.error = payload;
       })
-      .addCase(getFilteredData.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getFilteredData.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.customers = payload;
-      })
-      .addCase(getFilteredData.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.customers = null;
-        state.error = payload;
-        toast.error(payload);
-      })
+
       .addCase(createNewCustomer.pending, (state) => {
         state.loading = true;
       })

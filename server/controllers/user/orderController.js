@@ -272,6 +272,58 @@ const cancelOrder = async (req, res) => {
       },
       { new: true }
     );
+
+    if (order.paymentMode !== "cashOnDelivery") {
+      const token = req.cookies.user_token;
+
+      const { _id } = jwt.verify(token, process.env.SECRET);
+
+      if (!mongoose.Types.ObjectId.isValid(_id)) {
+        throw Error("Invalid ID!!!");
+      }
+      // Adding the refund to wallet of user.
+
+      await Payment.findOneAndUpdate(
+        { order: id },
+        {
+          $set: {
+            status: "refunded",
+          },
+        }
+      );
+
+      let wallet = {};
+      const exists = await Wallet.findOne({ user: _id });
+      if (exists) {
+        wallet = await Wallet.findByIdAndUpdate(exists._id, {
+          $inc: {
+            balance: order.totalPrice,
+          },
+          $push: {
+            transactions: {
+              amount: order.totalPrice,
+              type: "credit",
+              description: "Order Cancellation Refund",
+              order: id,
+            },
+          },
+        });
+      } else {
+        wallet = await Wallet.create({
+          user: _id,
+          balance: order.totalPrice,
+          transactions: [
+            {
+              amount: order.totalPrice,
+              type: "credit",
+              description: "Order Cancellation Refund",
+              order: id,
+            },
+          ],
+        });
+      }
+    }
+
     res.status(200).json({ order });
   } catch (error) {
     res.status(400).json({ error: error.message });

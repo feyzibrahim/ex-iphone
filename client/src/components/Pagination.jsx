@@ -3,7 +3,7 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import toast from "react-hot-toast";
 
 const Pagination = ({ handleClick, page, number, totalNumber }) => {
-  let paginationNum = parseInt(totalNumber / number);
+  let paginationNum = Math.ceil(totalNumber / number);
 
   const renderPaginationNumber = () => {
     const paginationButtons = [];
@@ -28,10 +28,10 @@ const Pagination = ({ handleClick, page, number, totalNumber }) => {
       <p
         className={`pagination-arrows`}
         onClick={() => {
-          if (page > 0) {
+          if (page > 1) {
             handleClick("page", page - 1);
           } else {
-            toast.error("Cant go below zero");
+            toast.error("Cant go below one");
           }
         }}
       >

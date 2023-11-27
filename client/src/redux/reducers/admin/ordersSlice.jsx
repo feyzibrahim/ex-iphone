@@ -4,7 +4,6 @@ import {
   updateOrderStatus,
   getOrderWithQuery,
   getReturnOrders,
-  getReturnOrderWithQuery,
   updateReturnOrderStatus,
 } from "../../actions/admin/ordersAction";
 import toast from "react-hot-toast";
@@ -85,20 +84,6 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.orders = null;
         state.error = payload;
-      })
-      .addCase(getReturnOrderWithQuery.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getReturnOrderWithQuery.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.orders = payload;
-      })
-      .addCase(getReturnOrderWithQuery.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.orders = null;
-        state.error = payload;
-        toast.error(payload);
       })
       .addCase(updateReturnOrderStatus.pending, (state) => {
         state.loading = true;

@@ -2,15 +2,10 @@ import React, { useEffect, useState } from "react";
 import { BsCaretRightFill, BsFilterRight } from "react-icons/bs";
 import { AiOutlinePlus, AiOutlineCalendar } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getAdmins,
-  getFilteredData,
-  deleteAdmin,
-} from "../../../../redux/actions/superAdmin/adminAction";
+import { getAdmins } from "../../../../redux/actions/superAdmin/adminAction";
 import TableRow from "./TableRow";
-import ConfirmModal from "../../../../components/ConfirmModal";
 import BlockOrUnBlock from "./BlockOrUnBlock";
 import Modal from "../../../../components/Modal";
 import FilterArray from "../../Components/FilterArray";
@@ -21,21 +16,26 @@ const ManageAdmins = () => {
 
   const { admins, loading, error } = useSelector((state) => state.admins);
 
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
+    } else {
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
   useEffect(() => {
-    dispatch(getAdmins());
-  }, []);
-
-  const [deleteId, setDeleteId] = useState("");
-  const [deleteModal, setDeleteModal] = useState(false);
-  const toggleDeleteModal = (id) => {
-    setDeleteModal(!deleteModal);
-    setDeleteId(id);
-  };
-
-  const dispatchDeleteAction = () => {
-    dispatch(deleteAdmin(deleteId));
-    toggleDeleteModal("");
-  };
+    dispatch(getAdmins(searchParams));
+  }, [searchParams]);
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
@@ -44,23 +44,8 @@ const ManageAdmins = () => {
     setSelectedOrderToUpdate(data);
   };
 
-  const dispatchFilter = (status) => {
-    if (status === "all") {
-      dispatch(getAdmins());
-    } else {
-      dispatch(getFilteredData(status === "active"));
-    }
-  };
-
   return (
     <>
-      {deleteModal && (
-        <ConfirmModal
-          negativeAction={toggleDeleteModal}
-          title="Confirm Delete?"
-          positiveAction={dispatchDeleteAction}
-        />
-      )}
       {blockUnBlockModal && (
         <Modal
           tab={
@@ -100,7 +85,7 @@ const ManageAdmins = () => {
         <div className="lg:flex justify-between items-center text-xs font-semibold">
           <FilterArray
             list={["all", "active", "blocked"]}
-            handleClick={dispatchFilter}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
@@ -135,7 +120,6 @@ const ManageAdmins = () => {
                       isLast={isLast}
                       admin={admin}
                       key={index}
-                      toggleDeleteModal={toggleDeleteModal}
                       toggleBlockUnBlockModal={toggleBlockUnBlockModal}
                     />
                   );

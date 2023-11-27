@@ -4,21 +4,31 @@ const mongoose = require("mongoose");
 // Getting all coupons
 const getCoupons = async (req, res) => {
   try {
-    const query = req.query;
+    const { status, search, page = 1, limit = 10 } = req.query;
 
-    let coupons;
-    if (Object.keys(query).length === 0) {
-      coupons = await Coupon.find(
-        {},
-        { description: 0, minimumPurchaseAmount: 0, maximumUses: 0 }
-      );
-    } else {
-      let { isActive } = query;
-      coupons = await Coupon.find(
-        { isActive },
-        { description: 0, minimumPurchaseAmount: 0, maximumUses: 0 }
-      );
+    let filter = {};
+
+    if (status) {
+      if (status === "active") {
+        filter.isActive = true;
+      } else {
+        filter.isActive = false;
+      }
     }
+
+    if (search) {
+      filter.code = { $regex: new RegExp(search, "i") };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const coupons = await Coupon.find(filter, {
+      description: 0,
+      minimumPurchaseAmount: 0,
+      maximumUses: 0,
+    })
+      .skip(skip)
+      .limit(limit);
 
     return res.status(200).json({ coupons });
   } catch (error) {

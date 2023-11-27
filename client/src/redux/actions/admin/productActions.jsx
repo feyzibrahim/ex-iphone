@@ -47,10 +47,13 @@ export const createProduct = createAsyncThunk(
 // Function to get the product details
 export const getProducts = createAsyncThunk(
   "products/getProducts",
-  async (rc, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/products`, configJson);
-      return data.products;
+      const { data } = await axios.get(
+        `${URL}/admin/products?${queries}`,
+        configJson
+      );
+      return data;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }
@@ -84,22 +87,6 @@ export const updateProduct = createAsyncThunk(
       );
 
       return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const getProductsWithQuery = createAsyncThunk(
-  "products/getProductsWithQuery",
-  async (query, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(
-        `${URL}/admin/products?status=${query}`,
-        config
-      );
-
-      return data.products;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

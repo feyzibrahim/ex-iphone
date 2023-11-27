@@ -3,7 +3,6 @@ import {
   getCoupons,
   createCoupon,
   deleteCoupon,
-  getFilteredCoupon,
   editCoupon,
 } from "../../actions/admin/couponsAction";
 import toast from "react-hot-toast";
@@ -30,20 +29,7 @@ const couponsSlice = createSlice({
         state.coupons = null;
         state.error = payload;
       })
-      .addCase(getFilteredCoupon.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getFilteredCoupon.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.coupons = payload;
-      })
-      .addCase(getFilteredCoupon.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.coupons = null;
-        state.error = payload;
-        toast.error(payload);
-      })
+
       .addCase(createCoupon.pending, (state) => {
         state.loading = true;
       })

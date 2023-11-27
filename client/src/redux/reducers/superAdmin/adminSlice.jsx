@@ -4,7 +4,6 @@ import {
   createNewAdmin,
   deleteAdmin,
   blockOrUnBlock,
-  getFilteredData,
 } from "../../actions/superAdmin/adminAction";
 import toast from "react-hot-toast";
 
@@ -30,20 +29,7 @@ const adminSlice = createSlice({
         state.admins = null;
         state.error = payload;
       })
-      .addCase(getFilteredData.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getFilteredData.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.admins = payload;
-      })
-      .addCase(getFilteredData.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.admins = null;
-        state.error = payload;
-        toast.error(payload);
-      })
+
       .addCase(createNewAdmin.pending, (state) => {
         state.loading = true;
       })

@@ -59,54 +59,42 @@ const getReturnOrder = async (req, res) => {
 // Get Return Orders List
 const getReturnOrders = async (req, res) => {
   try {
-    const query = req.query;
-    let orders;
+    const { status, search, page = 1, limit = 10 } = req.query;
 
-    // getting all return orders when there is no query
-    if (Object.keys(query).length === 0) {
-      orders = await Order.find(
-        {
-          status: {
-            $in: [
-              "return request",
-              "return approved",
-              "return rejected",
-              "pickup completed",
-            ],
-          },
-        },
-        {
-          address: 0,
-          statusHistory: 0,
-          products: { $slice: 1 },
-        }
-      )
-        .populate("user", { firstName: 1, lastName: 1 })
-        .populate("products.productId", { imageURL: 1, name: 1 })
-        .sort({ createdAt: -1 });
-    }
+    let filter = {};
 
-    // getting return orders with query
-    let status = query.status;
     if (status) {
       if (!isValidStatus(status)) {
         throw Error("Not a valid status");
       }
-
-      orders = await Order.find(
-        { status: status },
-        {
-          address: 0,
-          products: { $slice: 1 },
-        }
-      )
-        .populate("user", { firstName: 1, lastName: 1 })
-        .populate("products.productId", { imageURL: 1, name: 1 })
-        .sort({ createdAt: -1 });
-      if (orders.length === 0) {
-        throw Error(`No ${status} orders`);
-      }
+      filter.status = status;
+    } else {
+      filter.status = {
+        $in: [
+          "return request",
+          "return approved",
+          "return rejected",
+          "pickup completed",
+        ],
+      };
     }
+
+    if (search) {
+      filter._id = search;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const orders = await Order.find(filter, {
+      address: 0,
+      statusHistory: 0,
+      products: { $slice: 1 },
+    })
+      .skip(skip)
+      .limit(limit)
+      .populate("user", { firstName: 1, lastName: 1 })
+      .populate("products.productId", { imageURL: 1, name: 1 })
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ orders });
   } catch (error) {

@@ -3,37 +3,43 @@ const User = require("../../model/userModel");
 // Getting all Admins to list on super admin dashboard
 const getAdmins = async (req, res) => {
   try {
-    const query = req.query;
+    const { status, search } = req.query;
 
-    let admins;
+    let filter = {};
 
-    if (Object.keys(query).length === 0) {
-      admins = await User.find(
-        { role: "admin" },
-        {
-          password: 0,
-          dateOfBirth: 0,
-          role: 0,
-          walletBalance: 0,
-          isEmailVerified: 0,
-        }
-      );
-    } else {
-      let { isActive } = query;
-
-      admins = await User.find(
-        { role: "admin", isActive },
-        {
-          password: 0,
-          dateOfBirth: 0,
-          role: 0,
-          walletBalance: 0,
-          isEmailVerified: 0,
-        }
-      );
-      if (admins.length === 0) {
-        throw Error(`No ${isActive ? "active" : "blocked"} admin`);
+    if (status) {
+      if (status === "active") {
+        filter.isActive = true;
+      } else {
+        filter.isActive = false;
       }
+    }
+
+    if (search) {
+      if (search.includes(" ")) {
+        const [firstName, lastName] = search.split(" ");
+        filter.firstName = { $regex: new RegExp(firstName, "i") };
+        filter.lastName = { $regex: new RegExp(lastName, "i") };
+      } else {
+        filter.$or = [
+          { firstName: { $regex: new RegExp(search, "i") } },
+          { lastName: { $regex: new RegExp(search, "i") } },
+        ];
+      }
+    }
+
+    const admins = await User.find(
+      { role: "admin", ...filter },
+      {
+        password: 0,
+        dateOfBirth: 0,
+        role: 0,
+        walletBalance: 0,
+        isEmailVerified: 0,
+      }
+    );
+    if (admins.length === 0) {
+      throw Error(`No ${isActive ? "active" : "blocked"} admin`);
     }
 
     res.status(200).json({ admins });

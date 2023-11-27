@@ -4,25 +4,21 @@ import { FiDownload } from "react-icons/fi";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
-import {
-  getOrders,
-  getOrderWithQuery,
-} from "../../../../redux/actions/admin/ordersAction";
+import { getOrders } from "../../../../redux/actions/admin/ordersAction";
 import { BsFilterRight } from "react-icons/bs";
 import UpdateOrder from "./UpdateOrder";
 import FilterArray from "../../Components/FilterArray";
 import ReturnRequestsButtonInOrders from "./ReturnRequestsButtonInOrders";
 import ExportModal from "../../Components/ExportModal/ExportModal";
 import OrderTableRow from "../../Components/OrderTableRow";
+import JustLoading from "../../../../components/JustLoading";
+import { useSearchParams } from "react-router-dom";
+import SearchBar from "../../../../components/SearchBar";
 
 const Orders = () => {
   const dispatch = useDispatch();
 
   const { orders, loading, error } = useSelector((state) => state.orders);
-
-  useEffect(() => {
-    dispatch(getOrders());
-  }, []);
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [updateModal, setUpdateModal] = useState(false);
@@ -31,14 +27,27 @@ const Orders = () => {
     setSelectedOrderToUpdate(data);
   };
 
-  // Filtering with status
-  const handleClick = (value) => {
-    if (value === "all") {
-      dispatch(getOrders());
+  // Filtering
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
     } else {
-      dispatch(getOrderWithQuery(value));
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
     }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
+
+  useEffect(() => {
+    dispatch(getOrders(searchParams));
+  }, [searchParams]);
 
   // Export Modal
   const [showExportModal, setShowExportModal] = useState(false);
@@ -62,6 +71,11 @@ const Orders = () => {
         />
       )}
       <div className="p-5 w-full overflow-y-auto text-sm">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Orders</h1>
@@ -89,7 +103,7 @@ const Orders = () => {
               "cancelled",
               "returned",
             ]}
-            handleClick={handleClick}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">
@@ -102,7 +116,11 @@ const Orders = () => {
             </button>
           </div>
         </div>
-        {orders && orders.length > 0 ? (
+        {loading ? (
+          <div className="flex items-center justify-center h-full">
+            <JustLoading size={10} />
+          </div>
+        ) : orders && orders.length > 0 ? (
           <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
             <table className="w-full min-w-max table-auto">
               <thead className="font-normal">
