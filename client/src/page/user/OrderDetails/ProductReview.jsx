@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { AiFillStar, AiOutlineClose, AiOutlineStar } from "react-icons/ai";
 import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import * as Yup from "Yup";
-import axios from "axios";
 import { URL } from "../../../Common/links";
-import { config } from "../../../Common/configurations";
-import toast from "react-hot-toast";
+import { createReview } from "../../../redux/actions/user/reviewActions";
+import { useDispatch } from "react-redux";
 
 const StarRating = () => {
   const [rating, setRating] = useState(0);
@@ -36,7 +35,8 @@ const StarRating = () => {
   return <div className="flex">{renderStars()}</div>;
 };
 
-const ProductReview = ({ closeToggle, id, reviewProduct, loadReview }) => {
+const ProductReview = ({ closeToggle, id, reviewProduct }) => {
+  const dispatch = useDispatch();
   const initialValues = {
     rating: "",
     title: "",
@@ -50,17 +50,11 @@ const ProductReview = ({ closeToggle, id, reviewProduct, loadReview }) => {
   });
 
   const handleSubmit = async (value) => {
-    try {
-      const { data } = await axios.post(
-        `${URL}/user/review`,
-        { ...value, order: id, product: reviewProduct._id },
-        config
-      );
-      toast.success("Review Published");
+    const createAction = await dispatch(
+      createReview({ ...value, order: id, product: reviewProduct._id })
+    );
+    if (createReview.fulfilled.match(createAction)) {
       closeToggle();
-      loadReview();
-    } catch (error) {
-      toast.error(error.response.data.error);
     }
   };
 

@@ -113,7 +113,6 @@ const OrderDetail = () => {
               closeToggle={toggleReviewModal}
               id={id}
               reviewProduct={reviewProduct}
-              loadReview={loadReview}
             />
           }
         />

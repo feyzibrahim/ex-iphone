@@ -73,6 +73,7 @@ const reviewSlice = createSlice({
         if (index !== -1) {
           state.reviews[index] = payload;
         }
+        toast.success("Review Updated");
       })
       .addCase(updateReview.rejected, (state, { payload }) => {
         state.loading = false;

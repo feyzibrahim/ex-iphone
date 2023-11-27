@@ -7,11 +7,7 @@ export const createReview = createAsyncThunk(
   "reviews/createReview",
   async (formData, { rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        `${URL}/user/reviews`,
-        formData,
-        config
-      );
+      const { data } = await axios.post(`${URL}/user/review`, formData, config);
 
       return data.review;
     } catch (error) {

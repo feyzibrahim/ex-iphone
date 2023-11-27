@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
-
+import JustLoading from "../../components/JustLoading";
 import DescReview from "./components/DescReview";
 import Quantity from "./components/Quantity";
 import toast from "react-hot-toast";
@@ -97,7 +97,11 @@ const ProductDetails = () => {
 
   return (
     <div className="px-5 lg:px-40 py-20 bg-gray-100">
-      {product ? (
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center">
+          <JustLoading size={20} />
+        </div>
+      ) : product ? (
         <>
           <div className="lg:flex gap-10 justify-center">
             {/* Product Images */}
@@ -211,6 +215,7 @@ const ProductDetails = () => {
                 <button
                   onClick={addToCart}
                   className="w-full font-semibold text-blue-700 border border-blue-700 rounded-lg p-2 hover:bg-blue-700 hover:text-white"
+                  disabled={cartLoading}
                 >
                   {cartLoading ? "Loading" : "Add to Cart"}
                 </button>

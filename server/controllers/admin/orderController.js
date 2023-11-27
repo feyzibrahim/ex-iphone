@@ -109,22 +109,30 @@ const updateOrderStatus = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
-    const updated = await Order.findByIdAndUpdate(
-      id,
-      {
-        $set: {
-          status,
-        },
-        $push: {
-          statusHistory: {
-            status,
-            description,
-            date: new Date(date),
-          },
-        },
+    const statusExists = await Order.findOne({
+      _id: id,
+      "statusHistory.status": status,
+    });
+
+    let updateOptions = {
+      $set: {
+        status,
       },
-      { new: true }
-    );
+    };
+
+    if (!statusExists) {
+      updateOptions.$push = {
+        statusHistory: {
+          status,
+          description,
+          date: new Date(date),
+        },
+      };
+    }
+
+    const updated = await Order.findByIdAndUpdate(id, updateOptions, {
+      new: true,
+    });
 
     if (!updated) {
       throw Error("Something went wrong");

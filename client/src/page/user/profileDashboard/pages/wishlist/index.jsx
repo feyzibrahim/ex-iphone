@@ -1,32 +1,25 @@
 import React, { useEffect } from "react";
 import {
   getWishlist,
-  deleteOneProductFromWishlist,
   deleteEntireWishlist,
 } from "../../../../../redux/actions/user/wishlistActions";
 import { useDispatch, useSelector } from "react-redux";
-import { FaCartPlus } from "react-icons/fa";
 import { BiTrashAlt } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-
+import TableRow from "./tableRow";
 const WishList = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { wishlist, loading, error } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
     dispatch(getWishlist());
   }, []);
 
-  // Function for deleting one product from the wishlist
-  const dispatchDeleteFunction = (productId) => {
-    dispatch(deleteOneProductFromWishlist(productId));
-  };
-
   // Function for clearing the wishlist
   const clearWishlist = () => {
     dispatch(deleteEntireWishlist());
   };
+
+  // Adding to cart
 
   return (
     <div className="w-full">
@@ -54,55 +47,9 @@ const WishList = () => {
               </thead>
               <tbody>
                 {wishlist &&
-                  wishlist.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td
-                          className="px-5 py-3 flex gap-3 items-center hover:underline cursor-pointer hover:text-blue-500 w-96"
-                          onClick={() =>
-                            navigate(`/product/${item.product._id}`)
-                          }
-                        >
-                          <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
-                            {item.product.imageURL ? (
-                              <img
-                                src={`http://localhost:4000/img/${item.product.imageURL}`}
-                                alt="img"
-                                className="object-contain w-full h-full"
-                              />
-                            ) : (
-                              <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
-                            )}
-                          </div>
-                          <p className="line-clamp-1">{item.product.name}</p>
-                        </td>
-                        <td className="px-5 py-3">
-                          ₹{item.product.price + item.product.markup}
-                        </td>
-                        <td className="px-5 py-3 capitalize">
-                          {item.product.status === "published" && "available"}
-                          {item.product.status === "draft" && "not available"}
-                          {item.product.status === "unpublished" &&
-                            "not available"}
-                          {item.product.status === "low quantity" &&
-                            "low quantity"}
-                          {item.product.status === "out of stock" &&
-                            "out of stock"}
-                        </td>
-                        <td className="px-5 py-3 text-xl">
-                          <div className="flex items-center gap-3">
-                            <FaCartPlus className="hover:text-gray-700 cursor-pointer" />
-                            <BiTrashAlt
-                              className="hover:text-gray-700 cursor-pointer"
-                              onClick={() =>
-                                dispatchDeleteFunction(item.product._id)
-                              }
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  wishlist.map((item, index) => (
+                    <TableRow item={item} key={index} />
+                  ))}
               </tbody>
             </table>
           ) : (
