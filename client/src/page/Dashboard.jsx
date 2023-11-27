@@ -7,9 +7,11 @@ import { getWishlist } from "../redux/actions/user/wishlistActions";
 import { useSearchParams } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
 import SortButton from "../components/SortButton";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import Pagination from "../components/Pagination";
 
 const Dashboard = () => {
-  const { userProducts, loading, error } = useSelector(
+  const { userProducts, loading, error, totalAvailableProducts } = useSelector(
     (state) => state.userProducts
   );
   const dispatch = useDispatch();
@@ -38,6 +40,7 @@ const Dashboard = () => {
     setSearch(searchParam || "");
   }, []);
 
+  const [page, setPage] = useState(1);
   const handleClick = (param, value) => {
     let updatedFilters;
 
@@ -50,8 +53,6 @@ const Dashboard = () => {
     } else {
       updatedFilters = { ...filters, [param]: value };
     }
-
-    console.log(updatedFilters);
 
     setFilters(updatedFilters);
 
@@ -69,6 +70,10 @@ const Dashboard = () => {
     }
     if (updatedFilters.sort) {
       params.append("sort", updatedFilters.sort);
+    }
+    if (updatedFilters.page) {
+      params.append("page", updatedFilters.page);
+      setPage(updatedFilters.page);
     }
 
     setSearchParams(params.toString() ? "?" + params.toString() : "");
@@ -229,7 +234,9 @@ const Dashboard = () => {
             setSearch={setSearch}
           />
           <SortButton handleClick={handleClick} />
-          <div className="shrink-0 hidden lg:block">40/4000 Results Loaded</div>
+          <div className="shrink-0 hidden lg:block">
+            {userProducts.length}/{totalAvailableProducts} Results Loaded
+          </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-5">
           {userProducts &&
@@ -237,6 +244,12 @@ const Dashboard = () => {
               <ProductCard product={pro} key={index} />
             ))}
         </div>
+        <Pagination
+          handleClick={handleClick}
+          number={userProducts.length}
+          page={page}
+          totalNumber={totalAvailableProducts}
+        />
       </div>
     </div>
   );

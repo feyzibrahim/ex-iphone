@@ -5,14 +5,18 @@ import { config } from "../../../../../Common/configurations";
 import axios from "axios";
 import date from "date-and-time";
 import toast from "react-hot-toast";
+import JustLoading from "../../../../../components/JustLoading";
 
 const FindCoupons = () => {
   const [coupons, setCoupons] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true);
       const { data } = await axios.get(`${URL}/user/coupons`, config);
       setCoupons(data.coupons);
+      setLoading(false);
     };
     loadData();
   }, []);
@@ -27,7 +31,11 @@ const FindCoupons = () => {
         </div>
 
         <div className="p-5 overflow-auto">
-          {coupons.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center items-center">
+              <JustLoading size={10} />
+            </div>
+          ) : coupons.length > 0 ? (
             <table className="w-full min-w-max table-auto text-sm border">
               <thead>
                 <tr className="bg-gray-100 font-semibold">

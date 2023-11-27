@@ -9,12 +9,13 @@ import Quantity from "../components/Quantity";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import JustLoading from "../../../components/JustLoading";
 
 const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { cartId } = useSelector((state) => state.cart);
+  const { cartId, countLoading } = useSelector((state) => state.cart);
 
   const dispatchIncrement = (item) => {
     dispatch(incrementCount({ cartId, productId: item.product._id }));
@@ -48,11 +49,15 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
         {item.product.price + item.product.markup}
       </td>
       <td className="cart-table-row">
-        <Quantity
-          count={item.quantity}
-          increment={() => dispatchIncrement(item)}
-          decrement={() => dispatchDecrement(item)}
-        />
+        {countLoading ? (
+          <JustLoading size={5} />
+        ) : (
+          <Quantity
+            count={item.quantity}
+            increment={() => dispatchIncrement(item)}
+            decrement={() => dispatchDecrement(item)}
+          />
+        )}
       </td>
       <td className="cart-table-row">
         {(item.product.price + item.product.markup) * item.quantity}

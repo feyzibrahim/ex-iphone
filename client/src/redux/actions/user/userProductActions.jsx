@@ -11,7 +11,7 @@ export const getUserProducts = createAsyncThunk(
         `${URL}/user/products?${searchParams}`,
         config
       );
-      return data.products;
+      return data;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

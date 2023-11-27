@@ -245,3 +245,15 @@
     0
   ); /* Move the sidebar back on-screen when the 'show' class is applied */
 }
+
+/* Pagination  */
+
+.pagination {
+  @apply flex items-center justify-center border-2 w-7 h-7 rounded-full cursor-pointer text-sm border-gray-400 hover:border-gray-800 hover:text-gray-800 active:text-black;
+}
+.pagination-active {
+  @apply flex items-center justify-center border-2 w-7 h-7 rounded-full cursor-pointer text-sm border-blue-500 bg-blue-500 hover:border-blue-800 hover:bg-blue-800 text-white active:text-black;
+}
+.pagination-arrows {
+  @apply flex items-center justify-center border-2 w-7 h-7 rounded-full cursor-pointer border-blue-500 hover:border-blue-800 text-blue-500 hover:text-blue-800;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
+import { BiSearchAlt } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCart,
@@ -13,6 +14,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import CartProductRow from "./components/CartProductRow";
 import TotalAndSubTotal from "./components/TotalAndSubTotal";
+import JustLoading from "../../components/JustLoading";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -102,7 +104,11 @@ const Cart = () => {
             </button>
           </div>
           <div className="overflow-x-auto h-full">
-            {cart.length > 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center h-full">
+                <JustLoading size={10} />
+              </div>
+            ) : cart.length > 0 ? (
               <table className="w-full table-auto">
                 <thead className="bg-gray-100">
                   <tr>
@@ -164,12 +170,20 @@ const Cart = () => {
                 value={inputCouponCode}
                 onChange={(e) => setInputCouponCode(e.target.value)}
               />
-              <button
-                className="btn-blue-border my-3"
-                onClick={dispatchApplyCoupon}
-              >
-                Apply Coupon
-              </button>
+              <div className="flex justify-between">
+                <button
+                  className="btn-blue-border my-3"
+                  onClick={dispatchApplyCoupon}
+                >
+                  Apply Coupon
+                </button>
+                <button
+                  className="flex items-center gap-2 hover:text-blue-500 hover:underline"
+                  onClick={() => navigate("/dashboard/find-coupons")}
+                >
+                  Find <BiSearchAlt />
+                </button>
+              </div>
             </div>
           </div>
         </div>

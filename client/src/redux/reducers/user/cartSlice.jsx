@@ -23,6 +23,7 @@ const cartSlice = createSlice({
     discount: 0,
     couponType: "",
     couponCode: "",
+    countLoading: false,
   },
   reducers: {
     calculateTotalPrice: (state) => {
@@ -104,10 +105,10 @@ const cartSlice = createSlice({
       // Updating cart on when quantity is increased
 
       .addCase(incrementCount.pending, (state) => {
-        state.loading = true;
+        state.countLoading = true;
       })
       .addCase(incrementCount.fulfilled, (state, { payload }) => {
-        state.loading = false;
+        state.countLoading = false;
         state.error = null;
         const updatedCart = state.cart.map((cartItem) => {
           console.log(cartItem.product._id, payload.product);
@@ -122,15 +123,15 @@ const cartSlice = createSlice({
         state.cart = updatedCart;
       })
       .addCase(incrementCount.rejected, (state, { payload }) => {
-        state.loading = false;
+        state.countLoading = false;
         state.error = payload;
         toast.error(payload);
       })
       .addCase(decrementCount.pending, (state) => {
-        state.loading = true;
+        state.countLoading = true;
       })
       .addCase(decrementCount.fulfilled, (state, { payload }) => {
-        state.loading = false;
+        state.countLoading = false;
         state.error = null;
         const updatedCart = state.cart.map((cartItem) => {
           if (cartItem.product._id === payload.product) {
@@ -144,7 +145,7 @@ const cartSlice = createSlice({
         state.cart = updatedCart;
       })
       .addCase(decrementCount.rejected, (state, { payload }) => {
-        state.loading = false;
+        state.countLoading = false;
         state.error = payload;
         toast.error(payload);
       })

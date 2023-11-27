@@ -6,6 +6,7 @@ const userProductSlice = createSlice({
   initialState: {
     loading: false,
     userProducts: [],
+    totalAvailableProducts: null,
     error: null,
   },
   extraReducers: (builder) => {
@@ -16,7 +17,8 @@ const userProductSlice = createSlice({
       .addCase(getUserProducts.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.userProducts = payload;
+        state.userProducts = payload.products;
+        state.totalAvailableProducts = payload.totalAvailableProducts;
       })
       .addCase(getUserProducts.rejected, (state, { payload }) => {
         state.loading = false;

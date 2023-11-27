@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const getProducts = async (req, res) => {
   try {
-    const { category, price, search, sort } = req.query;
+    const { category, price, search, sort, page = 1, limit = 4 } = req.query;
 
     let filter = {};
     if (category) filter.category = { $in: category.split(",") };
@@ -47,6 +47,7 @@ const getProducts = async (req, res) => {
       sortOptions.createdAt = -1;
     }
 
+    const skip = (page - 1) * limit;
     const products = await Product.find(
       {
         status: { $in: ["published", "low quantity"] },
@@ -62,9 +63,16 @@ const getProducts = async (req, res) => {
       }
     )
       .sort(sortOptions)
+      .skip(skip)
+      .limit(parseInt(limit))
       .populate("category", { name: 1 });
 
-    res.status(200).json({ products });
+    const totalAvailableProducts = await Product.countDocuments({
+      status: { $in: ["published", "low quantity"] },
+      ...filter,
+    });
+
+    res.status(200).json({ products, totalAvailableProducts });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
