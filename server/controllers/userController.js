@@ -30,6 +30,7 @@ const getUserDataFirst = async (req, res) => {
 const signUpUser = async (req, res) => {
   try {
     let userCredentials = req.body;
+    console.log("UserController signup user", userCredentials);
 
     const profileImgURL = req?.file?.filename;
     console.log(profileImgURL);
@@ -38,7 +39,7 @@ const signUpUser = async (req, res) => {
       userCredentials = { ...userCredentials, profileImgURL: profileImgURL };
     }
 
-    const user = await User.signup(userCredentials, "user", false);
+    const user = await User.signup(userCredentials, "user", true);
 
     const token = createToken(user._id);
 

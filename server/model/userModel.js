@@ -57,6 +57,8 @@ UserSchema.statics.signup = async function (
   const { email, password, passwordAgain, firstName, lastName } =
     userCredentials;
 
+  console.log(userCredentials);
+
   if (
     !firstName ||
     !lastName ||
@@ -119,15 +121,13 @@ UserSchema.statics.login = async function (email, password) {
   }
 
   let user = await this.findOne({ email });
-
+  if (!user) {
+    throw Error("This email is not registered. Please check!");
+  }
   if (!user.isActive) {
     throw Error(
       "Your account is blocked. Contact customer care for further details"
     );
-  }
-
-  if (!user) {
-    throw Error("This email is not registered. Please check!");
   }
 
   const match = await bcrypt.compare(password, user.password);

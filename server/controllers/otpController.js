@@ -5,22 +5,30 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const { sendOTPMail, passwordChangedMail } = require("../util/mailFunction");
 
+// Sending OTP to email for validation
 const sendOTP = async (req, res) => {
   try {
-    const token = req.cookies.user_token;
+    const { email } = req.body;
+    if (!email) {
+      throw Error("Provide an Email");
+    }
 
-    const { _id } = jwt.verify(token, process.env.SECRET);
+    if (!validator.isEmail(email)) {
+      throw Error("Invalid Email");
+    }
 
-    const user = await User.findOne({ _id }, { password: 0 });
+    const user = await User.findOne({ email });
 
-    let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 10000;
+    if (user) {
+      throw Error("Email is already registered");
+    }
 
-    const email = user.email;
+    let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
     const exists = await OTP.findOne({ email });
 
     if (exists) {
-      return;
+      throw Error("OTP already send");
     }
 
     await OTP.create({ email, otp });
@@ -31,22 +39,11 @@ const sendOTP = async (req, res) => {
   }
 };
 
+// Validating above OTP
 const validateOTP = async (req, res) => {
-  const { otp } = req.body;
+  const { email, otp } = req.body;
 
   try {
-    const token = req.cookies.user_token;
-
-    const { _id } = jwt.verify(token, process.env.SECRET);
-
-    const user = await User.findOne({ _id }, { password: 0 });
-
-    if (!user) {
-      throw Error("Invalid Email");
-    }
-
-    const email = user.email;
-
     const data = await OTP.findOne({ email });
 
     if (!data) {
@@ -57,26 +54,16 @@ const validateOTP = async (req, res) => {
       throw Error("OTP is not matched");
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: user._id },
-      {
-        $set: {
-          isEmailVerified: true,
-        },
-      },
-      { new: true, projection: { password: 0 } }
-    );
-
     res.status(200).json({
       success: true,
       message: "OTP validation Success",
-      user: updatedUser,
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
+// Incase the user forget the password can reset after verifying otp
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -106,7 +93,7 @@ const forgotPassword = async (req, res) => {
       return;
     }
 
-    let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 10000;
+    let otp = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
     await OTP.create({ email, otp });
 
@@ -118,6 +105,7 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+// Validating forgot OTP
 const validateForgotOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -148,6 +136,7 @@ const validateForgotOTP = async (req, res) => {
   }
 };
 
+// Setting up new password
 const newPassword = async (req, res) => {
   try {
     const { email, password, passwordAgain } = req.body;
@@ -203,6 +192,7 @@ const newPassword = async (req, res) => {
   }
 };
 
+// Resending OTP incase the user doesn't receive the OTP
 const resentOTP = async (req, res) => {
   try {
     const { email } = req.body;

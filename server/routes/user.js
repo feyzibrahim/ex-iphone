@@ -105,7 +105,7 @@ router.post("/request-return/:id", requestReturn);
 router.get("/order-invoice/:id", generateOrderInvoice);
 
 // OTP
-router.get("/send-otp", sendOTP);
+router.post("/send-otp", sendOTP);
 router.post("/validate-otp", validateOTP);
 router.post("/resend-otp", resentOTP);
 

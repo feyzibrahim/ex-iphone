@@ -43,7 +43,7 @@ const OTPEmailSection = ({ email, setEmail, setEmailSec, setOTPSec }) => {
           type="email"
           name="email"
           placeholder="Enter your Email"
-          className="bg-transparent outline-none"
+          className="bg-transparent outline-none w-full"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

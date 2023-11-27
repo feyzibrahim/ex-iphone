@@ -5,8 +5,8 @@ import Logo from "../../assets/logoGrey.png";
 import OTPEmailSection from "./components/OTPEmailSection";
 import OTPEnterSection from "./components/OTPEnterSection";
 import PasswordEnterSection from "./components/PasswordEnterSection";
-import { TiCancel } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import OTPExpired from "./components/OTPExpired";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -62,20 +62,7 @@ const ForgetPassword = () => {
             </Link>
           </div>
         )}
-        {otpExpired && (
-          <div className="w-full">
-            <div className="flex justify-center text-9xl text-red-600 animate-pulse">
-              <TiCancel />
-            </div>
-
-            <h1 className="my-5 text-red-500 text-center animate-pulse">
-              OTP Expired try again Later
-            </h1>
-            <Link to="/" className="btn-blue text-white w-full">
-              Go Home
-            </Link>
-          </div>
-        )}
+        {otpExpired && <OTPExpired />}
       </div>
     </div>
   );
