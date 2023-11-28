@@ -12,7 +12,6 @@ const UserSchema = new Schema(
     },
     lastName: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -21,7 +20,6 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: Number,
@@ -41,6 +39,9 @@ const UserSchema = new Schema(
     profileImgURL: {
       type: String,
     },
+    profileImageURL: {
+      type: String,
+    },
     isEmailVerified: {
       type: Boolean,
       required: true,
@@ -56,8 +57,6 @@ UserSchema.statics.signup = async function (
 ) {
   const { email, password, passwordAgain, firstName, lastName } =
     userCredentials;
-
-  console.log(userCredentials);
 
   if (
     !firstName ||

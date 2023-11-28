@@ -30,10 +30,8 @@ const getUserDataFirst = async (req, res) => {
 const signUpUser = async (req, res) => {
   try {
     let userCredentials = req.body;
-    console.log("UserController signup user", userCredentials);
 
     const profileImgURL = req?.file?.filename;
-    console.log(profileImgURL);
 
     if (profileImgURL) {
       userCredentials = { ...userCredentials, profileImgURL: profileImgURL };

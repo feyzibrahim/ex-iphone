@@ -7,10 +7,12 @@ import {
   AiOutlineMail,
   AiOutlinePhone,
 } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signUpUser } from "../../redux/actions/userActions";
+import {
+  googleLoginOrSignUp,
+  signUpUser,
+} from "../../redux/actions/userActions";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "Yup";
 import InputWithIcon from "../../components/InputWithIcon";
@@ -22,6 +24,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { URL } from "../../Common/links";
 import { config } from "../../Common/configurations";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -122,6 +125,11 @@ const Register = () => {
     }
   };
 
+  // Google Login
+  const loginWithGoogle = async (data) => {
+    dispatch(googleLoginOrSignUp(data));
+  };
+
   return (
     <div className="py-20 bg-gray-100 lg:flex  text-gray-500">
       <div className="lg:w-1/2">
@@ -211,12 +219,17 @@ const Register = () => {
         {otpExpired && <OTPExpired />}
         <div className="text-center">
           <p className="my-4">OR</p>
-          <button className="bg-gray-300 w-full rounded-full py-3 text-black flex justify-center items-center gap-5 hover:bg-gray-400">
-            <span className="text-2xl">
-              <FcGoogle />
-            </span>
-            <p>Continue with Google</p>
-          </button>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+                loginWithGoogle(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </div>
           <p className="my-5">
             Already have an account?{" "}
             <Link

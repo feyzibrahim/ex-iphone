@@ -5,6 +5,7 @@ import {
   signUpUser,
   logout,
   editUserProfile,
+  googleLoginOrSignUp,
 } from "../actions/userActions";
 import toast from "react-hot-toast";
 
@@ -62,6 +63,20 @@ const userSlice = createSlice({
         state.user = payload;
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.user = null;
+        state.error = payload;
+      })
+      // Google Login
+      .addCase(googleLoginOrSignUp.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(googleLoginOrSignUp.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.user = payload;
+      })
+      .addCase(googleLoginOrSignUp.rejected, (state, { payload }) => {
         state.loading = false;
         state.user = null;
         state.error = payload;

@@ -50,6 +50,23 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const googleLoginOrSignUp = createAsyncThunk(
+  "user/googleLoginOrSignUp",
+  async (userCredentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post(
+        `${URL}/auth/google`,
+        { token: userCredentials.credential },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
 export const signUpUser = createAsyncThunk(
   "user/signUpUser",
   async (userCredentials, { rejectWithValue }) => {

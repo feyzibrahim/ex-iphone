@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import LoginBG from "../../assets/LoginBG.png";
 import Logo from "../../assets/logoGrey.png";
 import { AiOutlineLock, AiOutlineUser } from "react-icons/ai";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/actions/userActions";
+import {
+  googleLoginOrSignUp,
+  loginUser,
+} from "../../redux/actions/userActions";
 
 import { Formik, Form } from "formik";
 import * as Yup from "Yup";
 import InputWithIcon from "../../components/InputWithIcon";
 import PasswordInputWithIcon from "../../components/PasswordInputWithIcon";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -41,6 +44,10 @@ const Login = () => {
 
   const handleLoginSubmit = (value) => {
     dispatch(loginUser(value));
+  };
+
+  const loginWithGoogle = async (data) => {
+    dispatch(googleLoginOrSignUp(data));
   };
 
   return (
@@ -84,53 +91,6 @@ const Login = () => {
             </button>
           </Form>
         </Formik>
-
-        {/* <div>
-          <p>
-            <label htmlFor="username">Username</label>
-          </p>
-          <div className="flex items-center gap-3 border bg-white border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-            <AiOutlineUser className="text-xl" />
-            <input
-              type="text"
-              name="username"
-              placeholder="Enter your Username"
-              className="bg-transparent outline-none"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-        </div>
-        <div>
-          <p>
-            <label htmlFor="password">Password</label>
-          </p>
-          <div className="flex items-center gap-3 bg-white border border-gray-200 shadow-sm p-2 rounded-lg mb-2">
-            <AiOutlineLock className="text-xl" />
-            <input
-              type={showPass ? "text" : "password"}
-              name="password"
-              placeholder="Enter your Password"
-              className="bg-transparent outline-none w-full"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {showPass ? (
-              <AiOutlineEyeInvisible
-                className="mr-2 cursor-pointer text-xl"
-                onClick={togglePass}
-              />
-            ) : (
-              <AiOutlineEye
-                className="mr-2 cursor-pointer text-xl"
-                onClick={togglePass}
-              />
-            )}
-          </div>
-        </div>
-
-        {error && <p className="my-2 text-red-400">{error}</p>} */}
-
         <div className="text-center">
           <Link to="/forgot-password">
             <div className="my-5 text-blue-600 font-bold cursor-pointer hover:text-blue-500">
@@ -138,12 +98,18 @@ const Login = () => {
             </div>
           </Link>
           <p className="my-4">OR</p>
-          <button className="bg-gray-300 w-full rounded-full py-3 text-black flex justify-center items-center gap-5 hover:bg-gray-400">
-            <span className="text-2xl">
-              <FcGoogle />
-            </span>
-            <p>Continue with Google</p>
-          </button>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                console.log(credentialResponse);
+                loginWithGoogle(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+            />
+          </div>
+
           <p className="my-5">
             Don't have an account?{" "}
             <Link

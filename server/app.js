@@ -33,8 +33,10 @@ const userRoutes = require("./routes/user");
 const adminRoutes = require("./routes/admin");
 const superAdminRoutes = require("./routes/superAdmin");
 const publicRoutes = require("./routes/public");
+const authRoutes = require("./routes/auth");
 
 // Mounting the routes
+app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 app.use("/super-admin", superAdminRoutes);
