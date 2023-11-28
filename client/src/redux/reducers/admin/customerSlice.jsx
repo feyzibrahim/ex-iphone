@@ -13,6 +13,7 @@ const customerSlice = createSlice({
     loading: false,
     customers: [],
     error: null,
+    totalAvailableUsers: null,
   },
   extraReducers: (builder) => {
     builder
@@ -22,7 +23,8 @@ const customerSlice = createSlice({
       .addCase(getCustomers.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.customers = payload;
+        state.customers = payload.customers;
+        state.totalAvailableUsers = payload.totalAvailableUsers;
       })
       .addCase(getCustomers.rejected, (state, { payload }) => {
         state.loading = false;

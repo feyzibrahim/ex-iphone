@@ -4,7 +4,7 @@ import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
 import { useNavigate } from "react-router-dom";
 
-const TableRow = ({ index, length, coupon, toggleDeleteModal }) => {
+const TableRow = ({ index, length, coupon }) => {
   const navigate = useNavigate();
 
   const isLast = index === length - 1;
@@ -37,12 +37,6 @@ const TableRow = ({ index, length, coupon, toggleDeleteModal }) => {
             }}
           >
             <AiOutlineEdit />
-          </span>
-          <span
-            className="hover:text-gray-500"
-            onClick={() => toggleDeleteModal(coupon._id)}
-          >
-            <AiOutlineDelete />
           </span>
         </div>
       </td>

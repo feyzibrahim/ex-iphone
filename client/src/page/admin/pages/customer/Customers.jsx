@@ -16,7 +16,9 @@ const Customers = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { customers, loading, error } = useSelector((state) => state.customers);
+  const { customers, loading, error, totalAvailableUsers } = useSelector(
+    (state) => state.customers
+  );
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [blockUnBlockModal, setBlockUnBlockModal] = useState(false);
@@ -140,7 +142,7 @@ const Customers = () => {
             handleClick={handleFilter}
             page={page}
             number={10}
-            totalNumber={customers.length}
+            totalNumber={totalAvailableUsers}
           />
         </div>
       </div>

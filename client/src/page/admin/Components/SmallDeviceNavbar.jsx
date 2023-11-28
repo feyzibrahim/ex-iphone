@@ -22,7 +22,7 @@ const SmallDeviceNavbar = () => {
       </div>
 
       <div
-        className={`side-navbar ${
+        className={`side-navbar-admin ${
           showSideNavbar ? "show" : ""
         } absolute top-0 left-0  bg-opacity-40`}
         onClick={toggleSideNavbar}

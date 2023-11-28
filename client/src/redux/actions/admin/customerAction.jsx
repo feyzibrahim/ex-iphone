@@ -32,7 +32,7 @@ export const getCustomers = createAsyncThunk(
         `${URL}/admin/customers?${queries}`,
         config
       );
-      return data.customers;
+      return data;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

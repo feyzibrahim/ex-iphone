@@ -20,19 +20,6 @@ const Coupon = () => {
 
   const { coupons, loading, error } = useSelector((state) => state.coupons);
 
-  const [showDeleteModel, setShowDeleteModel] = useState(false);
-  const [idToBeDeleted, setIdToBeDeleted] = useState("");
-
-  const toggleDeleteModel = (id) => {
-    setIdToBeDeleted(id);
-    setShowDeleteModel(!showDeleteModel);
-  };
-
-  const deleteData = () => {
-    dispatch(deleteCoupon(idToBeDeleted));
-    toggleDeleteModel("");
-  };
-
   // Filtering
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -63,13 +50,6 @@ const Coupon = () => {
 
   return (
     <>
-      {showDeleteModel && (
-        <ConfirmModel
-          negativeAction={toggleDeleteModel}
-          positiveAction={deleteData}
-          title="Are your sure?"
-        />
-      )}
       <div className="p-5 w-full overflow-y-auto">
         <SearchBar
           handleClick={handleFilter}
@@ -131,7 +111,6 @@ const Coupon = () => {
                       key={index}
                       index={index}
                       length={coupons.length}
-                      toggleDeleteModal={toggleDeleteModel}
                     />
                   );
                 })}

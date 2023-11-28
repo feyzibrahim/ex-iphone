@@ -78,7 +78,9 @@ const Register = () => {
     formData.append("password", data.password);
     formData.append("passwordAgain", data.passwordAgain);
     formData.append("phoneNumber", data.phoneNumber);
-    formData.append("profileImgURL", data.profileImgURL);
+    if (data.profileImgURL) {
+      formData.append("profileImgURL", data.profileImgURL);
+    }
 
     dispatch(signUpUser(formData));
   };

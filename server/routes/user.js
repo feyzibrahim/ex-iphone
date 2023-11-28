@@ -77,6 +77,7 @@ const {
   editReview,
   readOrderReview,
 } = require("../controllers/user/reviewController");
+const { getCategories } = require("../controllers/user/categoryController");
 
 const router = express.Router();
 
@@ -164,5 +165,8 @@ router.delete("/review/:id", deleteReview);
 router.patch("/review/:id", editReview);
 // Review on order details page
 router.get("/order-review/:id", readOrderReview);
+
+// Category
+router.get("/categories", getCategories);
 
 module.exports = router;

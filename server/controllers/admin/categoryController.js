@@ -4,7 +4,25 @@ const mongoose = require("mongoose");
 // Getting all Categories to list on admin dashboard
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    const { status, search, page = 1, limit = 10 } = req.query;
+
+    let filter = {};
+
+    if (status) {
+      if (status === "active") {
+        filter.isActive = true;
+      } else {
+        filter.isActive = false;
+      }
+    }
+
+    if (search) {
+      filter.name = { $regex: new RegExp(search, "i") };
+    }
+
+    const skip = (page - 1) * limit;
+
+    const categories = await Category.find(filter).skip(skip).limit(limit);
 
     res.status(200).json({ categories });
   } catch (error) {

@@ -47,9 +47,12 @@ export const createNewCategory = createAsyncThunk(
 // Function to fetch all categories
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
-  async (rc, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`${URL}/admin/categories`, configJson);
+      const { data } = await axios.get(
+        `${URL}/admin/categories?${queries}`,
+        configJson
+      );
       return data.categories;
     } catch (error) {
       return handleError(error, rejectWithValue);

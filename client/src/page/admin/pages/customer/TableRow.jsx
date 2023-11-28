@@ -12,7 +12,9 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
     >
       <td className="admin-table-row flex items-center gap-2">
         <div className="w-10 h-10 overflow-clip flex justify-center items-center">
-          {customer.profileImgURL ? (
+          {customer.profileImgURL &&
+          customer.profileImgURL != null &&
+          customer.profileImgURL != "null" ? (
             <img
               src={`http://localhost:4000/img/${customer.profileImgURL}`}
               alt="img"

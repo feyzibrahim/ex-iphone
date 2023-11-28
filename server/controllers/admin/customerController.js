@@ -44,7 +44,12 @@ const getCustomers = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    res.status(200).json({ customers });
+    const totalAvailableUsers = await User.countDocuments({
+      role: "user",
+      ...filter,
+    });
+
+    res.status(200).json({ customers, totalAvailableUsers });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

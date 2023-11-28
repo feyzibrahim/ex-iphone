@@ -13,6 +13,7 @@ const TableRow = ({ index, length, product }) => {
   return (
     <tr
       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
+      onClick={() => navigate(`edit/${product._id}`)}
     >
       <td className="admin-table-row flex items-center gap-2 ">
         <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">

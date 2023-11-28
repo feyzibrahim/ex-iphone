@@ -14,6 +14,10 @@ const CategorySchema = new Schema(
     imgURL: {
       type: String,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

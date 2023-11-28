@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineSave, AiOutlineClose, AiOutlineDelete } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomFileInput from "../../Components/CustomFileInput";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,6 +62,7 @@ const EditProduct = () => {
         .get(`http://localhost:4000/admin/product/${id}`)
         .then(({ data }) => {
           setFetchedData({ ...data.product });
+          console.log(data);
 
           setDuplicateFetchData({ ...data.product });
         });
@@ -78,7 +79,6 @@ const EditProduct = () => {
   // Functions for product images uploads
   const [newMoreImage, setNewMoreImage] = useState([]);
   const handleMultipleImageInput = (files) => {
-    console.log("fetchedData");
     setNewMoreImage(files);
   };
 
@@ -89,8 +89,13 @@ const EditProduct = () => {
       if (duplicateFetchData[key] !== fetchedData[key]) {
         if (key === "attributes") {
           formData.append("attributes", JSON.stringify(fetchedData.attributes));
+        } else if (key === "moreImageURL" && Array.isArray(fetchedData[key])) {
+          fetchedData[key].forEach((item, index) => {
+            formData.append(`${key}[${index}]`, item);
+          });
         } else {
           formData.append(key, fetchedData[key]);
+          console.log(key);
         }
       }
     }
@@ -98,7 +103,6 @@ const EditProduct = () => {
     if (newMoreImage.length > 0) {
       for (const file of newMoreImage) {
         formData.append("moreImageURL", file);
-        console.log("first");
       }
     }
 
@@ -111,6 +115,7 @@ const EditProduct = () => {
     // for (const pair of formData.entries()) {
     //   console.log(pair[0] + ", " + pair[1]);
     // }
+    // console.log({ id: id, formData: formData });
 
     dispatch(updateProduct({ id: id, formData: formData }));
     navigate(-1);
@@ -143,6 +148,17 @@ const EditProduct = () => {
 
   const toggleConfirm = () => {
     setShowConfirm(!showConfirm);
+  };
+
+  // deleting one image from the product images
+  const deleteOneProductImage = (index) => {
+    const updatedImages = [...fetchedData.moreImageURL];
+    updatedImages.splice(index, 1);
+
+    setFetchedData((prevData) => ({
+      ...prevData,
+      ["moreImageURL"]: updatedImages,
+    }));
   };
 
   return (
@@ -249,14 +265,13 @@ const EditProduct = () => {
             {/* Image Uploading */}
             <div className="admin-div">
               <h1 className="font-bold">Product Images</h1>
-              <p className="admin-label my-2">Drop Here</p>
               {fetchedData.moreImageURL &&
               fetchedData.moreImageURL.length > 0 ? (
                 <div className="bg-gray-100 py-5 rounded-lg text-center border-dashed border-2">
                   <div className="flex flex-wrap   gap-3 justify-center">
                     {fetchedData.moreImageURL.map((img, index) => (
                       <div
-                        className="bg-white p-2 rounded-lg shadow-lg mb-2 w-24 h-24"
+                        className="bg-white p-2 rounded-lg shadow-lg mb-2 w-28 h-28 relative"
                         key={index}
                       >
                         <img
@@ -264,6 +279,12 @@ const EditProduct = () => {
                           alt="img"
                           className="h-full w-full object-contain"
                         />
+                        <button
+                          onClick={() => deleteOneProductImage(index)}
+                          className="absolute -top-2 -right-2 text-xl p-2 bg-blue-100 hover:bg-blue-200 rounded-full"
+                        >
+                          <AiOutlineDelete />
+                        </button>
                       </div>
                     ))}
                   </div>
@@ -280,7 +301,11 @@ const EditProduct = () => {
                   </button>
                 </div>
               ) : (
-                <CustomFileInput onChange={handleMultipleImageInput} />
+                <>
+                  <p className="admin-label my-2">Drop Here</p>
+
+                  <CustomFileInput onChange={handleMultipleImageInput} />
+                </>
               )}
             </div>
             {/* Attributes */}
@@ -372,7 +397,7 @@ const EditProduct = () => {
                 onChange={handleInputChange}
               >
                 {categories.map((cat, index) => (
-                  <option key={index} value={cat.name}>
+                  <option key={index} value={cat._id}>
                     {cat.name}
                   </option>
                 ))}

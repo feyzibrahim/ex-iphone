@@ -99,6 +99,7 @@ const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const formData = req.body;
+    console.log("Updation: ", formData);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw Error("Invalid ID!!!");
@@ -114,7 +115,6 @@ const updateProduct = async (req, res) => {
           formData.imageURL = file.filename;
         } else {
           formData.moreImageURL.push(file.filename);
-          console.log("SOmething here");
         }
       });
 
@@ -130,8 +130,6 @@ const updateProduct = async (req, res) => {
     if (formData.moreImageURL === "") {
       formData.moreImageURL = [];
     }
-
-    console.log(formData);
 
     if (formData.attributes) {
       const attributes = JSON.parse(formData.attributes);

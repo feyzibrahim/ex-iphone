@@ -30,6 +30,7 @@ const EditCategory = () => {
     updatedFormData.append("name", value.title);
     updatedFormData.append("description", value.description);
     updatedFormData.append("imgURL", value.imageURL);
+    updatedFormData.append("isActive", value.isActive);
     setFormData(updatedFormData);
   };
 
@@ -49,6 +50,7 @@ const EditCategory = () => {
     title: "",
     description: "",
     imageURL: null,
+    isActive: "",
   });
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const EditCategory = () => {
           title: categoryData.name,
           description: categoryData.description,
           imageURL: categoryData.imgURL,
+          isActive: categoryData.isActive,
         });
       } catch (error) {
         console.error(error);
@@ -155,6 +158,24 @@ const EditCategory = () => {
                 </div>
                 <div className="lg:w-2/3">
                   <p>
+                    <label htmlFor="isActive" className="admin-label">
+                      Is Active
+                    </label>
+                  </p>
+                  <Field
+                    as="select"
+                    name="isActive"
+                    className="capitalize admin-input"
+                  >
+                    <option value={true}>active</option>
+                    <option value={false}>block</option>
+                  </Field>
+                  <ErrorMessage
+                    name="isActive"
+                    component="div"
+                    className="text-red-500"
+                  />
+                  <p>
                     <label htmlFor="title" className="admin-label">
                       Category Title
                     </label>
@@ -178,7 +199,7 @@ const EditCategory = () => {
                   <Field
                     name="description"
                     as="textarea"
-                    className="admin-input h-36 lg:h-64"
+                    className="admin-input h-36 lg:h-44"
                     placeholder="Type the category description here"
                   />
                   <ErrorMessage
