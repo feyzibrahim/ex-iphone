@@ -77,6 +77,12 @@ function App() {
     }
   }, [dispatch, user]);
 
+  const ProtectedRoute = ({ element }) => {
+    const { user } = useSelector((state) => state.user);
+
+    return user ? element : <Navigate to="/login" />;
+  };
+
   return (
     <>
       <Toaster position="top-center" />
@@ -113,10 +119,16 @@ function App() {
           {/* User Routes */}
           <Route path="/product/:id" element={<ProductDetails />} />
 
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/cart" element={<ProtectedRoute element={<Cart />} />} />
+          <Route
+            path="/checkout"
+            element={<ProtectedRoute element={<Checkout />} />}
+          />
 
-          <Route path="/dashboard" element={<ProfileDashboard />}>
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute element={<ProfileDashboard />} />}
+          >
             <Route index element={<Dash />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="order-history" element={<OrderHistory />} />
