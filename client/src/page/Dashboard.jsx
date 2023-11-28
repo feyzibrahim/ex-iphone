@@ -8,6 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import SortButton from "../components/SortButton";
 import Pagination from "../components/Pagination";
 import FilterUserDashboard from "../components/FilterUserDashboard";
+import JustLoading from "../components/JustLoading";
 
 const Dashboard = () => {
   const { userProducts, loading, error, totalAvailableProducts } = useSelector(
@@ -29,6 +30,7 @@ const Dashboard = () => {
     const priceParam = searchParams.get("price");
     const searchParam = searchParams.get("search");
     const sortParam = searchParams.get("sort");
+    const page = searchParams.get("page");
 
     setFilters({
       category: categoryParam ? categoryParam.split(",") : [],
@@ -36,6 +38,7 @@ const Dashboard = () => {
       search: searchParam || "",
       sort: sortParam || "",
     });
+    setPage(page || 1);
     setSearch(searchParam || "");
   }, []);
 
@@ -85,6 +88,8 @@ const Dashboard = () => {
     params.delete("category");
     params.delete("price");
     params.delete("search");
+    params.delete("sort");
+    params.delete("page");
 
     setSearchParams(params);
 
@@ -92,8 +97,11 @@ const Dashboard = () => {
       category: [],
       price: "",
       search: "",
+      sort: "",
     });
     setSearch("");
+    setPage(1);
+    setActiveSort("Newest to Oldest");
   };
 
   useEffect(() => {
@@ -116,22 +124,28 @@ const Dashboard = () => {
             search={search}
             setSearch={setSearch}
           />
-          <SortButton handleClick={handleClick} />
+          <SortButton handleClick={handleClick} filters={filters} />
           <div className="shrink-0 hidden lg:block">
             {userProducts.length}/{totalAvailableProducts} Results Loaded
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-5">
-          {userProducts && userProducts.length > 0 ? (
-            userProducts.map((pro, index) => (
-              <ProductCard product={pro} key={index} />
-            ))
-          ) : (
-            <div className="h-96">
-              <p>Nothing to show</p>
-            </div>
-          )}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-96">
+            <JustLoading size={10} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 py-5">
+            {userProducts && userProducts.length > 0 ? (
+              userProducts.map((pro, index) => (
+                <ProductCard product={pro} key={index} />
+              ))
+            ) : (
+              <div className="h-96">
+                <p>Nothing to show</p>
+              </div>
+            )}
+          </div>
+        )}
         <Pagination
           handleClick={handleClick}
           number={4}

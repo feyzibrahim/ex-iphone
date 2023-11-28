@@ -179,7 +179,7 @@ const generateOrderCSV = async (req, res) => {
 const generatePDF = async (orderData) => {
   return new Promise((resolve, reject) => {
     try {
-      const doc = new PDFDocument();
+      const doc = new PDFDocument({ margin: 50 });
 
       const buffers = [];
       doc.on("data", (buffer) => buffers.push(buffer));
@@ -202,19 +202,6 @@ const generatePDF = async (orderData) => {
         "tax",
         "totalPrice",
       ];
-      // const headers = [
-      //   "Order ID",
-      //   "User ID",
-      //   "User Name",
-      //   "User Email",
-      //   "Status",
-      //   "Address",
-      //   "City",
-      //   "Subtotal",
-      //   "Shipping",
-      //   "Tax",
-      //   "Total Price",
-      // ];
 
       // Calculate column widths
       const columnWidths = headers.map((header) =>
@@ -224,37 +211,34 @@ const generatePDF = async (orderData) => {
         )
       );
 
-      // Styling for table
-      doc.lineWidth(1);
-      doc.lineCap("butt");
-      doc.moveTo(50, doc.y + 10); // Adjust the starting position
+      // Table row with bottom line
+      const generateTableRow = (y, values) => {
+        values.forEach((value, index) => {
+          doc.text(value, 50 + index * 100, y);
+          if (index < values.length - 1) {
+            doc
+              .moveTo(50 + (index + 1) * 100, y)
+              .lineTo(50 + (index + 1) * 100, y + 15);
+          }
+        });
+      };
 
       // Print headers with styling
-      headers.forEach((header, index) => {
-        doc.text(header, {
-          width: columnWidths[index] * 8,
-          align: "left",
-          continued: index < headers.length - 1,
-        });
-      });
+      generateTableRow(doc.y + 10, headers);
 
       doc.moveDown();
 
       // Loop through orders and add content manually
       orderData.forEach((item) => {
-        doc.moveTo(50, doc.y); // Reset position for each row
-
-        headers.forEach((header, index) => {
-          doc.text(String(item[header]), {
-            width: columnWidths[index] * 8,
-            align: "left",
-            continued: index < headers.length - 1,
-          });
-        });
+        generateTableRow(
+          doc.y,
+          headers.map((header) => String(item[header]))
+        );
 
         doc.moveDown(); // Move down for the next row
       });
 
+      // End the document
       doc.end();
     } catch (error) {
       reject(error);

@@ -69,7 +69,6 @@ const DescReview = ({ product, id }) => {
           <div className="w-full">
             <h1 className="font-semibold my-2">Description</h1>
             <p className="text-xs font-semibold text-gray-500">
-              {" "}
               {product.description}
             </p>
           </div>
@@ -132,7 +131,11 @@ const DescReview = ({ product, id }) => {
             <>
               <div className="flex flex-col lg:flex-row gap-5">
                 <div className="bg-blue-50 py-10 px-20 flex flex-col items-center gap-3 rounded">
-                  <h1 className="text-5xl font-semibold">{product.rating}.0</h1>
+                  <h1 className="text-5xl font-semibold">
+                    {Number.isInteger(product.rating)
+                      ? `${product.rating}.0`
+                      : product.rating.toFixed(1)}
+                  </h1>
                   <div className="flex text-xl">
                     {renderStars(product.rating)}
                   </div>
@@ -150,7 +153,6 @@ const DescReview = ({ product, id }) => {
                       const width = parseInt(
                         (item / product.numberOfReviews) * 100
                       );
-                      console.log(width);
                       return (
                         <div className="flex items-center gap-5" key={index}>
                           <div className="flex">{renderStars(index + 1)}</div>

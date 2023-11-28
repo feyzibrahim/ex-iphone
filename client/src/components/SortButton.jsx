@@ -1,6 +1,6 @@
 import React from "react";
 
-const SortButton = ({ handleClick }) => {
+const SortButton = ({ filters, handleClick }) => {
   const handleChange = (sort, value) => {
     handleClick(sort, value);
   };
@@ -10,42 +10,29 @@ const SortButton = ({ handleClick }) => {
       <p className="shrink-0"> Sort By:</p>
       <select
         className="rounded-lg outline-none px-2 py-1 border-"
+        value={filters.sort}
         onChange={(e) => {
-          if (e.target.value === "Oldest to newest") {
-            handleChange("sort", "created-desc");
-          }
-          if (e.target.value === "Price Low to High") {
-            handleChange("sort", "price-asc");
-          }
-          if (e.target.value === "Price High to Low") {
-            handleChange("sort", "price-desc");
-          }
-          if (e.target.value === "Newest to Oldest") {
-            handleChange("sort", "");
-          }
+          handleChange("sort", e.target.value);
         }}
       >
-        <option
-          className="hover:bg-gray-200 py-2 px-3 rounded-lg"
-          value="Newest to Oldest"
-        >
+        <option className="hover:bg-gray-200 py-2 px-3 rounded-lg" value="">
           Newest to Oldest
         </option>
         <option
           className="hover:bg-gray-200 py-2 px-3 rounded-lg"
-          value="Oldest to newest"
+          value="created-desc"
         >
           Oldest to newest
         </option>
         <option
           className="hover:bg-gray-200 py-2 px-3 rounded-lg"
-          value="Price Low to High"
+          value="price-asc"
         >
           Price Low to High
         </option>
         <option
           className="hover:bg-gray-200 py-2 px-3 rounded-lg"
-          value="Price High to Low"
+          value="price-desc"
         >
           Price High to Low
         </option>

@@ -23,7 +23,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
 
         {categories.map((item) => {
           return (
-            <li className="category-li">
+            <li className="category-li" key={item._id}>
               <input
                 type="checkbox"
                 name="category"

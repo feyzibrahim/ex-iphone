@@ -10,9 +10,9 @@ import {
   AiOutlineUser,
   AiOutlineHistory,
   AiOutlineLogout,
+  AiOutlineHome,
 } from "react-icons/ai";
 import { RiDashboardLine } from "react-icons/ri";
-// import { GiHamburgerMenu } from "react-icons/gi";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
@@ -32,16 +32,13 @@ const Navbar = () => {
 
   return (
     <nav className="flex z-10 absolute items-center justify-between py-5 px-5 lg:px-40 font-bold text-gray-500 w-full">
-      <div
-        className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100"
-        onClick={() => navigate("/")}
-      >
+      <div className="w-7 flex items-center cursor-pointer opacity-70 hover:opacity-100">
         <ExIphoneLogo />
       </div>
       <div className="hidden lg:flex gap-10">
-        <NavLink className="hover:text-blue-400 px-2 py-1" to="/">
+        {/* <NavLink className="hover:text-blue-400 px-2 py-1" to="/">
           Home
-        </NavLink>
+        </NavLink> */}
         {!user ? (
           <>
             <NavLink className="hover:text-blue-400 px-2 py-1" to="/contact">
@@ -53,18 +50,21 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <NavLink className="hover:text-blue-400 px-2 py-1" to="/products">
+            {/* <NavLink className="hover:text-blue-400 px-2 py-1" to="/products">
               Products
             </NavLink>
             <NavLink className="hover:text-blue-400 px-2 py-1" to="/og">
               Original Products
-            </NavLink>
+            </NavLink> */}
           </>
         )}
       </div>
       <div className="flex gap-6 items-center relative">
         {user ? (
           <>
+            <NavLink to="/" className="hover:text-blue-400 p-2">
+              <AiOutlineHome className="text-xl" />
+            </NavLink>
             <NavLink to="/cart" className="hover:text-blue-400 p-2">
               <AiOutlineShoppingCart className="text-xl" />
             </NavLink>
