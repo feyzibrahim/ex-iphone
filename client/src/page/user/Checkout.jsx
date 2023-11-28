@@ -200,7 +200,9 @@ const Checkout = () => {
     }
 
     if (selectedPayment === "myWallet") {
-      if (walletBalance < totalPrice + discount + tax + shipping) {
+      let entireTotal =
+        Number(totalPrice) + Number(discount) + Number(tax) - Number(offer);
+      if (walletBalance < entireTotal) {
         toast.error("Not balance in your wallet");
         return;
       }
