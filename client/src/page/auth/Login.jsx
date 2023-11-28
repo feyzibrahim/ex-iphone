@@ -101,7 +101,6 @@ const Login = () => {
           <div className="flex justify-center">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
-                console.log(credentialResponse);
                 loginWithGoogle(credentialResponse);
               }}
               onError={() => {

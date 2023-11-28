@@ -32,7 +32,11 @@ const ProfilePage = () => {
         </h1>
         <div className="w-full">
           <div className="lg:flex items-start gap-5 p-5">
-            {user?.profileImgURL && typeof user?.profileImgURL === "string" ? (
+            {!(user?.profileImgURL || user?.profileImageURL) && (
+              <div className="w-56 h-56 bg-gray-100 rounded-full shrink-0"></div>
+            )}
+
+            {user?.profileImgURL && (
               <div className="h-56 w-56 rounded-full shrink-0 overflow-clip">
                 <img
                   src={`http://localhost:4000/img/${user?.profileImgURL}`}
@@ -40,9 +44,18 @@ const ProfilePage = () => {
                   className="h-full w-full object-cover"
                 />
               </div>
-            ) : (
-              <div className="w-56 h-56 bg-gray-100 rounded-full shrink-0"></div>
             )}
+
+            {user?.profileImageURL && (
+              <div className="h-56 w-56 rounded-full shrink-0 overflow-clip">
+                <img
+                  src={`${user?.profileImageURL}`}
+                  alt="profile"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            )}
+
             <div className="w-full">
               <div className="lg:grid grid-cols-2 gap-5 ">
                 <InputWithIcon

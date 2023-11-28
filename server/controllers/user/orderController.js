@@ -381,6 +381,32 @@ const generateOrderInvoice = async (req, res) => {
   }
 };
 
+const orderCount = async (req, res) => {
+  try {
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    const totalOrders = await Order.countDocuments({ user: _id });
+    const pendingOrders = await Order.countDocuments({
+      user: _id,
+      status: "pending",
+    });
+    const completedOrders = await Order.countDocuments({
+      user: _id,
+      status: "delivered",
+    });
+
+    res.status(200).json({ totalOrders, pendingOrders, completedOrders });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getOrders,
@@ -388,4 +414,5 @@ module.exports = {
   cancelOrder,
   requestReturn,
   generateOrderInvoice,
+  orderCount,
 };

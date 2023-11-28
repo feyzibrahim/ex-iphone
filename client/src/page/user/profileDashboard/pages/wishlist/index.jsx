@@ -6,6 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { BiTrashAlt } from "react-icons/bi";
 import TableRow from "./tableRow";
+import JustLoading from "../../../../../components/JustLoading";
 const WishList = () => {
   const dispatch = useDispatch();
   const { wishlist, loading, error } = useSelector((state) => state.wishlist);
@@ -35,7 +36,11 @@ const WishList = () => {
         </div>
 
         <div className="p-5 overflow-auto">
-          {wishlist ? (
+          {loading ? (
+            <div className="flex items-center justify-center h-96">
+              <JustLoading size={10} />
+            </div>
+          ) : wishlist && wishlist.length > 0 ? (
             <table className="w-full min-w-max table-auto text-sm border">
               <thead>
                 <tr className="bg-gray-100 font-semibold">
@@ -54,7 +59,7 @@ const WishList = () => {
             </table>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <p>No Transactions</p>
+              <p>You haven't added any products to wishlist</p>
             </div>
           )}
         </div>

@@ -78,7 +78,7 @@ const Navbar = () => {
               <AiOutlineUser className="text-xl" />
             </button>
             {dropDown && (
-              <div className="absolute top-10 font-normal w-44 bg-white rounded-lg shadow-2xl">
+              <div className="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl">
                 <NavLink
                   to="/dashboard/"
                   className="navbar-drop-ul"

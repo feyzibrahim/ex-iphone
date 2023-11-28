@@ -1,6 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-// import { logout } from "../../redux/actions/userActions";
+import { NavLink, useNavigate } from "react-router-dom";
+import { logout } from "../../redux/actions/userActions";
 import { RiDashboardLine } from "react-icons/ri";
 import {
   AiOutlineHeart,
@@ -11,8 +11,16 @@ import { TiTicket } from "react-icons/ti";
 import { MdTrackChanges } from "react-icons/md";
 import { BiUser, BiHistory } from "react-icons/bi";
 import { GiMailbox } from "react-icons/gi";
+import { useDispatch } from "react-redux";
 
 const DashSideNavbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <div className="w-1/5 bg-white h-fit shrink-0 rounded hidden lg:block">
       <NavLink className="side-nav-link-sp" to="/dashboard/">
@@ -47,10 +55,10 @@ const DashSideNavbar = () => {
         <TiTicket />
         Find Coupons
       </NavLink>
-      <NavLink className="side-nav-link-sp" to="/">
+      <button className="side-nav-link-sp w-full" onClick={handleLogout}>
         <AiOutlineLogout />
         Logout
-      </NavLink>
+      </button>
     </div>
   );
 };

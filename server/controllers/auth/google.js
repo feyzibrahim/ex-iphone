@@ -22,7 +22,7 @@ const loginUsingGoogle = async (req, res) => {
   });
   const { name, email, picture } = ticket.getPayload();
 
-  let user = await User.findOne({ email });
+  let user = await User.findOne({ email }, { password: 0 });
 
   if (!user) {
     user = await User.create({
