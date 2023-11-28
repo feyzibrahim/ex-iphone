@@ -1,5 +1,4 @@
 import React from "react";
-
 import BgImage from "../../assets/iphone.png";
 import NewsLetter from "../../assets/newletter.png";
 
@@ -10,13 +9,16 @@ import NewIphone from "../../components/HomeComponents/NewIphone";
 import AppleWatchCollection from "../../components/HomeComponents/AppleWatchCollection";
 import { useSelector } from "react-redux";
 import ImageSlider from "../../components/HomeComponents/ImageSlider";
+import JustLoading from "../../components/JustLoading";
 
 const Home = () => {
   const { loading } = useSelector((state) => state.user);
 
   if (loading) {
     return (
-      <div className="h-screen flex justify-center items-center">Loading</div>
+      <div className="h-screen flex justify-center items-center">
+        <JustLoading size={20} />
+      </div>
     );
   }
 

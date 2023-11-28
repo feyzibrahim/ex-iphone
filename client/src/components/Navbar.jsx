@@ -36,11 +36,11 @@ const Navbar = () => {
         <ExIphoneLogo />
       </div>
       <div className="hidden lg:flex gap-10">
-        {/* <NavLink className="hover:text-blue-400 px-2 py-1" to="/">
-          Home
-        </NavLink> */}
         {!user ? (
           <>
+            <NavLink className="hover:text-blue-400 px-2 py-1" to="/">
+              Home
+            </NavLink>
             <NavLink className="hover:text-blue-400 px-2 py-1" to="/contact">
               Contact
             </NavLink>
