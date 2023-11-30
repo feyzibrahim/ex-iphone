@@ -5,7 +5,7 @@ import iPad from "../../assets/collection/iPad.png";
 import iWatch from "../../assets/collection/iWatch.png";
 import airPods from "../../assets/collection/airPods.png";
 import airTags from "../../assets/collection/airTags.png";
-import homePod from "../../assets/collection/homePod.png";
+import homePod from "../../assets/collection/homepod.png";
 import iAcc from "../../assets/collection/iAcc.png";
 
 const NewCollection = () => {
