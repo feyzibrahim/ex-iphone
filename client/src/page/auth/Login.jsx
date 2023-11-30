@@ -10,7 +10,7 @@ import {
 } from "../../redux/actions/userActions";
 
 import { Formik, Form } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import InputWithIcon from "../../components/InputWithIcon";
 import PasswordInputWithIcon from "../../components/PasswordInputWithIcon";
 import { GoogleLogin } from "@react-oauth/google";
