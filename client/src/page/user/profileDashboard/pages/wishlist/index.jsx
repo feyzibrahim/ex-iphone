@@ -5,7 +5,7 @@ import {
 } from "../../../../../redux/actions/user/wishlistActions";
 import { useDispatch, useSelector } from "react-redux";
 import { BiTrashAlt } from "react-icons/bi";
-import TableRow from "./tableRow";
+import TableRow from "./TableRow";
 import JustLoading from "../../../../../components/JustLoading";
 const WishList = () => {
   const dispatch = useDispatch();
