@@ -5,7 +5,7 @@ import ProductCards from "../ProductCards";
 
 import Eight from "../../assets/appleWatchCol/8.png";
 import Se from "../../assets/appleWatchCol/se.png";
-import Ultra from "../../assets/appleWatchCol/Ultra.png";
+import Ultra from "../../assets/appleWatchCol/ultra.png";
 
 const AppleWatchCollection = () => {
   const list = [
