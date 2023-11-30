@@ -12,7 +12,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Setting up cors
-const allowedOrigins = ["http://localhost:5173"];
+const allowedOrigins = ["http://localhost:5173", "http://localhost:4173"];
 const corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
