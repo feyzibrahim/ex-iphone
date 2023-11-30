@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiFillStar, AiOutlineClose, AiOutlineStar } from "react-icons/ai";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import { URL } from "../../../Common/links";
 import { useDispatch, useSelector } from "react-redux";
 import { updateReview } from "../../../redux/actions/user/reviewActions";

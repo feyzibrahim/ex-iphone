@@ -6,7 +6,7 @@ import { createNewCategory } from "../../../../redux/actions/admin/categoriesAct
 import CustomSingleFileInput from "../../Components/CustomSingleFileInput";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import ConfirmModal from "../../../../components/ConfirmModal";
 
 const CreateCategories = () => {

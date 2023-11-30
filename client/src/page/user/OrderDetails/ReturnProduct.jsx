@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import { requestReturn } from "../../../redux/actions/user/userOrderActions";
 import { useDispatch } from "react-redux";
 

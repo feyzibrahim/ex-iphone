@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import InputType from "../components/InputType";
 import { AiOutlineClose } from "react-icons/ai";
 import { useDispatch } from "react-redux";

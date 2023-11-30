@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { createCoupon } from "../../../../redux/actions/admin/couponsAction";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import ConfirmModal from "../../../../components/ConfirmModal";
 
 const CreateCoupon = () => {

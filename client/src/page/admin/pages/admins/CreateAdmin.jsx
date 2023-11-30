@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewAdmin } from "../../../../redux/actions/superAdmin/adminAction";
 import { Formik, Form } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 import InputWithIcon from "../../../../components/InputWithIcon";
 import PasswordInputWithIcon from "../../../../components/PasswordInputWithIcon";
 import { FiDownload } from "react-icons/fi";

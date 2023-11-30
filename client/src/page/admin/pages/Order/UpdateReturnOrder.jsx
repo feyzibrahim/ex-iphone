@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { updateReturnOrderStatus } from "../../../../redux/actions/admin/ordersAction";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 
 const UpdateReturnOrder = ({ toggleModal, data }) => {
   const { id, status } = data;

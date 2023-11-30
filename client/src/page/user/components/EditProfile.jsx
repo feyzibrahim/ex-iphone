@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, ErrorMessage } from "formik";
-import * as Yup from "Yup";
+import * as Yup from "yup";
 
 import {
   AiOutlineClose,
