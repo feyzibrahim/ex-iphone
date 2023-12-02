@@ -1,7 +1,8 @@
 import React from "react";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
+import { URL } from "@common/links";
 
 const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
@@ -14,7 +15,7 @@ const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
         <div className="w-10 h-10 overflow-clip flex justify-center items-center">
           {admin.profileImgURL ? (
             <img
-              src={`http://localhost:4000/img/${admin.profileImgURL}`}
+              src={`${URL}/img/${admin.profileImgURL}`}
               alt="img"
               className="object-cover w-full h-full rounded-md"
             />

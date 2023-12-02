@@ -49,7 +49,7 @@ const TableRow = ({ item }) => {
         <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
           {item.product.imageURL ? (
             <img
-              src={`http://localhost:4000/img/${item.product.imageURL}`}
+              src={`${URL}/img/${item.product.imageURL}`}
               alt="img"
               className="object-contain w-full h-full"
             />

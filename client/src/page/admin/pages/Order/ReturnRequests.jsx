@@ -16,6 +16,7 @@ import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import UpdateReturnOrder from "./UpdateReturnOrder";
 import SearchBar from "../../../../components/SearchBar";
+import { URL } from "@common/links";
 
 const ReturnRequests = () => {
   const dispatch = useDispatch();
@@ -129,7 +130,7 @@ const ReturnRequests = () => {
                         <div className="w-10 h-10 overflow-clip flex justify-center items-center">
                           {item.products[0].productId.imageURL ? (
                             <img
-                              src={`http://localhost:4000/img/${item.products[0].productId.imageURL}`}
+                              src={`${URL}/img/${item.products[0].productId.imageURL}`}
                               alt="img"
                               className="object-contain w-full h-full"
                             />

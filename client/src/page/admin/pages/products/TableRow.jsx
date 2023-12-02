@@ -3,6 +3,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import { useNavigate } from "react-router-dom";
 import StatusComponent from "../../../../components/StatusComponent";
+import { URL } from "@common/links";
 
 const TableRow = ({ index, length, product }) => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const TableRow = ({ index, length, product }) => {
         <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
           {product.imageURL ? (
             <img
-              src={`http://localhost:4000/img/${product.imageURL}`}
+              src={`${URL}/img/${product.imageURL}`}
               alt="img"
               className="object-contain w-full h-full"
             />

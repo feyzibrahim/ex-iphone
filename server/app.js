@@ -36,15 +36,15 @@ const publicRoutes = require("./routes/public");
 const authRoutes = require("./routes/auth");
 
 // Mounting the routes
-app.use("/auth", authRoutes);
-app.use("/user", userRoutes);
-app.use("/admin", adminRoutes);
-app.use("/super-admin", superAdminRoutes);
-app.use("/public", publicRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/super-admin", superAdminRoutes);
+app.use("/api/public", publicRoutes);
 
 // Public Api for accessing images
-app.use("/img", express.static(__dirname + "/public/products/"));
-app.use("/off", express.static(__dirname + "/public/official/"));
+app.use("/api/img", express.static(__dirname + "/public/products/"));
+app.use("/api/off", express.static(__dirname + "/public/official/"));
 
 mongoose
   .connect(process.env.MONGO_URI)

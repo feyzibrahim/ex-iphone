@@ -145,7 +145,7 @@ const EditProfile = ({ closeToggle }) => {
                 <div className="bg-gray-100 py-5 rounded-lg text-center border-dashed border-2 h-80">
                   <div className="h-56 w-56">
                     <img
-                      src={`http://localhost:4000/img/${values.profileImgURL}`}
+                      src={`${URL}/img/${values.profileImgURL}`}
                       alt="profile"
                       className="h-full w-full object-cover rounded-full"
                     />

@@ -11,9 +11,4 @@ export default defineConfig({
       "@redux": path.resolve(__dirname, "./src/redux"),
     },
   },
-  build: {
-    rollupOptions: {
-      external: ["yup"], // Add 'yup' or the actual module name here
-    },
-  },
 });

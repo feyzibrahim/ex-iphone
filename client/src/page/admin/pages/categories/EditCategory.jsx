@@ -9,6 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
+import { URL } from "@common/links";
 
 const EditCategory = () => {
   const dispatch = useDispatch();
@@ -131,7 +132,7 @@ const EditCategory = () => {
                     <div className="bg-gray-100 py-5 rounded-lg text-center border-dashed border-2 h-80">
                       <div className="h-56">
                         <img
-                          src={`http://localhost:4000/img/${values.imageURL}`}
+                          src={`${URL}/img/${values.imageURL}`}
                           alt="asfa"
                           className="h-full w-full object-contain"
                         />

@@ -9,6 +9,7 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
+import { URL } from "@common/links";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -210,7 +211,7 @@ const EditProduct = () => {
                   <div className="bg-gray-100 py-5 rounded-lg text-center border-dashed border-2">
                     <div className="h-56">
                       <img
-                        src={`http://localhost:4000/img/${fetchedData.imageURL}`}
+                        src={`${URL}/img/${fetchedData.imageURL}`}
                         alt="im"
                         className="h-full w-full object-contain"
                       />
@@ -275,7 +276,7 @@ const EditProduct = () => {
                         key={index}
                       >
                         <img
-                          src={`http://localhost:4000/img/${img}`}
+                          src={`${URL}/img/${img}`}
                           alt="img"
                           className="h-full w-full object-contain"
                         />

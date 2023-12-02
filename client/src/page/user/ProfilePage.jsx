@@ -12,6 +12,7 @@ import { RiCalendarEventFill } from "react-icons/ri";
 import { TiTick } from "react-icons/ti";
 import Modal from "../../components/Modal";
 import EditProfile from "./components/EditProfile";
+import { URL } from "@common/links";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.user);
@@ -39,7 +40,7 @@ const ProfilePage = () => {
             {user?.profileImgURL && (
               <div className="h-56 w-56 rounded-full shrink-0 overflow-clip">
                 <img
-                  src={`http://localhost:4000/img/${user?.profileImgURL}`}
+                  src={`${URL}/img/${user?.profileImgURL}`}
                   alt="profile"
                   className="h-full w-full object-cover"
                 />

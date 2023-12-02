@@ -1,7 +1,8 @@
 import React from "react";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import RatingStars from "./RatingStars";
+import { URL } from "@common/links";
+
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const ProductCard = ({ product }) => {
     >
       <div className="overflow-hidden rounded-lg h-56">
         <img
-          src={`http://localhost:4000/img/${product.imageURL}`}
+          src={`${URL}/img/${product.imageURL}`}
           alt={product.name}
           className="object-contain w-full h-full"
         />

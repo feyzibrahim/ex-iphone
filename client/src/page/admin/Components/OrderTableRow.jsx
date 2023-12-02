@@ -3,6 +3,7 @@ import date from "date-and-time";
 import StatusComponent from "../../../components/StatusComponent";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { URL } from "@common/links";
 
 const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
         <div className="w-10 h-10 overflow-clip flex justify-center items-center  shrink-0">
           {item.products[0].productId.imageURL ? (
             <img
-              src={`http://localhost:4000/img/${item.products[0].productId.imageURL}`}
+              src={`${URL}/img/${item.products[0].productId.imageURL}`}
               alt="img"
               className="object-contain w-full h-full"
             />

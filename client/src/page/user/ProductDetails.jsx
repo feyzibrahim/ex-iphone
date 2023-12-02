@@ -109,24 +109,11 @@ const ProductDetails = () => {
               <div className="w-80 h-80 lg:w-96 lg:h-96 flex">
                 {currentImage && (
                   <img
-                    src={`http://localhost:4000/img/${currentImage}`}
+                    src={`${URL}/img/${currentImage}`}
                     alt="Some to be"
                     className="w-full h-full object-contain"
                   />
                 )}
-                {/* <Magnifier
-              imageSrc={`http://localhost:4000/img/${currentImage}`}
-              imageAlt="Large Image"
-              largeImageSrc={`http://localhost:4000/img/${currentImage}`}
-              magnifierSize="30%"
-            />
-            <SideBySideMagnifier
-              imageSrc={`http://localhost:4000/img/${currentImage}`}
-              imageAlt="Large Image"
-              alwaysInPlace={true}
-              largeImageSrc={`http://localhost:4000/img/${currentImage}`}
-              smallImageSrc={`http://localhost:4000/img/${currentImage}`}
-            /> */}
               </div>
 
               <div className="flex gap-1 lg:gap-5 mt-5">
@@ -144,7 +131,7 @@ const ProductDetails = () => {
                       <img
                         className="w-full h-full object-contain"
                         key={i}
-                        src={`http://localhost:4000/img/${image}`}
+                        src={`${URL}/img/${image}`}
                       />
                     </div>
                   ))}

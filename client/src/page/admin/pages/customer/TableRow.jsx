@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
+import { URL } from "@common/links";
 
 const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
@@ -16,7 +17,7 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
           customer.profileImgURL != null &&
           customer.profileImgURL != "null" ? (
             <img
-              src={`http://localhost:4000/img/${customer.profileImgURL}`}
+              src={`${URL}/img/${customer.profileImgURL}`}
               alt="img"
               className="object-cover w-full h-full rounded-md"
             />

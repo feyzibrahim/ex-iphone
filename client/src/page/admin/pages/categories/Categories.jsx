@@ -9,6 +9,7 @@ import JustLoading from "../../../../components/JustLoading";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import SearchBar from "../../../../components/SearchBar";
+import { URL } from "@common/links";
 
 const Categories = () => {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ const Categories = () => {
                           <div className="w-10 h-10 overflow-clip flex justify-center items-center">
                             {category.imgURL ? (
                               <img
-                                src={`http://localhost:4000/img/${category.imgURL}`}
+                                src={`${URL}/img/${category.imgURL}`}
                                 alt="img"
                                 className="object-contain w-full h-full"
                               />
