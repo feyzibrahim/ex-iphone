@@ -57,9 +57,7 @@ const EditCategory = () => {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4000/admin/category/${id}`
-        );
+        const response = await axios.get(`${URL}/admin/category/${id}`);
 
         const categoryData = response.data.category;
         setInitialValues({

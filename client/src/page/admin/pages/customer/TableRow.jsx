@@ -12,7 +12,7 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
     >
       <td className="admin-table-row flex items-center gap-2">
-        <div className="w-10 h-10 overflow-clip flex justify-center items-center">
+        <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
           {customer.profileImgURL &&
           customer.profileImgURL != null &&
           customer.profileImgURL != "null" ? (
@@ -25,7 +25,9 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
             <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
           )}
         </div>
-        {customer.firstName} {customer.lastName}
+        <p className="line-clamp-1">
+          {customer.firstName} {customer.lastName}
+        </p>
       </td>
       <td className="admin-table-row">{customer.email}</td>
       <td className="admin-table-row">{customer.phoneNumber}</td>

@@ -130,17 +130,17 @@ const OrderDetail = () => {
         />
       )}
       {orderData && (
-        <div className="min-h-screen bg-gray-100 w-full">
-          <div className="bg-white rounded-lg overflow-x-auto">
+        <div className="min-h-screen bg-gray-100 w-full px-5 lg:px-0">
+          <div className="bg-white rounded-lg">
             <div className="flex items-center justify-between px-5 py-1 border-b">
               <div className="flex items-center gap-1">
                 <div
-                  className="cursor-pointer p-3 rounded-md text-gray-500 hover:text-black hover:shadow-lg"
+                  className="cursor-pointer p-1 sm:p-3 rounded-md text-gray-500 hover:text-black hover:shadow-lg"
                   onClick={() => navigate(-1)}
                 >
                   <BsArrowLeft className="text-xl" />
                 </div>
-                <h1 className="uppercase text-xl font-semibold">
+                <h1 className="sm:uppercase text-xs sm:text-xl font-semibold">
                   Order Detail
                 </h1>
               </div>
@@ -149,10 +149,10 @@ const OrderDetail = () => {
                   orderData.status === "processing" ||
                   orderData.status === "shipped") && (
                   <p
-                    className="text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
+                    className="text-xs sm:text-lg font-semibold flex items-center gap-1 text-red-400 cursor-pointer hover:bg-red-100 px-2 rounded-lg"
                     onClick={toggleCancelModal}
                   >
-                    Cancel Order <TiCancel />
+                    Cancel Order <TiCancel className="text-2xl" />
                   </p>
                 )}
                 <>
@@ -177,10 +177,10 @@ const OrderDetail = () => {
             </div>
             {/* Total Price, Order ID, and product count, order placement date */}
             <div>
-              <div className="p-5 m-5 bg-gray-200 rounded-lg flex items-center justify-between">
+              <div className="p-2 sm:p-5 m-5 bg-gray-200 rounded-lg flex flex-col sm:flex-row items-center justify-between">
                 <div>
-                  <h1 className="text-lg font-semibold">#{orderData._id}</h1>
-                  <p className="text-gray-500">
+                  <h1 className="sm:text-lg font-semibold">#{orderData._id}</h1>
+                  <p className="text-gray-500 text-xs sm:text-base">
                     {orderData.totalQuantity} products ∙ Order placed in{" "}
                     {date.format(
                       new Date(orderData.createdAt),
@@ -191,10 +191,10 @@ const OrderDetail = () => {
                 <h1 className="text-3xl font-bold">{orderData.totalPrice}₹</h1>
               </div>
               {/* Expected Date and status component */}
-              <div className="px-5 pb-5 border-b flex items-center justify-between">
+              <div className="px-5 pb-5 border-b flex flex-col gap-2 sm:flex-row sm:gap-0 items-center justify-between">
                 <div>
                   <OrderDates orderData={orderData} />
-                  <div className="flex gap-1">
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-1">
                     <p className="text-gray-500">Payment Mode</p>
                     <p>{orderData.paymentMode}</p>
                     <button
@@ -230,37 +230,39 @@ const OrderDetail = () => {
                   </span>
                 </h1>
                 {/* Product table */}
-                <table className="w-full table-auto">
-                  <thead>
-                    <tr className="bg-gray-100 border border-gray-300">
-                      <td className="py-2 px-1 w-4/12">Products</td>
-                      <td className="py-2 px-1 w-1/12">Price</td>
-                      <td className="py-2 px-1 w-1/12">Quantity</td>
-                      <td className="py-2 px-1 w-1/12">Sub-Total</td>
-                      {orderData.status !== "pending" &&
-                        orderData.status !== "processing" &&
-                        orderData.status !== "shipped" && (
-                          <td className="py-2 px-1 w-2/12">Review</td>
-                        )}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orderData.products &&
-                      orderData.products.map((item, index) => (
-                        <OrderDetailsProductRow
-                          index={index}
-                          item={item}
-                          length={orderData.products.length}
-                          key={index}
-                          status={orderData.status}
-                          toggleReviewModal={toggleReviewModal}
-                        />
-                      ))}
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                  <table className="w-full table-auto">
+                    <thead>
+                      <tr className="bg-gray-100 border border-gray-300">
+                        <td className="py-2 px-1 w-4/12">Products</td>
+                        <td className="py-2 px-1 w-1/12">Price</td>
+                        <td className="py-2 px-1 w-1/12">Quantity</td>
+                        <td className="py-2 px-1 w-1/12">Sub-Total</td>
+                        {orderData.status !== "pending" &&
+                          orderData.status !== "processing" &&
+                          orderData.status !== "shipped" && (
+                            <td className="py-2 px-1 w-2/12">Review</td>
+                          )}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orderData.products &&
+                        orderData.products.map((item, index) => (
+                          <OrderDetailsProductRow
+                            index={index}
+                            item={item}
+                            length={orderData.products.length}
+                            key={index}
+                            status={orderData.status}
+                            toggleReviewModal={toggleReviewModal}
+                          />
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
                 {/* Order Total and charges */}
-                <div className="flex w-full flex-row-reverse">
-                  <div className="w-1/4 bg-gray-100  p-5">
+                <div className="lg:flex w-full lg:flex-row-reverse">
+                  <div className="sm:w-1/4 bg-gray-100  p-5">
                     <div className="border-b border-gray-200 pb-2 mb-2">
                       <div className="cart-total-li">
                         <p className="cart-total-li-first">Sub Total</p>

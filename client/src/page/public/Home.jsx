@@ -42,7 +42,7 @@ const Home = () => {
               <input
                 type="text"
                 placeholder="Find the best product"
-                className="text-black outline-none"
+                className="text-black outline-none w-full"
               />
             </div>
             <button className="btn-blue">Search</button>

@@ -45,6 +45,7 @@ const productSlice = createSlice({
         state.loading = false;
         state.products = null;
         state.error = payload;
+        state.totalAvailableProducts = state.totalAvailableProducts + 1;
       })
 
       // Deleting a Product

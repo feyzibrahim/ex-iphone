@@ -112,7 +112,7 @@ const Customers = () => {
             <table className="w-full min-w-max table-auto">
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
-                  <th className="admin-table-head">Name</th>
+                  <th className="admin-table-head w-96">Name</th>
                   <th className="admin-table-head">Email</th>
                   <th className="admin-table-head">Phone No</th>
                   <th className="admin-table-head">Status</th>

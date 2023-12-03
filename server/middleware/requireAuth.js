@@ -10,11 +10,16 @@ const requireAuth = async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       throw Error("Invalid ID!!!");
     }
-    req.user = await User.findOne({ _id }).select("_id");
+    const user = await User.findOne({ _id });
+
+    if (!user.isActive) {
+      throw Error("User is blocked by admin");
+    }
+
     next();
   } catch (error) {
     console.log(error);
-    res.status(401).json({ error: "Request is not authorized" });
+    res.status(401).json({ error: error.message });
   }
 };
 

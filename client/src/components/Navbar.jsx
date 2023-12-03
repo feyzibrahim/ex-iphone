@@ -59,7 +59,7 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div className="flex gap-6 items-center relative">
+      <div className="flex sm:gap-6 items-center relative">
         {user ? (
           <>
             <NavLink to="/" className="hover:text-blue-400 p-2">

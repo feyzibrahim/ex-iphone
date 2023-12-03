@@ -59,14 +59,12 @@ const EditProduct = () => {
   // Fetching The product details initially
   useEffect(() => {
     const getProductDetails = async () => {
-      axios
-        .get(`http://localhost:4000/admin/product/${id}`)
-        .then(({ data }) => {
-          setFetchedData({ ...data.product });
-          console.log(data);
+      axios.get(`${URL}/admin/product/${id}`).then(({ data }) => {
+        setFetchedData({ ...data.product });
+        console.log(data);
 
-          setDuplicateFetchData({ ...data.product });
-        });
+        setDuplicateFetchData({ ...data.product });
+      });
     };
     getProductDetails();
   }, []);
