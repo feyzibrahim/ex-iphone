@@ -48,9 +48,9 @@ const CartProductRow = ({ item, isLast, toggleProductConfirm }) => {
       <td className="cart-table-row">
         {item.product.price + item.product.markup}
       </td>
-      <td className="cart-table-row">
+      <td className="cart-table-row w-36">
         {countLoading ? (
-          <JustLoading size={5} />
+          <JustLoading size={10} />
         ) : (
           <Quantity
             count={item.quantity}

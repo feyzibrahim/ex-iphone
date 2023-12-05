@@ -41,11 +41,12 @@ const TotalAndSubTotal = () => {
             {discount}
             {discount !== ""
               ? couponType === "percentage"
-                ? "% Off"
+                ? `% Off (${offer}₹)`
                 : "₹ Off"
               : "0₹"}
           </p>
         </div>
+
         {couponCode !== "" && (
           <>
             <div className="cart-total-li bg-blue-100 p-2 rounded">
