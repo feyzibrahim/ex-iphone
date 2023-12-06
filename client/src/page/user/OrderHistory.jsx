@@ -18,7 +18,7 @@ const OrderHistory = () => {
   }, []);
 
   return (
-    <div className="min-h-screen w-full  ">
+    <div className="min-h-screen w-full">
       <div className="bg-white rounded-lg h-full mx-5 lg:mx-0">
         <h1 className="uppercase text-lg font-semibold px-5 py-3 border-b">
           Order History
@@ -61,7 +61,7 @@ const OrderHistory = () => {
                         <td className="px-5 py-2">{item.totalPrice}₹</td>
                         <td className="px-5 py-2 hover:underline hover:text-blue-600 text-blue-400 ">
                           <Link
-                            to={`detail/${item._id}`}
+                            to={`detail/${item.orderId || item._id}`}
                             className="flex items-center gap-2"
                           >
                             View Details <BsArrowRight />

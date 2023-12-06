@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
-import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { createCoupon } from "../../../../redux/actions/admin/couponsAction";
+import { useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import ConfirmModal from "../../../../components/ConfirmModal";
+import { AiOutlineSave, AiOutlineClose } from "react-icons/ai";
+import { createCoupon } from "../../../../redux/actions/admin/couponsAction";
+import { getTodayOnwardDateForInput } from "../../../../Common/functions";
 
 const CreateCoupon = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,8 @@ const CreateCoupon = () => {
     maximumUses: Yup.number().min(0).required("Value is required"),
     expirationDate: Yup.date().required("Expiry date is required"),
   });
+
+  const dateFromTomorrow = getTodayOnwardDateForInput();
 
   return (
     <>
@@ -208,6 +211,7 @@ const CreateCoupon = () => {
                 <Field
                   name="expirationDate"
                   type="date"
+                  min={dateFromTomorrow}
                   placeholder="Type the coupon code here"
                   className="admin-input"
                 />

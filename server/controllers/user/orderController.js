@@ -211,15 +211,19 @@ const getOrders = async (req, res) => {
 const getOrder = async (req, res) => {
   try {
     const { id } = req.params;
+    let find = {};
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
     }
 
-    const order = await Order.findOne({ _id: id }).populate(
-      "products.productId",
-      { imageURL: 1, name: 1, description: 1 }
-    );
+    const order = await Order.findOne(find).populate("products.productId", {
+      imageURL: 1,
+      name: 1,
+      description: 1,
+    });
 
     if (!order) {
       throw Error("No Such Order");

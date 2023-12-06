@@ -46,3 +46,18 @@ export const renderStars = (rating) => {
 
   return stars;
 };
+
+// Get todays date for input type limiting
+export const getTodayOnwardDateForInput = () => {
+  const today = new Date();
+  today.setDate(today.getDate());
+  const formattedMinDate = date.format(today, "YYYY-MM-DD");
+  return formattedMinDate;
+};
+
+export const getTomorrowOnwardsDateForInput = () => {
+  const today = new Date();
+  today.setDate(today.getDate() + 1);
+  const formattedMinDate = date.format(today, "YYYY-MM-DD");
+  return formattedMinDate;
+};

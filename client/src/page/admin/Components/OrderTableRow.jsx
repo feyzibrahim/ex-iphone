@@ -12,7 +12,9 @@ const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
     <tr
       key={index}
       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
-      onClick={() => navigate(`/admin/orders/detail/${item._id}`)}
+      onClick={() =>
+        navigate(`/admin/orders/detail/${item.orderId || item._id}`)
+      }
     >
       <td className="admin-table-row">{index + 1}</td>
       <td className="admin-table-row flex items-center gap-2">

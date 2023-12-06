@@ -91,7 +91,7 @@ const OrderDetails = () => {
                   </div>
                   Order Id
                 </div>
-                <p>{orderData._id}</p>
+                <p>{orderData.orderId || orderData._id}</p>
               </div>
               <div className="xy-center">
                 <div className="tile-row ">

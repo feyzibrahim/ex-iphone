@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import axios from "axios";
@@ -15,6 +16,7 @@ import CheckoutPaymentOption from "./components/CheckoutPaymentOption";
 
 const Checkout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Cart from Redux
   const { cart, loading, error } = useSelector((state) => state.cart);
@@ -220,6 +222,12 @@ const Checkout = () => {
       saveOrderOnCashDeliveryOrMyWallet();
     }
   };
+
+  useEffect(() => {
+    if (!cart) {
+      navigate("/");
+    }
+  }, [cart]);
 
   return (
     <>

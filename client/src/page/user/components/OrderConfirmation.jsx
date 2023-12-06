@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
 import date from "date-and-time";
+import { BsArrowRight } from "react-icons/bs";
 
 const OrderConfirmation = ({ orderData }) => {
   return (
@@ -21,8 +22,18 @@ const OrderConfirmation = ({ orderData }) => {
         <div className="mb-8">
           <div className="py-3 border-b">
             <h3 className="text-lg font-semibold mb-2">Order Details</h3>
-            <p>Order ID: {orderData._id}</p>
+            <p>Order ID: {orderData.orderId}</p>
             <p>Order Total: {orderData.totalPrice}</p>
+            <p>
+              <Link
+                to={`/dashboard/order-history/detail/${
+                  orderData.orderId || orderData._id
+                }`}
+                className="flex items-center justify-center gap-2 text-sm py-2 text-blue-500 hover:underline"
+              >
+                View Details <BsArrowRight />
+              </Link>
+            </p>
           </div>
           <h1 className="text-lg font-semibold my-2">Expected Delivery Date</h1>
           <p>{date.format(new Date(orderData.deliveryDate), "MMM DD YYYY")}</p>

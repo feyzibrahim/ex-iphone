@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("./userModel");
 const Product = require("./productModel");
 const Coupon = require("./couponModel");
+const Counter = require("./counterModel");
 
 const { Schema } = mongoose;
 
@@ -100,6 +101,10 @@ const StatusHistorySchema = new Schema({
 
 const OrderSchema = new Schema(
   {
+    orderId: {
+      type: Number,
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: User,
@@ -175,5 +180,30 @@ const OrderSchema = new Schema(
   },
   { timestamps: true }
 );
+
+// Order ID generation
+OrderSchema.pre("save", async function (next) {
+  if (!this.isNew) {
+    return next();
+  }
+
+  try {
+    const counter = await Counter.findOne({ model: "Order", field: "orderId" });
+
+    // Checking if order counter already exist
+    if (counter) {
+      this.orderId = counter.count + 1;
+      counter.count += 1;
+      await counter.save();
+    } else {
+      await Counter.create({ model: "Order", field: "orderId" });
+      this.orderId = 1000;
+    }
+
+    return next();
+  } catch (error) {
+    return next(error);
+  }
+});
 
 module.exports = mongoose.model("Order", OrderSchema);

@@ -179,7 +179,9 @@ const OrderDetail = () => {
             <div>
               <div className="p-2 sm:p-5 m-5 bg-gray-200 rounded-lg flex flex-col sm:flex-row items-center justify-between">
                 <div>
-                  <h1 className="sm:text-lg font-semibold">#{orderData._id}</h1>
+                  <h1 className="sm:text-lg font-semibold">
+                    #{orderData.orderId || orderData._id}
+                  </h1>
                   <p className="text-gray-500 text-xs sm:text-base">
                     {orderData.totalQuantity} products ∙ Order placed in{" "}
                     {date.format(
