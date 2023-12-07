@@ -9,7 +9,7 @@ import JustLoading from "../../../../components/JustLoading";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import SearchBar from "../../../../components/SearchBar";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const Categories = () => {
   const navigate = useNavigate();

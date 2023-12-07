@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";

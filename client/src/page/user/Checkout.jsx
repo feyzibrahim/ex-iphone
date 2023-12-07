@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import axios from "axios";
-import { URL } from "../../Common/links";
+import { URL } from "../../Common/api";
 import { config } from "../../Common/configurations";
 import CheckoutCartRow from "./components/CheckoutCartRow";
 import AddressCheckoutSession from "./components/AddressCheckoutSession";

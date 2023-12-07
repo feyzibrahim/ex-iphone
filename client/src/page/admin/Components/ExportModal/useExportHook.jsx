@@ -1,5 +1,5 @@
 import axios from "axios";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 import { config } from "@common/configurations";
 import { useState } from "react";
 

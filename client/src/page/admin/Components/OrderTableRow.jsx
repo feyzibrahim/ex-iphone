@@ -3,7 +3,7 @@ import date from "date-and-time";
 import StatusComponent from "../../../components/StatusComponent";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
   const navigate = useNavigate();
@@ -63,6 +63,7 @@ const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
                 id: item._id,
                 status: item.status,
                 paymentMode: item.paymentMode,
+                deliveryDate: item.deliveryDate,
               });
             }}
           >

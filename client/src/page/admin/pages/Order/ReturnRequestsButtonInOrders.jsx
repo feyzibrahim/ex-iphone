@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineReceiptRefund } from "react-icons/hi";
 import axios from "axios";
-import { URL } from "../../../../Common/links";
+import { URL } from "../../../../Common/api";
 import { config } from "../../../../Common/configurations";
 
 const ReturnRequestsButtonInOrders = () => {

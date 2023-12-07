@@ -6,7 +6,7 @@ import JustLoading from "../../components/JustLoading";
 import DescReview from "./components/DescReview";
 import Quantity from "./components/Quantity";
 import toast from "react-hot-toast";
-import { URL } from "../../Common/links";
+import { URL } from "../../Common/api";
 import { config } from "../../Common/configurations";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../redux/actions/user/wishlistActions";

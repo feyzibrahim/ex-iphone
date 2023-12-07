@@ -16,7 +16,7 @@ import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import UpdateReturnOrder from "./UpdateReturnOrder";
 import SearchBar from "../../../../components/SearchBar";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const ReturnRequests = () => {
   const dispatch = useDispatch();

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 import { config } from "@common/configurations";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";

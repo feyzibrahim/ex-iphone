@@ -16,7 +16,7 @@ import { TiTick } from "react-icons/ti";
 import InputWithIcon from "../../../components/InputWithIcon";
 import CustomSingleFileInput from "../../admin/Components/CustomSingleFileInput";
 import { editUserProfile } from "../../../redux/actions/userActions";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 import { config } from "../../../Common/configurations";
 import axios from "axios";
 import toast from "react-hot-toast";

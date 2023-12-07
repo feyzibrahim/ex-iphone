@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BiWallet } from "react-icons/bi";
 import { GiPayMoney } from "react-icons/gi";
 import axios from "axios";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 import { config } from "../../../Common/configurations";
 
 const CheckoutPaymentOption = ({

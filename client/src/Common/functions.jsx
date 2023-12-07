@@ -61,3 +61,9 @@ export const getTomorrowOnwardsDateForInput = () => {
   const formattedMinDate = date.format(today, "YYYY-MM-DD");
   return formattedMinDate;
 };
+
+export const getPassedDateOnwardDateForInput = (inputDateString) => {
+  const inputDate = new Date(inputDateString);
+  const formattedDate = date.format(inputDate, "YYYY-MM-DD");
+  return formattedDate;
+};

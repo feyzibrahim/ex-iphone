@@ -5,7 +5,7 @@ import {
   handleError,
   configMultiPart,
 } from "../../Common/configurations";
-import { URL } from "../../Common/links";
+import { URL } from "../../Common/api";
 
 export const logout = createAsyncThunk(
   "user/logout",
@@ -38,7 +38,7 @@ export const loginUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `${URL}/user/login`,
+        `${URL}/auth/login`,
         userCredentials,
         config
       );
@@ -72,7 +72,7 @@ export const signUpUser = createAsyncThunk(
   async (userCredentials, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `${URL}/user/signup`,
+        `${URL}/auth/signup`,
         userCredentials,
         configMultiPart
       );

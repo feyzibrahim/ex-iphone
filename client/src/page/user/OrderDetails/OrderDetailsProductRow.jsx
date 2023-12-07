@@ -1,5 +1,5 @@
 import React from "react";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 import { Link } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
 

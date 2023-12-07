@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BiTrashAlt } from "react-icons/bi";
 import { FaCartPlus } from "react-icons/fa";
 import axios from "axios";
-import { URL } from "../../../../../Common/links";
+import { URL } from "../../../../../Common/api";
 import toast from "react-hot-toast";
 import { config } from "../../../../../Common/configurations";
 import { useNavigate } from "react-router-dom";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineLock } from "react-icons/ai";
 import axios from "axios";
 import { config } from "../../../Common/configurations";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 
 const PasswordEnterSection = ({ email, setPasswordSec, setFinalMessage }) => {
   const [password, setPassword] = useState("");

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdContentCopy } from "react-icons/md";
-import { URL } from "../../../../../Common/links";
+import { URL } from "../../../../../Common/api";
 import { config } from "../../../../../Common/configurations";
 import axios from "axios";
 import date from "date-and-time";

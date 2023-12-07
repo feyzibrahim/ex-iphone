@@ -5,7 +5,7 @@ import { HiOutlineReceiptRefund } from "react-icons/hi";
 import { FiDownload } from "react-icons/fi";
 
 import axios from "axios";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 import { config } from "../../../Common/configurations";
 import { useNavigate, useParams } from "react-router-dom";
 import date from "date-and-time";

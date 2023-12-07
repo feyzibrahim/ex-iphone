@@ -4,12 +4,13 @@ import { updateOrderStatus } from "../../../../redux/actions/admin/ordersAction"
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { getTodayOnwardDateForInput } from "../../../../Common/functions";
+import { getPassedDateOnwardDateForInput } from "../../../../Common/functions";
 
 const UpdateOrder = ({ toggleModal, data }) => {
-  const { id, status, paymentMode } = data;
+  const { id, status, paymentMode, deliveryDate } = data;
   const dispatch = useDispatch();
-  const dateFromTomorrow = getTodayOnwardDateForInput();
+  const dateFromTomorrow = getPassedDateOnwardDateForInput(deliveryDate);
+  console.log(deliveryDate);
 
   const initialValues = {
     status: status,

@@ -6,11 +6,7 @@ import FilterArray from "../../Components/FilterArray";
 import { BsFilterRight } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import TableRow from "./TableRow";
-import {
-  getCoupons,
-  deleteCoupon,
-} from "../../../../redux/actions/admin/couponsAction";
-import ConfirmModel from "../../../../components/ConfirmModal";
+import { getCoupons } from "../../../../redux/actions/admin/couponsAction";
 import Loading from "../../../../components/Loading";
 import SearchBar from "../../../../components/SearchBar";
 

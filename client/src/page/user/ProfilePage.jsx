@@ -6,13 +6,12 @@ import {
   AiOutlinePhone,
   AiOutlineUser,
   AiOutlineClose,
-  AiOutlineWallet,
 } from "react-icons/ai";
 import { RiCalendarEventFill } from "react-icons/ri";
 import { TiTick } from "react-icons/ti";
 import Modal from "../../components/Modal";
 import EditProfile from "./components/EditProfile";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.user);

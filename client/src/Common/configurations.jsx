@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 export const config = {
   headers: {
     "Content-Type": "application/json",
@@ -13,8 +15,13 @@ export const configMultiPart = {
 };
 
 export const handleError = (error, rejectWithValue) => {
+  const navigate = useNavigate();
   if (error.response && error.response.data.error) {
     console.log(error.response.data.error);
+
+    if (error.response.data.error === "User is blocked by admin") {
+      navigate("/404");
+    }
 
     return rejectWithValue(error.response.data.error);
   } else {

@@ -1,6 +1,6 @@
 import React from "react";
 import { renderStars, timeAgo } from "../../../Common/functions";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 
 const ReviewRow = ({ review }) => {
   return (

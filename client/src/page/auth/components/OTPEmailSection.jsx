@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import axios from "axios";
 import { config } from "../../../Common/configurations";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 import toast from "react-hot-toast";
 
 const OTPEmailSection = ({ email, setEmail, setEmailSec, setOTPSec }) => {

@@ -3,7 +3,7 @@ import { Chart as ChartJS } from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
 import { lineChartNoGridNoLegend } from "@common/configurations";
 import axios from "axios";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 import { config } from "@common/configurations";
 
 const RevenueChart = () => {

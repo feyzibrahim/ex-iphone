@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { config } from "../../../Common/configurations";
-import { URL } from "../../../Common/links";
+import { URL } from "../../../Common/api";
 
 const OTPEnterSection = ({
   email,

@@ -3,7 +3,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import { useNavigate } from "react-router-dom";
 import StatusComponent from "../../../../components/StatusComponent";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const TableRow = ({ index, length, product }) => {
   const navigate = useNavigate();

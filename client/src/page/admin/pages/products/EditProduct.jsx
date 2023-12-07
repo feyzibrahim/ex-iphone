@@ -9,7 +9,7 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const EditProduct = () => {
   const dispatch = useDispatch();

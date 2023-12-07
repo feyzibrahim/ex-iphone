@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import axios from "axios";
-import { URL } from "../Common/links";
+import { URL } from "../Common/api";
 import { config } from "../Common/configurations";
 
 const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {

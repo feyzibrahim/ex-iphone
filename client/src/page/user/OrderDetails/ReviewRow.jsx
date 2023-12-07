@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { renderStars, timeAgo } from "@common/functions";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 import { AiOutlineEdit } from "react-icons/ai";
 import Modal from "../../../components/Modal";
 import ProductEditReview from "./ProductEditReview";

@@ -5,7 +5,7 @@ import BreadCrumbs from "../../Components/BreadCrumbs";
 import CustomFileInput from "../../Components/CustomFileInput";
 import DraggableItem from "./DraggableItem";
 import useBannerHooks from "./useBannerHooks";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 import { AiOutlineDelete } from "react-icons/ai";
 import ConfirmModal from "../../../../components/ConfirmModal";
 

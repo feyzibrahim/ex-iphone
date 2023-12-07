@@ -22,7 +22,7 @@ import OTPEnterSection from "./Register/OTPEnterSection";
 import OTPExpired from "./components/OTPExpired";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { URL } from "../../Common/links";
+import { URL } from "../../Common/api";
 import { config } from "../../Common/configurations";
 import { GoogleLogin } from "@react-oauth/google";
 

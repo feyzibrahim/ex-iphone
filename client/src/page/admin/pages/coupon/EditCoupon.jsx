@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
-import { URL } from "../../../../Common/links";
+import { URL } from "../../../../Common/api";
 import { config } from "../../../../Common/configurations";
 
 const CreateCoupon = () => {
@@ -64,7 +64,6 @@ const CreateCoupon = () => {
     const loadInitialData = async () => {
       try {
         const { data } = await axios.get(`${URL}/admin/coupon/${id}`, config);
-        console.log(data.coupon);
         setInitialValues({ ...data.coupon });
       } catch (error) {
         console.error(error);

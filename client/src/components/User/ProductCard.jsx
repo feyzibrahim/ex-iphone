@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import RatingStars from "./RatingStars";
-import { URL } from "@common/links";
+import { URL } from "@common/api";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
