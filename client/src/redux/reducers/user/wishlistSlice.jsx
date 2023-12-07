@@ -21,7 +21,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(getWishlist.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.wishlist = payload;
+        state.wishlist = payload.wishlist.items;
         state.error = null;
       })
       .addCase(getWishlist.rejected, (state, { payload }) => {
@@ -34,7 +34,7 @@ const wishlistSlice = createSlice({
       })
       .addCase(addToWishlist.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.wishlist = payload;
+        state.wishlist = payload.wishlist.items;
         state.error = null;
         toast.success("Added to wishlist");
       })

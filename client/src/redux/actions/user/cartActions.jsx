@@ -1,19 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { URL } from "../../../Common/api";
-import { config, handleError } from "../../../Common/configurations";
+import { commonReduxRequest } from "@common/api";
+import { appJson } from "@common/configurations";
 
 // Fetching whole cart
 export const getCart = createAsyncThunk(
   "cart/getCart",
   async (rc, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${URL}/user/cart`, config);
-
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "get",
+      `/user/cart`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -21,13 +20,13 @@ export const getCart = createAsyncThunk(
 export const deleteEntireCart = createAsyncThunk(
   "cart/deleteEntireCart",
   async (id, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(`${URL}/user/cart/${id}`, config);
-
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "delete",
+      `/user/cart/${id}`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -35,15 +34,13 @@ export const deleteEntireCart = createAsyncThunk(
 export const deleteOneProduct = createAsyncThunk(
   "cart/deleteOneProduct",
   async ({ cartId, productId }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(
-        `${URL}/user/cart/${cartId}/item/${productId}`,
-        config
-      );
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "delete",
+      `/user/cart/${cartId}/item/${productId}`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -51,16 +48,13 @@ export const deleteOneProduct = createAsyncThunk(
 export const incrementCount = createAsyncThunk(
   "cart/incrementCount",
   async ({ cartId, productId }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${URL}/user/cart-increment-quantity/${cartId}/item/${productId}`,
-        config
-      );
-
-      return data.updatedItem;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "patch",
+      `/user/cart-increment-quantity/${cartId}/item/${productId}`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -68,16 +62,13 @@ export const incrementCount = createAsyncThunk(
 export const decrementCount = createAsyncThunk(
   "cart/decrementCount",
   async ({ cartId, productId }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${URL}/user/cart-decrement-quantity/${cartId}/item/${productId}`,
-        config
-      );
-
-      return data.updatedItem;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "patch",
+      `/user/cart-decrement-quantity/${cartId}/item/${productId}`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -85,17 +76,13 @@ export const decrementCount = createAsyncThunk(
 export const applyCoupon = createAsyncThunk(
   "cart/applyCoupon",
   async (couponCode, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(
-        `${URL}/user/coupon-apply`,
-        { code: couponCode },
-        config
-      );
-
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "post",
+      `/user/coupon-apply`,
+      { code: couponCode },
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
@@ -104,25 +91,12 @@ export const applyCoupon = createAsyncThunk(
 export const removeCoupon = createAsyncThunk(
   "cart/removeCoupon",
   async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${URL}/user/coupon-remove`, config);
-
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "get",
+      `/user/coupon-remove`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
-
-// export const addToCart = createAsyncThunk(
-//   "cart/addToCart",
-//   async (formData, { rejectWithValue }) => {
-//     try {
-//       const { data } = await axios.post(`${URL}/user/cart`, formData, config);
-//       console.log(data);
-//       return data;
-//     } catch (error) {
-//      return handleError(error, rejectWithValue);
-//     }
-//   }
-// );

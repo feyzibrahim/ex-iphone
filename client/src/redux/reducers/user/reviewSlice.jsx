@@ -22,7 +22,7 @@ const reviewSlice = createSlice({
       .addCase(getReviews.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.reviews = payload;
+        state.reviews = payload.reviews;
       })
       .addCase(getReviews.rejected, (state, { payload }) => {
         state.loading = false;
@@ -36,7 +36,7 @@ const reviewSlice = createSlice({
       .addCase(createReview.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.reviews = [...state.reviews, payload];
+        state.reviews = [...state.reviews, payload.review];
         toast.success("Review Added");
       })
       .addCase(createReview.rejected, (state, { payload }) => {
@@ -67,11 +67,11 @@ const reviewSlice = createSlice({
         state.loading = false;
         state.error = null;
         const index = state.reviews.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.review._id
         );
 
         if (index !== -1) {
-          state.reviews[index] = payload;
+          state.reviews[index] = payload.review;
         }
         toast.success("Review Updated");
       })

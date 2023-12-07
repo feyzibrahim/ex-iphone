@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import {
-  AiOutlineCalendar,
-  // AiOutlineDelete,
-  // AiOutlineEdit,
-  AiOutlinePlus,
-} from "react-icons/ai";
+import { AiOutlineCalendar, AiOutlinePlus } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import date from "date-and-time";
-// import Modal from "../../../../components/Modal";
 
 import { getPayments } from "../../../../redux/actions/admin/paymentAction";
 import { BsFilterRight } from "react-icons/bs";
-// import UpdateOrder from "./UpdateOrder";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
+import SearchBar from "../../../../components/SearchBar";
 
 const Payments = () => {
   const dispatch = useDispatch();
@@ -24,38 +18,36 @@ const Payments = () => {
 
   const { payments, loading, error } = useSelector((state) => state.payments);
 
-  useEffect(() => {
-    dispatch(getPayments());
-  }, []);
+  // Filtering
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
-  // const [updateModal, setUpdateModal] = useState(false);
-  // const toggleUpdateModal = (data) => {
-  // setUpdateModal(!updateModal);
-  // setSelectedOrderToUpdate(data);
-  // };
-
-  const handleClick = (value) => {
-    // if (value === "all") {
-    dispatch(getPayments());
-    // } else {
-    //   dispatch(getOrderWithQuery(value));
-    // }
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
+    } else {
+      params.set(type, value);
+      if (type === "page") {
+        setPage(value);
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
+
+  useEffect(() => {
+    dispatch(getPayments(searchParams));
+  }, [searchParams]);
 
   return (
     <>
-      {/* {updateModal && (
-        <Modal
-          tab={
-            <UpdateOrder
-              toggleModal={toggleUpdateModal}
-              data={selectedOrderToUpdate}
-            />
-          }
-        />
-      )} */}
       <div className="p-5 w-full overflow-y-auto text-sm">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Payments</h1>
@@ -78,7 +70,7 @@ const Payments = () => {
         <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={["all", "success", "pending", "cancelled", "refunded"]}
-            handleClick={handleClick}
+            handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
             <button className="admin-button-fl bg-white">

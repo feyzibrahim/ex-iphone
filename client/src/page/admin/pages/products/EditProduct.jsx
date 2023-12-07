@@ -59,12 +59,18 @@ const EditProduct = () => {
   // Fetching The product details initially
   useEffect(() => {
     const getProductDetails = async () => {
-      axios.get(`${URL}/admin/product/${id}`).then(({ data }) => {
+      try {
+        const { data } = await axios.get(`${URL}/admin/product/${id}`, {
+          withCredentials: true,
+        });
+
         setFetchedData({ ...data.product });
         console.log(data);
 
         setDuplicateFetchData({ ...data.product });
-      });
+      } catch (error) {
+        console.log(error);
+      }
     };
     getProductDetails();
   }, []);

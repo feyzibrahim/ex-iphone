@@ -16,7 +16,7 @@ const walletSlice = createSlice({
       .addCase(getWallet.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.wallet = payload;
+        state.wallet = payload.wallet;
       })
       .addCase(getWallet.rejected, (state, { payload }) => {
         state.loading = false;

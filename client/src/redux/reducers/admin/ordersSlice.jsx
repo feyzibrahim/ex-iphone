@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getOrders,
   updateOrderStatus,
-  getOrderWithQuery,
   getReturnOrders,
   updateReturnOrderStatus,
 } from "../../actions/admin/ordersAction";
@@ -23,24 +22,24 @@ const ordersSlice = createSlice({
       .addCase(getOrders.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.orders = payload;
+        state.orders = payload.orders;
       })
       .addCase(getOrders.rejected, (state, { payload }) => {
         state.loading = false;
         state.orders = null;
         state.error = payload;
       })
-      .addCase(updateOrderStatus.pending, (state) => {
-        state.loading = true;
-      })
+      // .addCase(updateOrderStatus.pending, (state) => {
+      //   state.loading = false;
+      // })
       .addCase(updateOrderStatus.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
         const index = state.orders.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.order._id
         );
         if (index !== -1) {
-          state.orders[index] = payload;
+          state.orders[index] = payload.order;
         }
         toast.success("Product Status Updated");
       })
@@ -50,54 +49,38 @@ const ordersSlice = createSlice({
         state.error = payload;
       })
 
-      .addCase(updateReturnOrderStatus.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.orders = null;
-        state.error = payload;
-      })
-      .addCase(getOrderWithQuery.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getOrderWithQuery.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.orders = payload;
-      })
-      .addCase(getOrderWithQuery.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.orders = null;
-        state.error = payload;
-        toast.error(payload);
-      })
-
       // Return Order Getting list
-
       .addCase(getReturnOrders.pending, (state) => {
         state.loading = true;
       })
       .addCase(getReturnOrders.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.orders = payload;
+        state.orders = payload.orders;
       })
       .addCase(getReturnOrders.rejected, (state, { payload }) => {
         state.loading = false;
         state.orders = null;
         state.error = payload;
       })
-      .addCase(updateReturnOrderStatus.pending, (state) => {
-        state.loading = true;
-      })
+      // .addCase(updateReturnOrderStatus.pending, (state) => {
+      //   state.loading = true;
+      // })
       .addCase(updateReturnOrderStatus.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
         const index = state.orders.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.order._id
         );
         if (index !== -1) {
-          state.orders[index] = payload;
+          state.orders[index] = payload.order;
         }
         toast.success("Product Status Updated");
+      })
+      .addCase(updateReturnOrderStatus.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.orders = null;
+        state.error = payload;
       });
   },
 });

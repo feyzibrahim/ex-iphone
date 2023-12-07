@@ -21,7 +21,9 @@ const DescReview = ({ product, id }) => {
 
   const loadReviews = async () => {
     try {
-      const { data } = await axios.get(`${URL}/user/reviews/${id}`);
+      const { data } = await axios.get(`${URL}/user/reviews/${id}`, {
+        withCredentials: true,
+      });
       setReviews(data.reviews);
       const ratingCounts = Array(5).fill(0);
 

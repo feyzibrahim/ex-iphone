@@ -22,7 +22,7 @@ const addressSlice = createSlice({
       .addCase(getAddresses.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.addresses = payload;
+        state.addresses = payload.addresses;
       })
       .addCase(getAddresses.rejected, (state, { payload }) => {
         state.loading = false;
@@ -36,7 +36,7 @@ const addressSlice = createSlice({
       .addCase(createAddress.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.addresses = [...state.addresses, payload];
+        state.addresses = [...state.addresses, payload.address];
         toast.success("Address Added");
       })
       .addCase(createAddress.rejected, (state, { payload }) => {
@@ -51,7 +51,7 @@ const addressSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.addresses = state.addresses.filter(
-          (item) => item._id !== payload._id
+          (item) => item._id !== payload.address._id
         );
         toast.success("Address Deleted");
       })
@@ -67,11 +67,11 @@ const addressSlice = createSlice({
         state.loading = false;
         state.error = null;
         const index = state.addresses.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.address._id
         );
 
         if (index !== -1) {
-          state.addresses[index] = payload;
+          state.addresses[index] = payload.address;
         }
       })
       .addCase(updateAddress.rejected, (state, { payload }) => {

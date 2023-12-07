@@ -2,10 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getCoupons,
   createCoupon,
-  deleteCoupon,
   editCoupon,
 } from "../../actions/admin/couponsAction";
-import toast from "react-hot-toast";
 
 const couponsSlice = createSlice({
   name: "coupons",
@@ -22,7 +20,7 @@ const couponsSlice = createSlice({
       .addCase(getCoupons.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.coupons = payload;
+        state.coupons = payload.coupons;
       })
       .addCase(getCoupons.rejected, (state, { payload }) => {
         state.loading = false;
@@ -39,22 +37,6 @@ const couponsSlice = createSlice({
         state.coupons = [...state.coupons, payload];
       })
       .addCase(createCoupon.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.coupons = null;
-        state.error = payload;
-      })
-      .addCase(deleteCoupon.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(deleteCoupon.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.coupons = state.coupons.filter(
-          (item) => item._id !== payload._id
-        );
-        toast.success("Coupon Deleted");
-      })
-      .addCase(deleteCoupon.rejected, (state, { payload }) => {
         state.loading = false;
         state.coupons = null;
         state.error = payload;

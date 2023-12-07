@@ -24,10 +24,11 @@ export const commonReduxRequest = async (
   };
 
   try {
-    const response = apiInstance(requestConfig);
+    const response = await apiInstance(requestConfig);
 
-    return response;
+    return response.data;
   } catch (error) {
+    console.log(error);
     return handleError(error, rejectWithValue);
   }
 };

@@ -21,7 +21,7 @@ const userOrdersSLice = createSlice({
       .addCase(getOrders.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.userOrders = payload;
+        state.userOrders = payload.orders;
       })
       .addCase(getOrders.rejected, (state, { payload }) => {
         state.loading = false;
@@ -36,11 +36,11 @@ const userOrdersSLice = createSlice({
         state.error = null;
 
         const index = state.userOrders.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.order._id
         );
 
         if (index !== -1) {
-          state.userOrders[index] = payload;
+          state.userOrders[index] = payload.order;
         }
         toast.success("Order Cancelled Successfully");
       })
@@ -57,11 +57,11 @@ const userOrdersSLice = createSlice({
         state.error = null;
 
         const index = state.userOrders.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.order._id
         );
 
         if (index !== -1) {
-          state.userOrders[index] = payload;
+          state.userOrders[index] = payload.order;
         }
         toast.success("Return Request Successfully Sent");
       })

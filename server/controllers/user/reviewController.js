@@ -211,7 +211,11 @@ const editReview = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate("user", {
+      firstName: 1,
+      lastName: 1,
+      profileImgURL: 1,
+    });
 
     res.status(200).json({ review: updatedReview });
   } catch (error) {

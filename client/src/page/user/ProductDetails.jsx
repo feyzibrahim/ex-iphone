@@ -30,7 +30,9 @@ const ProductDetails = () => {
   const loadProduct = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`${URL}/user/product/${id}`);
+      const { data } = await axios.get(`${URL}/user/product/${id}`, {
+        withCredentials: true,
+      });
 
       if (data) {
         setProduct(data.product);
@@ -78,7 +80,7 @@ const ProductDetails = () => {
           product: id,
           quantity: count,
         },
-        config
+        { ...config, withCredentials: true }
       )
       .then((data) => {
         toast.success("Added to cart");

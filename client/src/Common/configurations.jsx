@@ -6,7 +6,13 @@ export const config = {
   },
   withCredentials: true,
 };
+export const appJson = {
+  "Content-Type": "application/json",
+};
 
+export const multiForm = {
+  "Content-Type": "multipart/form-data",
+};
 export const configMultiPart = {
   headers: {
     "Content-Type": "multipart/form-data",

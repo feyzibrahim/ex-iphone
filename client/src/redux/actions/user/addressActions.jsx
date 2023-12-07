@@ -1,65 +1,55 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { URL } from "../../../Common/api";
-import { config, handleError } from "../../../Common/configurations";
+import { commonReduxRequest } from "@common/api";
+import { appJson } from "@common/configurations";
 
 export const createAddress = createAsyncThunk(
   "address/createAddress",
   async (formData, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(
-        `${URL}/user/address`,
-        formData,
-        config
-      );
-
-      return data.address;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "post",
+      `/user/address`,
+      formData,
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
 export const getAddresses = createAsyncThunk(
   "address/getAddresses",
-  async (nothing, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${URL}/user/address`, config);
-
-      return data.addresses;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+  async (_, { rejectWithValue }) => {
+    return commonReduxRequest(
+      "get",
+      `/user/address`,
+      null,
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
 export const deleteAddress = createAsyncThunk(
   "address/deleteAddress",
   async (id, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(`${URL}/user/address/${id}`, config);
-
-      return data.address;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "delete",
+      `/user/address/${id}`,
+      {},
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
 export const updateAddress = createAsyncThunk(
   "address/updateAddress",
   async ({ id, formData }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${URL}/user/address/${id}`,
-        formData,
-        config
-      );
-
-      console.log(data);
-      return data.address;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "patch",
+      `/user/address/${id}`,
+      formData,
+      appJson,
+      rejectWithValue
+    );
   }
 );

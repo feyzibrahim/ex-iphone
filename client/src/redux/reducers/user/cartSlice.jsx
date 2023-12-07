@@ -111,8 +111,7 @@ const cartSlice = createSlice({
         state.countLoading = false;
         state.error = null;
         const updatedCart = state.cart.map((cartItem) => {
-          console.log(cartItem.product._id, payload.product);
-          if (cartItem.product._id === payload.product) {
+          if (cartItem.product._id === payload.updatedItem.product) {
             return {
               ...cartItem,
               quantity: cartItem.quantity + 1,
@@ -134,7 +133,7 @@ const cartSlice = createSlice({
         state.countLoading = false;
         state.error = null;
         const updatedCart = state.cart.map((cartItem) => {
-          if (cartItem.product._id === payload.product) {
+          if (cartItem.product._id === payload.updatedItem.product) {
             return {
               ...cartItem,
               quantity: cartItem.quantity - 1,

@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getCustomers,
   createNewCustomer,
-  deleteCustomer,
   blockOrUnBlock,
 } from "../../actions/admin/customerAction";
 import toast from "react-hot-toast";
@@ -45,22 +44,7 @@ const customerSlice = createSlice({
         state.customers = null;
         state.error = payload;
       })
-      .addCase(deleteCustomer.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(deleteCustomer.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.customers = state.customers.filter(
-          (item) => item._id !== payload._id
-        );
-        toast.success("User Deleted");
-      })
-      .addCase(deleteCustomer.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.customers = null;
-        state.error = payload;
-      })
+
       .addCase(blockOrUnBlock.pending, (state) => {
         state.loading = true;
       })
@@ -68,11 +52,11 @@ const customerSlice = createSlice({
         state.loading = false;
         state.error = null;
         const index = state.customers.findIndex(
-          (item) => item._id === payload._id
+          (item) => item._id === payload.customer._id
         );
 
         if (index !== -1) {
-          state.customers[index] = payload;
+          state.customers[index] = payload.customer;
         }
         toast.success("User Updated");
       })

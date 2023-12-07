@@ -1,17 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { URL } from "../../../Common/api";
-import { config, handleError } from "../../../Common/configurations";
+import { commonReduxRequest } from "@common/api";
+import { appJson } from "@common/configurations";
 
 export const getWallet = createAsyncThunk(
   "wallet/getWallet",
-  async (rc, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(`${URL}/user/wallet`, config);
-
-      return data.wallet;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+  async (_, { rejectWithValue }) => {
+    return commonReduxRequest(
+      "get",
+      `/user/wallet`,
+      null,
+      appJson,
+      rejectWithValue
+    );
   }
 );

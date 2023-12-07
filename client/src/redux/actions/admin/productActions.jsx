@@ -1,26 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { URL } from "../../../Common/api";
-import {
-  handleError,
-  config,
-  configMultiPart,
-} from "../../../Common/configurations";
+import { commonReduxRequest } from "@common/api";
+import { appJson, multiForm } from "@common/configurations";
 
 // Function to create new product
 export const createProduct = createAsyncThunk(
   "products/createProduct",
   async (formData, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.post(
-        `${URL}/admin/product`,
-        formData,
-        configMultiPart
-      );
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "post",
+      `/admin/product`,
+      formData,
+      multiForm,
+      rejectWithValue
+    );
   }
 );
 
@@ -28,44 +20,25 @@ export const createProduct = createAsyncThunk(
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (queries, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.get(
-        `${URL}/admin/products?${queries}`,
-        config
-      );
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
-  }
-);
-
-export const deleteProducts = createAsyncThunk(
-  "products/deleteProducts",
-  async (id, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.delete(`${URL}/admin/product/${id}`, config);
-
-      return data.product;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "get",
+      `/admin/products${queries && `?${queries}`}`,
+      null,
+      appJson,
+      rejectWithValue
+    );
   }
 );
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
   async ({ id, formData }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${URL}/admin/product/${id}`,
-        formData,
-        configMultiPart
-      );
-
-      return data;
-    } catch (error) {
-      return handleError(error, rejectWithValue);
-    }
+    return commonReduxRequest(
+      "patch",
+      `/admin/product/${id}`,
+      formData,
+      multiForm,
+      rejectWithValue
+    );
   }
 );

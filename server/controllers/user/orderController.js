@@ -241,11 +241,15 @@ const cancelOrder = async (req, res) => {
     const { id } = req.params;
     const { reason } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
+    let find = {};
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
     }
 
-    const orderDetails = await Order.findById(id).populate(
+    const orderDetails = await Order.findOne(find).populate(
       "products.productId"
     );
 
@@ -339,13 +343,16 @@ const requestReturn = async (req, res) => {
   try {
     const { id } = req.params;
     const { reason } = req.body;
+    let find = {};
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
     }
 
-    const order = await Order.findByIdAndUpdate(
-      id,
+    const order = await Order.findOneAndUpdate(
+      find,
       {
         $set: {
           status: "return request",
@@ -371,7 +378,15 @@ const generateOrderInvoice = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const order = await Order.findById(id).populate("products.productId");
+    let find = {};
+
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
+    }
+
+    const order = await Order.findOne(find).populate("products.productId");
 
     const pdfBuffer = await generateInvoicePDF(order);
 

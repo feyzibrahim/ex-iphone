@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   getProducts,
   createProduct,
-  deleteProducts,
   updateProduct,
 } from "../../actions/admin/productActions";
 
@@ -46,23 +45,6 @@ const productSlice = createSlice({
         state.products = null;
         state.error = payload;
         state.totalAvailableProducts = state.totalAvailableProducts + 1;
-      })
-
-      // Deleting a Product
-      .addCase(deleteProducts.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(deleteProducts.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.error = null;
-        state.products = state.products.filter(
-          (product) => product._id !== payload._id
-        );
-      })
-      .addCase(deleteProducts.rejected, (state, { payload }) => {
-        state.loading = false;
-        state.products = null;
-        state.error = payload;
       })
 
       // Updating a product

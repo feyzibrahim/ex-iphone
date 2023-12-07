@@ -16,7 +16,7 @@ const paymentsSlice = createSlice({
       .addCase(getPayments.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.payments = payload;
+        state.payments = payload.payments;
       })
       .addCase(getPayments.rejected, (state, { payload }) => {
         state.loading = false;

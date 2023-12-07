@@ -50,7 +50,7 @@ const ProductReview = ({ closeToggle, id, reviewProduct }) => {
   });
 
   const handleSubmit = async (value) => {
-    const createAction = await dispatch(
+    const createAction = dispatch(
       createReview({ ...value, order: id, product: reviewProduct._id })
     );
     if (createReview.fulfilled.match(createAction)) {
