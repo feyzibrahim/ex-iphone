@@ -101,7 +101,7 @@ const Dashboard = () => {
     });
     setSearch("");
     setPage(1);
-    setActiveSort("Newest to Oldest");
+    // setActiveSort("Newest to Oldest");
   };
 
   useEffect(() => {

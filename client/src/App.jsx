@@ -37,6 +37,7 @@ import Wallet from "./page/user/profileDashboard/pages/wallet";
 import Addresses from "./page/user/profileDashboard/pages/addresses";
 import TrackOrder from "./page/user/profileDashboard/pages/trackOrder";
 import WishList from "./page/user/profileDashboard/pages/wishlist";
+import BuyNow from "./page/user/buyNow";
 
 // Admin
 import AdminDash from "./page/admin/Dashboard";
@@ -124,6 +125,7 @@ function App() {
             path="/checkout"
             element={<ProtectedRoute element={<Checkout />} />}
           />
+          <Route path="/buy-now" element={<BuyNow />} />
 
           <Route
             path="/dashboard"

@@ -52,7 +52,13 @@ const addToCart = async (req, res) => {
       );
 
       if (existingProductIndex !== -1) {
-        // If the product exists in the cart, update its quantity
+        // Checking if the product quantity exists or not
+        if (
+          product.stockQuantity < exists.items[existingProductIndex].quantity
+        ) {
+          throw Error("Not enough Quantity");
+        }
+
         cart = await Cart.findOneAndUpdate(
           { "items.product": items.product, user: _id },
           {
