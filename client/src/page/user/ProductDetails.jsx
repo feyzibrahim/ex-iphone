@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import axios from "axios";
 import JustLoading from "../../components/JustLoading";
@@ -11,10 +11,12 @@ import { config } from "../../Common/configurations";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../redux/actions/user/wishlistActions";
 import ProductDetailsStarAndRating from "./components/ProductDetailsStarAndRating";
+import { addToBuyNowStore } from "../../redux/reducers/user/buyNowSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   let [product, setProduct] = useState({});
   let [loading, setLoading] = useState(false);
@@ -210,7 +212,13 @@ const ProductDetails = () => {
                 </button>
               </div>
               <div className="flex gap-3">
-                <button className="w-full font-semibold hover:bg-blue-500 rounded-lg p-2 bg-blue-700 text-white">
+                <button
+                  className="w-full font-semibold hover:bg-blue-500 rounded-lg p-2 bg-blue-700 text-white"
+                  onClick={() => {
+                    dispatch(addToBuyNowStore({ product, count }));
+                    navigate(`/buy-now`);
+                  }}
+                >
                   Buy Now
                 </button>
 

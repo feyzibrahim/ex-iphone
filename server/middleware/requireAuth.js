@@ -33,7 +33,6 @@ const requireAdminAuth = async (req, res, next) => {
     const token = req.cookies.user_token;
 
     const { _id } = jwt.verify(token, process.env.SECRET);
-    console.log(_id);
 
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       throw Error("Invalid ID!!!");

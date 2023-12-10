@@ -31,10 +31,14 @@ const getOrder = async (req, res) => {
       find.orderId = id;
     }
 
+    // console.log(find);
+
     const order = await Order.findOne(find).populate("products.productId", {
       imageURL: 1,
       name: 1,
     });
+
+    // console.log(order);
 
     if (!order) {
       throw Error("No Such Order");

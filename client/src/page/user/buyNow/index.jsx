@@ -8,23 +8,30 @@ import { URL } from "@common/api";
 import { config } from "@common/configurations";
 import CheckoutCartRow from "../components/CheckoutCartRow";
 import AddressCheckoutSession from "../components/AddressCheckoutSession";
-import TotalAndSubTotal from "../components/TotalAndSubTotal";
 import Loading from "../../../components/Loading";
 import OrderConfirmation from "../components/OrderConfirmation";
-import { clearCartOnOrderPlaced } from "../../../redux/reducers/user/cartSlice";
+import { emptyBuyNowStore } from "../../../redux/reducers/user/buyNowSlice";
 import CheckoutPaymentOption from "../components/CheckoutPaymentOption";
 
-const ButNow = () => {
+const BuyNow = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Cart from Redux
-  const { cart, loading, error } = useSelector((state) => state.cart);
-  const { totalPrice, shipping, discount, tax, couponType } = useSelector(
-    (state) => state.cart
-  );
+  const { product, quantity } = useSelector((state) => state.buyNow);
+
+  useEffect(() => {
+    if (!product) {
+      navigate("/");
+    }
+  }, []);
 
   let offer = 0;
+  let couponType = "s";
+  let totalPrice = product ? product.price + product.markup : 0;
+  let shipping = 0;
+  let tax = parseInt(totalPrice * 0.08);
+  let discount = 0;
+  // let couponCode = "o";
 
   if (couponType === "percentage") {
     offer = (totalPrice * discount) / 100;
@@ -58,11 +65,12 @@ const ButNow = () => {
 
     try {
       const order = await axios.post(
-        `${URL}/user/order`,
+        `${URL}/user/buy-now/${product._id}`,
         {
           notes: additionalNotes,
           address: selectedAddress,
           paymentMode: selectedPayment,
+          quantity,
         },
         config
       );
@@ -72,7 +80,7 @@ const ButNow = () => {
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
       setConfirmationPage(true);
-      dispatch(clearCartOnOrderPlaced());
+      dispatch(emptyBuyNowStore());
     } catch (error) {
       // Error Handling
       const errorMessage =
@@ -92,11 +100,12 @@ const ButNow = () => {
     try {
       // Make the first POST request to create the order
       const orderResponse = await axios.post(
-        `${URL}/user/order`,
+        `${URL}/user/buy-now/${product._id}`,
         {
           notes: additionalNotes,
           address: selectedAddress,
           paymentMode: selectedPayment,
+          quantity: 1,
         },
         config
       );
@@ -115,7 +124,7 @@ const ButNow = () => {
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
       setConfirmationPage(true);
-      dispatch(clearCartOnOrderPlaced());
+      dispatch(emptyBuyNowStore());
     } catch (error) {
       // Error Handling
       const errorMessage =
@@ -131,7 +140,7 @@ const ButNow = () => {
     // Getting razor-pay secret key
     const {
       data: { key },
-    } = await axios.get(`${URL}/user/razor-key`);
+    } = await axios.get(`${URL}/user/razor-key`, { withCredentials: true });
 
     // making razor-pay order
     const {
@@ -149,7 +158,7 @@ const ButNow = () => {
       currency: "INR",
       name: "ex.iphones",
       description: "Test Transaction",
-      image: "http://localhost:4000/off/logo.png",
+      image: `${URL}/off/logo.png`,
       order_id: order.id,
       handler: function (response) {
         saveOrder(response);
@@ -188,10 +197,6 @@ const ButNow = () => {
   // Order placing
   const placeOrder = async () => {
     // Validating before placing an order
-    if (cart.length === 0) {
-      toast.error("Add product to cart");
-      return;
-    }
     if (!selectedAddress) {
       toast.error("Delivery address not found");
       return;
@@ -264,12 +269,58 @@ const ButNow = () => {
           <div className="lg:w-1/4 bg-white px-5 py-3 border border-gray-200 rounded shrink-0">
             <h1 className="font-semibold py-2">Order Summery</h1>
             <div className="py-1">
-              {cart &&
-                cart.map((item, index) => (
-                  <CheckoutCartRow item={item} key={index} />
-                ))}
+              {product && <CheckoutCartRow item={{ product, quantity }} />}
             </div>
-            <TotalAndSubTotal />
+            <>
+              <div className="border-b border-gray-200 pb-2 mb-2">
+                <div className="cart-total-li">
+                  <p className="cart-total-li-first">Sub Total</p>
+                  <p className="cart-total-li-second">{totalPrice}₹</p>
+                </div>
+                <div className="cart-total-li">
+                  <p className="cart-total-li-first">Shipping</p>
+                  <p className="cart-total-li-second">
+                    {shipping === 0 ? "Free" : shipping}
+                  </p>
+                </div>
+                <div className="cart-total-li">
+                  <p className="cart-total-li-first">Tax</p>
+                  <p className="cart-total-li-second">{parseInt(tax)}₹</p>
+                </div>
+                <div className="cart-total-li">
+                  <p className="cart-total-li-first">Discount</p>
+                  <p className="cart-total-li-second">
+                    {discount}
+                    {discount !== ""
+                      ? couponType === "percentage"
+                        ? `% Off (${offer}₹)`
+                        : "₹ Off"
+                      : "0₹"}
+                  </p>
+                </div>
+
+                {/*  {couponCode !== "" && (
+                  <>
+                    <div className="cart-total-li bg-blue-100 p-2 rounded">
+                      <p className="cart-total-li-first">Coupon Applied</p>
+                      <p className="cart-total-li-first">{couponCode}</p>
+                    </div>
+                    <div className="flex flex-row-reverse text-xs">
+                      <button
+                        className="text-red-500 hover:bg-red-100 p-1 rounded font-semibold"
+                        // onClick={() => dispatch(removeCoupon())}
+                      >
+                        Remove Coupon
+                      </button>
+                    </div>
+                  </>
+                )} */}
+              </div>
+              <div className="cart-total-li">
+                <p className="font-semibold text-gray-500">Total</p>
+                <p className="font-semibold">{finalTotal}₹</p>
+              </div>
+            </>
             <button
               className="btn-blue w-full text-white uppercase font-semibold text-sm my-5"
               onClick={placeOrder}
@@ -283,4 +334,4 @@ const ButNow = () => {
   );
 };
 
-export default ButNow;
+export default BuyNow;

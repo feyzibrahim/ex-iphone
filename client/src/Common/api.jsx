@@ -44,3 +44,22 @@ export const commonReduxRequest = async (
     return handleError(error, rejectWithValue);
   }
 };
+
+export const commonRequest = async (method, route, body, config) => {
+  let requestConfig = {
+    method,
+    url: route,
+    data: body,
+    headers: config,
+    withCredentials: true,
+  };
+
+  try {
+    const response = await apiInstance(requestConfig);
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};

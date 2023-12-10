@@ -12,7 +12,7 @@ import { AiOutlineUser, AiOutlinePhone } from "react-icons/ai";
 import { HiOutlineMail } from "react-icons/hi";
 import StatusComponent from "../../../../components/StatusComponent";
 
-const OrderDetails = () => {
+const ReturnOrderDetails = () => {
   const { id } = useParams();
   const [orderData, setOrderData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -266,4 +266,4 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+export default ReturnOrderDetails;

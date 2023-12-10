@@ -2,6 +2,7 @@ const Review = require("../../model/reviewModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Product = require("../../model/productModel");
+const Order = require("../../model/orderModel");
 
 // Creating a new review for each product
 const createNewReview = async (req, res) => {
@@ -15,6 +16,11 @@ const createNewReview = async (req, res) => {
     }
 
     const body = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(body.order)) {
+      const order = await Order.findOne({ orderId: body.order });
+      body.order = order._id;
+    }
 
     const reviewExists = await Review.findOne({
       user: _id,
@@ -113,11 +119,6 @@ const readProductReview = async (req, res) => {
 // Read user reviews on order history page
 const readOrderReview = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      throw Error("Invalid ID!!!");
-    }
-
     const token = req.cookies.user_token;
 
     const { _id } = jwt.verify(token, process.env.SECRET);
@@ -126,7 +127,17 @@ const readOrderReview = async (req, res) => {
       throw Error("Invalid user Id!!!");
     }
 
-    const reviews = await Review.find({ order: id, user: _id }).populate(
+    // Fetching order Id
+    const { id } = req.params;
+    let find = {};
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
+    }
+    const order = await Order.findOne(find);
+
+    const reviews = await Review.find({ order: order._id, user: _id }).populate(
       "user",
       {
         firstName: 1,
@@ -192,7 +203,7 @@ const editReview = async (req, res) => {
       (product.rating * product.numberOfReviews + ratingChange) /
       product.numberOfReviews;
 
-    const updatedProduct = await Product.findByIdAndUpdate(
+    await Product.findByIdAndUpdate(
       body.product,
       {
         $set: {

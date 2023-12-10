@@ -426,6 +426,117 @@ const orderCount = async (req, res) => {
   }
 };
 
+// Buy Now function
+
+const buyNow = async (req, res) => {
+  try {
+    const { address, paymentMode, notes, quantity } = req.body;
+
+    // User Id
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid ID!!!");
+    }
+    // Product ID
+    const { id } = req.params;
+
+    const product = await Products.findOne({ _id: id });
+    if (!product) {
+      throw Error("No product were found with this id");
+    }
+
+    if (quantity > product.stockQuantity) {
+      throw Error("Insufficient Quantity");
+    }
+
+    const sum = product.price + product.markup;
+    const sumWithTax = parseInt(sum + sum * 0.08);
+
+    // Request Body
+
+    const addressData = await Address.findOne({ _id: address });
+    if (!addressData) {
+      throw Error("Address cannot be found");
+    }
+
+    let products = [];
+
+    products.push({
+      productId: product._id,
+      quantity: quantity,
+      totalPrice: product.price + product.markup,
+      price: product.price,
+      markup: product.markup,
+    });
+
+    let orderData = {
+      user: _id,
+      address: addressData,
+      products: products,
+      subTotal: sum,
+      tax: parseInt(sum * 0.08),
+      totalPrice: sumWithTax,
+      paymentMode,
+      totalQuantity: quantity,
+      statusHistory: [
+        {
+          status: "pending",
+        },
+      ],
+      ...(notes ? notes : {}),
+      // ...(cart.coupon ? { coupon: cart.coupon } : {}),
+      // ...(cart.couponCode ? { couponCode: cart.couponCode } : {}),
+      // ...(cart.discount ? { discount: cart.discount } : {}),
+      // ...(cart.type ? { couponType: cart.type } : {}),
+    };
+
+    await updateProductList(id, -quantity);
+
+    const order = await Order.create(orderData);
+    console.log(order);
+
+    // When payment is done using wallet reducing the wallet and creating payment
+    if (paymentMode === "myWallet") {
+      const exists = await Wallet.findOne({ user: _id });
+      if (!exists) {
+        throw Error("No Wallet where found");
+      }
+
+      await Payment.create({
+        order: order._id,
+        payment_id: `wallet_${uuid.v4()}`,
+        user: _id,
+        status: "success",
+        paymentMode: "myWallet",
+      });
+
+      let wallet = {};
+      if (exists) {
+        wallet = await Wallet.findByIdAndUpdate(exists._id, {
+          $inc: {
+            balance: -sumWithTax,
+          },
+          $push: {
+            transactions: {
+              amount: sumWithTax,
+              type: "debit",
+              description: "Product Ordered",
+              order: order._id,
+            },
+          },
+        });
+      }
+    }
+
+    res.status(200).json({ order });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   createOrder,
   getOrders,
@@ -434,4 +545,5 @@ module.exports = {
   requestReturn,
   generateOrderInvoice,
   orderCount,
+  buyNow,
 };

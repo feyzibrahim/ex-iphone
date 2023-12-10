@@ -131,7 +131,7 @@ const Checkout = () => {
     // Getting razor-pay secret key
     const {
       data: { key },
-    } = await axios.get(`${URL}/user/razor-key`);
+    } = await axios.get(`${URL}/user/razor-key`, config);
 
     // making razor-pay order
     const {
@@ -149,7 +149,7 @@ const Checkout = () => {
       currency: "INR",
       name: "ex.iphones",
       description: "Test Transaction",
-      image: "http://localhost:4000/off/logo.png",
+      image: `${URL}/off/logo.png`,
       order_id: order.id,
       handler: function (response) {
         saveOrder(response);

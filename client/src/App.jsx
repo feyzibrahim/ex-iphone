@@ -125,7 +125,10 @@ function App() {
             path="/checkout"
             element={<ProtectedRoute element={<Checkout />} />}
           />
-          <Route path="/buy-now" element={<BuyNow />} />
+          <Route
+            path="/buy-now"
+            element={<ProtectedRoute element={<BuyNow />} />}
+          />
 
           <Route
             path="/dashboard"
