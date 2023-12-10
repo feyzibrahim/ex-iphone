@@ -14,11 +14,14 @@ import OrderTableRow from "../../Components/OrderTableRow";
 import JustLoading from "../../../../components/JustLoading";
 import { useSearchParams } from "react-router-dom";
 import SearchBar from "../../../../components/SearchBar";
+import Pagination from "../../../../components/Pagination";
 
 const Orders = () => {
   const dispatch = useDispatch();
 
-  const { orders, loading, error } = useSelector((state) => state.orders);
+  const { orders, loading, error, totalAvailableOrders } = useSelector(
+    (state) => state.orders
+  );
 
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [updateModal, setUpdateModal] = useState(false);
@@ -45,6 +48,13 @@ const Orders = () => {
     setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
+  }, []);
+
+  // Getting all the orders on page load
   useEffect(() => {
     dispatch(getOrders(searchParams));
   }, [searchParams]);
@@ -141,10 +151,12 @@ const Orders = () => {
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-gray-200 ";
+                  const adjustedIndex = (page - 1) * 10 + index + 1;
+
                   return (
                     <OrderTableRow
                       key={index}
-                      index={index}
+                      index={adjustedIndex}
                       item={item}
                       toggleUpdateModal={toggleUpdateModal}
                       classes={classes}
@@ -153,6 +165,14 @@ const Orders = () => {
                 })}
               </tbody>
             </table>
+            <div className="py-5">
+              <Pagination
+                handleClick={handleFilter}
+                page={page}
+                number={10}
+                totalNumber={totalAvailableOrders}
+              />
+            </div>
           </div>
         ) : (
           <div className="absolute top-1/2 left-1/3 lg:left-1/2 lg:right-1/2">

@@ -81,6 +81,13 @@ const Dashboard = () => {
     setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
 
+  // Getting page number on reload
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
+  }, []);
+
   // Clear all filters
   const clearFilters = () => {
     const params = new URLSearchParams();

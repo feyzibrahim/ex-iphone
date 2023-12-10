@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToWishlist } from "../../redux/actions/user/wishlistActions";
 import ProductDetailsStarAndRating from "./components/ProductDetailsStarAndRating";
 import { addToBuyNowStore } from "../../redux/reducers/user/buyNowSlice";
+import ImageZoom from "../../components/ImageZoom";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -112,10 +113,11 @@ const ProductDetails = () => {
             <div className="lg:w-1/2 bg-white p-5 rounded flex flex-col items-center h-fit">
               <div className="w-80 h-80 lg:w-96 lg:h-96 flex">
                 {currentImage && (
-                  <img
-                    src={`${URL}/img/${currentImage}`}
-                    alt="Some to be"
-                    className="w-full h-full object-contain"
+                  <ImageZoom
+                    imageUrl={`${URL}/img/${currentImage}`}
+                    width={400}
+                    zoomedValue={1000}
+                    zoomedWidth={600}
                   />
                 )}
               </div>

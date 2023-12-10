@@ -11,6 +11,7 @@ const SearchBar = ({ handleClick, search, setSearch }) => {
         onSubmit={(e) => {
           e.preventDefault();
           handleClick("search", search);
+          handleClick("page", "");
           if (search === "") {
             setShowClose(false);
           } else {

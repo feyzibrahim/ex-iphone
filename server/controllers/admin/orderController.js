@@ -92,7 +92,9 @@ const getOrders = async (req, res) => {
       .populate("products.productId", { imageURL: 1, name: 1 })
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ orders });
+    const totalAvailableOrders = await Order.countDocuments(filter);
+
+    res.status(200).json({ orders, totalAvailableOrders });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

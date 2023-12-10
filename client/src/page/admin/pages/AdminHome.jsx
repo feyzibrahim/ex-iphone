@@ -16,7 +16,7 @@ const AdminHome = () => {
   const { orders, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(getOrders({}));
   }, []);
 
   // Update Orders

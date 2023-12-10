@@ -38,6 +38,14 @@ const Products = () => {
     setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
 
+  // Getting page number on reload
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
+  }, []);
+
+  // Getting products details
   useEffect(() => {
     dispatch(getProducts(searchParams));
   }, [searchParams]);
