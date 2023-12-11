@@ -15,6 +15,7 @@
     "autoprefixer": "^10.4.16",
     "axios": "^1.5.1",
     "chart.js": "^4.4.0",
+    "country-state-city": "^3.2.1",
     "date-and-time": "^3.0.3",
     "date-fns": "^2.30.0",
     "formik": "^2.4.5",

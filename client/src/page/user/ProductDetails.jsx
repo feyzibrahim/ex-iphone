@@ -117,7 +117,7 @@ const ProductDetails = () => {
                     imageUrl={`${URL}/img/${currentImage}`}
                     width={400}
                     zoomedValue={1000}
-                    zoomedWidth={600}
+                    zoomedWidth={550}
                   />
                 )}
               </div>
