@@ -125,7 +125,7 @@ const Dashboard = () => {
         handleClick={handleClick}
       />
       <div className="w-full lg:w-4/5 pb-5">
-        <div className="flex  gap-5 items-center justify-between">
+        <div className="flex flex-col lg:flex-row gap-5 items-center justify-between">
           <SearchBar
             handleClick={handleClick}
             search={search}

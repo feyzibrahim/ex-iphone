@@ -4,20 +4,23 @@ import { GrClose } from "react-icons/gr";
 
 const SearchBar = ({ handleClick, search, setSearch }) => {
   const [showClose, setShowClose] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(search);
+    handleClick("search", search);
+    handleClick("page", "");
+    if (search === "") {
+      setShowClose(false);
+    } else {
+      setShowClose(true);
+    }
+  };
+
   return (
     <div className="w-full">
       <form
         className="flex items-center bg-white  py-2 px-4 rounded-lg border"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleClick("search", search);
-          handleClick("page", "");
-          if (search === "") {
-            setShowClose(false);
-          } else {
-            setShowClose(true);
-          }
-        }}
+        onSubmit={(e) => handleSubmit(e)}
       >
         <input
           type="text"
