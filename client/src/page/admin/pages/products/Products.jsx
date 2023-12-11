@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsFilterRight } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineCalendar } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import FilterArray from "../../Components/FilterArray";
 import JustLoading from "../../../../components/JustLoading";
 import Pagination from "../../../../components/Pagination";
 import SearchBar from "../../../../components/SearchBar";
+import RangeDatePicker from "../../../../components/RangeDatePicker";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -90,10 +91,8 @@ const Products = () => {
             handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
-            <button className="admin-button-fl bg-white">
-              <AiOutlineCalendar />
-              Select Date
-            </button>
+            <RangeDatePicker handleFilter={handleFilter} />
+
             <button className="admin-button-fl bg-white">
               <BsFilterRight />
               Filters

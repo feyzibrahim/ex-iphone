@@ -37,6 +37,9 @@
 .btn-blue-border {
   @apply border-2 text-blue-600 hover:text-blue-200 uppercase text-sm border-blue-600 px-5 font-semibold lg:px-12 py-3 rounded-lg hover:bg-blue-700;
 }
+.btn-red-border {
+  @apply border-2 text-red-500 hover:text-red-200 uppercase text-sm border-red-500 px-5 font-semibold lg:px-12 py-3 rounded-lg hover:bg-red-500;
+}
 
 .xy-center {
   @apply flex justify-between items-center;
