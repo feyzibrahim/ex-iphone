@@ -1,3 +1,6 @@
+export const GOOGLE_ID =
+  "628424458787-qkhchkq95n7ht13oneer3692talfp63f.apps.googleusercontent.com";
+
 export const config = {
   headers: {
     "Content-Type": "application/json",

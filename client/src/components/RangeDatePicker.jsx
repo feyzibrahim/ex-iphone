@@ -2,20 +2,33 @@ import React, { useState, useEffect, useRef } from "react";
 import { format, isAfter } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import { AiOutlineCalendar } from "react-icons/ai";
-import "react-day-picker/dist/style.css";
 
-const RangeDatePicker = ({ handleFilter }) => {
+const RangeDatePicker = ({
+  handleFilter,
+  startingDate,
+  setStartingDate,
+  endingDate,
+  setEndingDate,
+}) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [range, setRange] = useState("");
-  const [showDate, setShowDate] = useState("Select Date");
-
-  const [startingDate, setStartingDate] = useState("");
-  const [endingDate, setEndingDate] = useState("");
 
   const today = new Date();
   const datePickerRef = useRef(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const startDate = params.get("startingDate");
+    const endDate = params.get("endingDate");
+    if (startDate) {
+      setStartingDate(startDate);
+      handleFilter("startingDate", startDate);
+    }
+    if (endDate) {
+      setEndingDate(endDate);
+      handleFilter("endingDate", endDate);
+    }
+
     const handleClickOutside = (event) => {
       if (
         datePickerRef.current &&
@@ -42,7 +55,10 @@ const RangeDatePicker = ({ handleFilter }) => {
         onClick={() => toggleDatePicker()}
         className="cursor-pointer admin-button-fl bg-white hover:bg-gray-200 active:bg-gray-300"
       >
-        <AiOutlineCalendar /> {showDate}
+        <AiOutlineCalendar />{" "}
+        {startingDate || endingDate
+          ? `${startingDate || `-`} to ${endingDate || `-`}`
+          : "Select Date"}
       </button>
       {showDatePicker && (
         <div className="bg-white px-3 py-2 rounded-lg shadow-2xl absolute right-0 top-10 text-sm">
@@ -55,10 +71,12 @@ const RangeDatePicker = ({ handleFilter }) => {
             onSelect={(pickedDate) => {
               setRange(pickedDate);
               if (pickedDate && pickedDate.from) {
-                setStartingDate(pickedDate.from);
+                setStartingDate(
+                  format(new Date(pickedDate.from), "yyyy-MM-dd")
+                );
               }
               if (pickedDate && pickedDate.to) {
-                setEndingDate(pickedDate.to);
+                setEndingDate(format(new Date(pickedDate.to), "yyyy-MM-dd"));
               }
             }}
           />
@@ -66,20 +84,9 @@ const RangeDatePicker = ({ handleFilter }) => {
             <button
               className="btn-blue text-white w-full"
               onClick={() => {
-                let date = `${format(
-                  new Date(startingDate),
-                  "dd/MM/yyyy"
-                )} : ${format(new Date(endingDate), "dd/MM/yyyy")}`;
-                setShowDate(date);
                 toggleDatePicker();
-                handleFilter(
-                  "startingDate",
-                  format(new Date(startingDate), "dd/MM/yyyy")
-                );
-                handleFilter(
-                  "endingDate",
-                  format(new Date(endingDate), "dd/MM/yyyy")
-                );
+                handleFilter("startingDate", startingDate);
+                handleFilter("endingDate", endingDate);
               }}
             >
               Save
@@ -87,9 +94,12 @@ const RangeDatePicker = ({ handleFilter }) => {
             <button
               className="btn-red-border text-white w-full"
               onClick={() => {
-                setShowDate("Select Date");
+                setStartingDate("");
+                setEndingDate("");
                 toggleDatePicker();
                 setRange("");
+                handleFilter("startingDate", "");
+                handleFilter("endingDate", "");
               }}
             >
               Clear

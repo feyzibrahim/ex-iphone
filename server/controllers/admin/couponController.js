@@ -4,9 +4,25 @@ const mongoose = require("mongoose");
 // Getting all coupons
 const getCoupons = async (req, res) => {
   try {
-    const { status, search, page = 1, limit = 10 } = req.query;
+    const {
+      status,
+      search,
+      page = 1,
+      limit = 10,
+      startingDate,
+      endingDate,
+    } = req.query;
 
     let filter = {};
+    // Date
+    if (startingDate) {
+      const date = new Date(startingDate);
+      filter.createdAt = { $gte: date };
+    }
+    if (endingDate) {
+      const date = new Date(endingDate);
+      filter.createdAt = { ...filter.createdAt, $lte: date };
+    }
 
     if (status) {
       if (status === "active") {

@@ -16,7 +16,14 @@ function isValidStatus(status) {
 // Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
   try {
-    const { status, search, page = 1, limit = 10 } = req.query;
+    const {
+      status,
+      search,
+      page = 1,
+      limit = 10,
+      startingDate,
+      endingDate,
+    } = req.query;
 
     let filter = {};
 
@@ -27,6 +34,19 @@ const getProducts = async (req, res) => {
       filter.name = { $regex: new RegExp(search, "i") };
     }
     const skip = (page - 1) * limit;
+
+    // Date
+    if (startingDate) {
+      const date = new Date(startingDate);
+      filter.createdAt = { $gte: date };
+    }
+    if (endingDate) {
+      const date = new Date(endingDate);
+      filter.createdAt = { ...filter.createdAt, $lte: date };
+    }
+
+    console.log(filter);
+
     const products = await Product.find(filter, {
       attributes: 0,
       moreImageURL: 0,

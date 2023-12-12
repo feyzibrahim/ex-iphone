@@ -9,6 +9,8 @@ import TableRow from "./TableRow";
 import { getCoupons } from "../../../../redux/actions/admin/couponsAction";
 import Loading from "../../../../components/Loading";
 import SearchBar from "../../../../components/SearchBar";
+import RangeDatePicker from "../../../../components/RangeDatePicker";
+import ClearFilterButton from "../../Components/ClearFilterButton";
 
 const Coupon = () => {
   const navigate = useNavigate();
@@ -17,6 +19,8 @@ const Coupon = () => {
   const { coupons, loading, error } = useSelector((state) => state.coupons);
 
   // Filtering
+  const [startingDate, setStartingDate] = useState("");
+  const [endingDate, setEndingDate] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,6 +36,20 @@ const Coupon = () => {
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
+  // Removing filters
+  const removeFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("search");
+    params.delete("page");
+    params.delete("status");
+    params.delete("startingDate");
+    params.delete("endingDate");
+    setSearch("");
+    setStartingDate("");
+    setEndingDate("");
+    setSearchParams(params);
   };
 
   useEffect(() => {
@@ -75,14 +93,14 @@ const Coupon = () => {
             handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
-            <button className="admin-button-fl bg-white">
-              <AiOutlineCalendar />
-              Select Date
-            </button>
-            <button className="admin-button-fl bg-white">
-              <BsFilterRight />
-              Filters
-            </button>
+            <RangeDatePicker
+              handleFilter={handleFilter}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              endingDate={endingDate}
+              setEndingDate={setEndingDate}
+            />
+            <ClearFilterButton handleClick={removeFilters} />
           </div>
         </div>
         <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
@@ -95,6 +113,7 @@ const Coupon = () => {
                   <th className="admin-table-head">Type</th>
                   <th className="admin-table-head">Value</th>
                   <th className="admin-table-head">Status</th>
+                  <th className="admin-table-head">Created On</th>
                   <th className="admin-table-head">Expiry</th>
                   <th className="admin-table-head">Action</th>
                 </tr>

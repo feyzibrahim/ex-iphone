@@ -15,6 +15,8 @@ import JustLoading from "../../../../components/JustLoading";
 import { useSearchParams } from "react-router-dom";
 import SearchBar from "../../../../components/SearchBar";
 import Pagination from "../../../../components/Pagination";
+import RangeDatePicker from "../../../../components/RangeDatePicker";
+import ClearFilterButton from "../../Components/ClearFilterButton";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -31,6 +33,8 @@ const Orders = () => {
   };
 
   // Filtering
+  const [startingDate, setStartingDate] = useState("");
+  const [endingDate, setEndingDate] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,6 +52,21 @@ const Orders = () => {
     setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
 
+  // Removing filters
+  const removeFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("search");
+    params.delete("page");
+    params.delete("status");
+    params.delete("startingDate");
+    params.delete("endingDate");
+    setSearch("");
+    setStartingDate("");
+    setEndingDate("");
+    setSearchParams(params);
+  };
+
+  // Filters setting initially
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const pageNumber = params.get("page");
@@ -116,14 +135,14 @@ const Orders = () => {
             handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
-            <button className="admin-button-fl bg-white">
-              <AiOutlineCalendar />
-              Select Date
-            </button>
-            <button className="admin-button-fl bg-white">
-              <BsFilterRight />
-              Filters
-            </button>
+            <RangeDatePicker
+              handleFilter={handleFilter}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              endingDate={endingDate}
+              setEndingDate={setEndingDate}
+            />
+            <ClearFilterButton handleClick={removeFilters} />
           </div>
         </div>
         {loading ? (

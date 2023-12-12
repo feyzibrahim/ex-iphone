@@ -1,19 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
 
 const SearchBar = ({ handleClick, search, setSearch }) => {
-  const [showClose, setShowClose] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(search);
     handleClick("search", search);
     handleClick("page", "");
-    if (search === "") {
-      setShowClose(false);
-    } else {
-      setShowClose(true);
-    }
   };
 
   return (
@@ -31,12 +24,11 @@ const SearchBar = ({ handleClick, search, setSearch }) => {
             setSearch(e.target.value);
           }}
         />
-        {showClose ? (
+        {search ? (
           <button
             type="button"
             onClick={() => {
               handleClick("search", "");
-              setShowClose(false);
               setSearch("");
             }}
           >
@@ -47,7 +39,6 @@ const SearchBar = ({ handleClick, search, setSearch }) => {
             type="button"
             onClick={() => {
               handleClick("search", search);
-              setShowClose(true);
             }}
           >
             <BiSearch className="text-xl text-gray-400 hover:text-gray-800" />
