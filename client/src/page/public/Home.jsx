@@ -10,9 +10,15 @@ import AppleWatchCollection from "../../components/HomeComponents/AppleWatchColl
 import { useSelector } from "react-redux";
 import ImageSlider from "../../components/HomeComponents/ImageSlider";
 import JustLoading from "../../components/JustLoading";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const { loading } = useSelector((state) => state.user);
+
+  const gotoLogin = () => {
+    navigate("/login");
+  };
 
   if (loading) {
     return (
@@ -45,7 +51,9 @@ const Home = () => {
                 className="text-black outline-none w-full"
               />
             </div>
-            <button className="btn-blue">Search</button>
+            <button className="btn-blue" onClick={gotoLogin}>
+              Search
+            </button>
           </div>
         </div>
         {/* BG iPhone Image */}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import iMac from "../../assets/collection/iMac.png";
 import iPhone from "../../assets/collection/iPhone.png";
 import iPad from "../../assets/collection/iPad.png";
@@ -7,18 +7,27 @@ import airPods from "../../assets/collection/airPods.png";
 import airTags from "../../assets/collection/airTags.png";
 import homePod from "../../assets/collection/homepod.png";
 import iAcc from "../../assets/collection/iAcc.png";
+import { URL, commonRequest } from "../../Common/api";
+import { appJson } from "../../Common/configurations";
 
 const NewCollection = () => {
-  const list = [
-    { title: "iMac", img: iMac },
-    { title: "iPhone", img: iPhone },
-    { title: "iPad", img: iPad },
-    { title: "iWatch", img: iWatch },
-    { title: "airPods", img: airPods },
-    { title: "airTags", img: airTags },
-    { title: "homePod", img: homePod },
-    { title: "iAcc", img: iAcc },
-  ];
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await commonRequest(
+        "GET",
+        "/public/collections",
+        null,
+        appJson
+      );
+      if (res.categories) {
+        setList(res.categories);
+      }
+      console.log(res);
+    };
+    loadData();
+  }, []);
 
   return (
     <>
@@ -26,11 +35,17 @@ const NewCollection = () => {
         Newest Collection Available
       </h1>
       <div className="grid grid-cols-2 mx-auto lg:flex gap-5 p-10 justify-center">
-        {list.map((li) => {
+        {list.map((li, index) => {
           return (
-            <div key={li.title}>
-              <img src={li.img} alt={li.title} />
-              <p className="text-center mt-3 text-sm font-bold">{li.title}</p>
+            <div key={index} className="">
+              <div className="w-full h-32">
+                <img
+                  src={`${URL}/img/${li.imgURL}`}
+                  alt={li.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="text-center mt-3 text-sm font-bold">{li.name}</p>
             </div>
           );
         })}
