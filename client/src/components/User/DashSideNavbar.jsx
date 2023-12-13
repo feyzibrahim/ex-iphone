@@ -35,10 +35,10 @@ const DashSideNavbar = () => {
         <BiHistory />
         Order History
       </NavLink>
-      <NavLink className="side-nav-link-sp" to="track-order">
+      {/* <NavLink className="side-nav-link-sp" to="track-order">
         <MdTrackChanges />
         Track Order
-      </NavLink>
+      </NavLink> */}
       <NavLink className="side-nav-link-sp" to="wishlist">
         <AiOutlineHeart />
         Wishlist

@@ -21,14 +21,7 @@ const {
   orderCount,
   buyNow,
 } = require("../controllers/user/orderController");
-const {
-  sendOTP,
-  validateOTP,
-  forgotPassword,
-  validateForgotOTP,
-  newPassword,
-  resentOTP,
-} = require("../controllers/otpController");
+
 const {
   getCart,
   addToCart,
@@ -84,17 +77,11 @@ const router = express.Router();
 // To get user data on initial page load.
 router.get("/", getUserDataFirst);
 
-// Auth
+// Logout
 router.get("/logout", logoutUser);
 
 // Edit User profile
 router.post("/edit-profile", upload.single("profileImgURL"), editUser);
-
-// Forget Password
-router.post("/forget-password", forgotPassword);
-router.post("/forget-password-validate-otp", validateForgotOTP);
-// Set new password
-router.post("/set-new-password", newPassword);
 
 // Products
 router.get("/products", getProducts);
@@ -110,11 +97,6 @@ router.post("/request-return/:id", requestReturn);
 router.get("/order-invoice/:id", generateOrderInvoice);
 router.get("/order-count/", orderCount);
 router.post("/buy-now/:id", buyNow);
-
-// OTP
-router.post("/send-otp", sendOTP);
-router.post("/validate-otp", validateOTP);
-router.post("/resend-otp", resentOTP);
 
 // Cart
 router.get("/cart", getCart);

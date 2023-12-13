@@ -49,7 +49,7 @@ const OTPEnterSection = ({
 
     await axios
       .post(
-        `${URL}/user/validate-otp`,
+        `${URL}/auth/validate-otp`,
         {
           email,
           otp: otpNumber,
@@ -109,7 +109,7 @@ const OTPEnterSection = ({
       setResendLoading(true);
       await axios
         .post(
-          `${URL}/user/resend-otp`,
+          `${URL}/auth/resend-otp`,
           {
             email,
           },

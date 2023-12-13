@@ -101,7 +101,7 @@ const Register = () => {
 
       // Send OTP request
       const response = await axios.post(
-        `${URL}/user/send-otp`,
+        `${URL}/auth/send-otp`,
         { email: value.email },
         config
       );

@@ -24,6 +24,10 @@ const getWishlist = async (req, res) => {
       })
       .sort({ createdAt: -1 });
 
+    if (!wishlist) {
+      throw Error("Wishlist is empty");
+    }
+
     res.status(200).json({ wishlist });
   } catch (error) {
     res.status(400).json({ error: error.message });

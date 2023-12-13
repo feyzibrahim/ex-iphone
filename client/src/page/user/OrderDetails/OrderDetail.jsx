@@ -17,7 +17,10 @@ import OrderHistoryAddress from "./OrderHistoryAddress";
 import ProductReview from "./ProductReview";
 import StatusHistoryLoadingBar from "./StatusHistoryLoadingBar";
 import ReturnProduct from "./ReturnProduct";
-import { getStatusDate } from "../../../Common/functions";
+import {
+  getStatusDate,
+  modifyPaymentModeText,
+} from "../../../Common/functions";
 import OrderDates from "./OrderDates";
 import YourReview from "./YourReview";
 
@@ -75,6 +78,7 @@ const OrderDetail = () => {
     try {
       const response = await axios.get(`${URL}/user/order-invoice/${id}`, {
         responseType: "blob",
+        withCredentials: true,
       });
 
       const blob = new Blob([response.data], { type: "application/pdf" });
@@ -197,14 +201,16 @@ const OrderDetail = () => {
                 <div>
                   <OrderDates orderData={orderData} />
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-1">
-                    <p className="text-gray-500">Payment Mode</p>
-                    <p>{orderData.paymentMode}</p>
-                    <button
-                      className="btn-blue-no-pad px-2 text-white flex items-center gap-2 active:bg-blue-800"
-                      onClick={handleGenerateInvoice}
-                    >
-                      <FiDownload /> Invoice
-                    </button>
+                    <p className="text-gray-500">Payment Mode:</p>
+                    <p>{modifyPaymentModeText(orderData.paymentMode)}</p>
+                    {orderData.status && orderData.status === "delivered" && (
+                      <button
+                        className="btn-blue-no-pad px-2 text-white flex items-center gap-2 active:bg-blue-800"
+                        onClick={handleGenerateInvoice}
+                      >
+                        <FiDownload /> Invoice
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div>

@@ -67,3 +67,18 @@ export const getPassedDateOnwardDateForInput = (inputDateString) => {
   const formattedDate = date.format(inputDate, "YYYY-MM-DD");
   return formattedDate;
 };
+
+// Modify Payment Mode Text
+
+export const modifyPaymentModeText = (mode) => {
+  console.log(mode);
+  if (mode === "cashOnDelivery") {
+    return "Cash on Delivery";
+  }
+  if (mode === "razorPay") {
+    return "Razor Pay";
+  }
+  if (mode === "myWallet") {
+    return "My Wallet";
+  }
+};

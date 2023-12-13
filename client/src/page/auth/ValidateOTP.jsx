@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateUserOnOTPValidation } from "../../redux/reducers/userSlice";
 import toast from "react-hot-toast";
+import { URL } from "../../Common/api";
 
 const ValidateOTP = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const ValidateOTP = () => {
 
     await axios
       .post(
-        "http://localhost:4000/user/validate-otp",
+        `${URL}/auth/validate-otp`,
         {
           otp: otpNumber,
         },
@@ -65,7 +66,7 @@ const ValidateOTP = () => {
 
   useEffect(() => {
     const generateOTP = async () => {
-      const data = await axios.get("http://localhost:4000/user/send-otp", {
+      const data = await axios.get(`${URL}/auth/send-otp`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -119,7 +120,7 @@ const ValidateOTP = () => {
       setResendLoading(true);
       await axios
         .post(
-          `${URL}/user/resend-otp`,
+          `${URL}/auth/resend-otp`,
           {
             email: "aodifajio",
           },

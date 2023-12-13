@@ -64,7 +64,7 @@ const generateInvoicePDF = async (order) => {
         .lineWidth(0.5)
         .strokeColor("#ccc")
         .stroke()
-        .text(`Order Id: ${order._id}`, 50, 200)
+        .text(`Order Id: ${order.orderId ? order.orderId : order._id}`, 50, 200)
         .text(
           `Order Date: ${moment(new Date(order.createdAt)).format(
             "DD/MM/YYYY"

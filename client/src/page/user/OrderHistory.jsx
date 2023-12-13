@@ -38,6 +38,10 @@ const OrderHistory = () => {
 
   useEffect(() => {
     dispatch(getOrders(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNum = params.get("page");
+    console.log(pageNum, "page number");
+    setPage(parseInt(pageNum) || 1);
   }, [searchParams]);
 
   return (
