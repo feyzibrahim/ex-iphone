@@ -187,6 +187,10 @@ const getOrders = async (req, res) => {
       throw Error("Invalid ID!!!");
     }
 
+    const { page = 1, limit = 10 } = req.query;
+
+    const skip = (page - 1) * limit;
+
     const orders = await Order.find(
       { user: _id },
       {
@@ -198,10 +202,14 @@ const getOrders = async (req, res) => {
         products: { $slice: 1 },
       }
     )
+      .skip(skip)
+      .limit(limit)
       .populate("products.productId", { name: 1 })
       .sort({ createdAt: -1 });
 
-    res.status(200).json({ orders });
+    const totalAvailableOrders = await Order.countDocuments({ user: _id });
+
+    res.status(200).json({ orders, totalAvailableOrders });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

@@ -224,8 +224,8 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (!cart) {
-      navigate("/");
+    if (!cart || cart.length === 0) {
+      navigate(-1);
     }
   }, [cart]);
 

@@ -10,7 +10,6 @@ const UpdateOrder = ({ toggleModal, data }) => {
   const { id, status, paymentMode, deliveryDate } = data;
   const dispatch = useDispatch();
   const dateFromTomorrow = getPassedDateOnwardDateForInput(deliveryDate);
-  console.log(deliveryDate);
 
   const initialValues = {
     status: status,

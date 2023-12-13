@@ -12,6 +12,7 @@ const userOrdersSLice = createSlice({
     loading: false,
     userOrders: [],
     error: null,
+    totalAvailableOrders: null,
   },
   extraReducers: (builder) => {
     builder
@@ -22,6 +23,7 @@ const userOrdersSLice = createSlice({
         state.loading = false;
         state.error = null;
         state.userOrders = payload.orders;
+        state.totalAvailableOrders = payload.totalAvailableOrders;
       })
       .addCase(getOrders.rejected, (state, { payload }) => {
         state.loading = false;

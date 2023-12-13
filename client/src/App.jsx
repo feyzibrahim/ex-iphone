@@ -178,6 +178,10 @@ function AdminRoutes() {
         <Route path="orders" element={<Orders />} />
         <Route path="orders/detail/:id" element={<OrderDetails />} />
         <Route path="orders/return-requests" element={<ReturnRequests />} />
+        <Route
+          path="orders/return-requests/detail/:id"
+          element={<OrderDetails />}
+        />
 
         <Route path="manageAdmins" element={<ManageAdmins />} />
         <Route path="manageAdmins/create" element={<CreateAdmin />} />

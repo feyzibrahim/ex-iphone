@@ -1,21 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../redux/actions/user/userOrderActions";
 import date from "date-and-time";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { BsArrowRight } from "react-icons/bs";
 import StatusComponent from "../../components/StatusComponent";
 import JustLoading from "../../components/JustLoading";
+import Pagination from "../../components/Pagination";
 
 const OrderHistory = () => {
-  const { userOrders, loading, error } = useSelector(
+  const { userOrders, loading, error, totalAvailableOrders } = useSelector(
     (state) => state.userOrders
   );
   const dispatch = useDispatch();
 
+  // Pagination
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [page, setPage] = useState(1);
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
+    } else {
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
   useEffect(() => {
-    dispatch(getOrders());
-  }, []);
+    dispatch(getOrders(searchParams));
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen w-full">
@@ -76,6 +99,12 @@ const OrderHistory = () => {
             <div className="flex justify-center">No Orders yet</div>
           )}
         </div>
+        <Pagination
+          handleClick={handleFilter}
+          number={10}
+          page={page}
+          totalNumber={totalAvailableOrders}
+        />
       </div>
     </div>
   );

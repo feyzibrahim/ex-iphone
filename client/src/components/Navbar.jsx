@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -24,6 +24,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const datePickerRef = useRef(null);
 
   const [dropDown, setDropDown] = useState(false);
   const toggleDropDown = () => {
@@ -40,6 +41,23 @@ const Navbar = () => {
   const toggleSideNavbar = () => {
     setShowSideNavbar(!showSideNavbar);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target)
+      ) {
+        setDropDown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -100,7 +118,10 @@ const Navbar = () => {
               </button>
 
               {dropDown && (
-                <div className="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl">
+                <div
+                  className="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl"
+                  ref={datePickerRef}
+                >
                   <NavLink
                     to="/dashboard/"
                     className="navbar-drop-ul"

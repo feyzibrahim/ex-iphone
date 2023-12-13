@@ -10,6 +10,10 @@ import ConfirmModal from "../../../../components/ConfirmModal";
 import axios from "axios";
 import { URL } from "../../../../Common/api";
 import { config } from "../../../../Common/configurations";
+import {
+  getPassedDateOnwardDateForInput,
+  getTomorrowOnwardsDateForInput,
+} from "../../../../Common/functions";
 
 const CreateCoupon = () => {
   const dispatch = useDispatch();
@@ -64,13 +68,21 @@ const CreateCoupon = () => {
     const loadInitialData = async () => {
       try {
         const { data } = await axios.get(`${URL}/admin/coupon/${id}`, config);
-        setInitialValues({ ...data.coupon });
+        // console.log(data);
+        setInitialValues({
+          ...data.coupon,
+          expirationDate: getPassedDateOnwardDateForInput(
+            data.coupon.expirationDate
+          ),
+        });
       } catch (error) {
         console.error(error);
       }
     };
     loadInitialData();
   }, []);
+  // Date limiting
+  const dateFromTomorrow = getTomorrowOnwardsDateForInput();
 
   return (
     <>
@@ -265,6 +277,7 @@ const CreateCoupon = () => {
                 <Field
                   name="expirationDate"
                   type="date"
+                  min={dateFromTomorrow}
                   placeholder="Type the coupon code here"
                   className="admin-input"
                 />

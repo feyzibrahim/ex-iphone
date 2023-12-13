@@ -45,8 +45,6 @@ const getProducts = async (req, res) => {
       filter.createdAt = { ...filter.createdAt, $lte: date };
     }
 
-    console.log(filter);
-
     const products = await Product.find(filter, {
       attributes: 0,
       moreImageURL: 0,

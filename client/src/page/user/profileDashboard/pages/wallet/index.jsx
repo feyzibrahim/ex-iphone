@@ -36,10 +36,10 @@ const Wallet = () => {
                 </p>
               </div>
             </div>
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               <button className="btn-blue text-white">Add Money</button>
               <button className="btn-red text-white">Refund</button>
-            </div>
+            </div> */}
           </div>
           <div className="p-5 overflow-auto">
             {wallet ? (

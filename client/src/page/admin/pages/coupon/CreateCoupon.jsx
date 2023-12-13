@@ -54,7 +54,6 @@ const CreateCoupon = () => {
   });
 
   const dateFromTomorrow = getTomorrowOnwardsDateForInput();
-  console.log(dateFromTomorrow);
 
   return (
     <>

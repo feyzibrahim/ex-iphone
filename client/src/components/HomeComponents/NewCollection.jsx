@@ -1,12 +1,4 @@
 import React, { useEffect, useState } from "react";
-import iMac from "../../assets/collection/iMac.png";
-import iPhone from "../../assets/collection/iPhone.png";
-import iPad from "../../assets/collection/iPad.png";
-import iWatch from "../../assets/collection/iWatch.png";
-import airPods from "../../assets/collection/airPods.png";
-import airTags from "../../assets/collection/airTags.png";
-import homePod from "../../assets/collection/homepod.png";
-import iAcc from "../../assets/collection/iAcc.png";
 import { URL, commonRequest } from "../../Common/api";
 import { appJson } from "../../Common/configurations";
 
@@ -24,7 +16,6 @@ const NewCollection = () => {
       if (res.categories) {
         setList(res.categories);
       }
-      console.log(res);
     };
     loadData();
   }, []);

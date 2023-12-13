@@ -62,7 +62,7 @@ const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
                 id: item._id,
                 status: item.status,
                 paymentMode: item.paymentMode,
-                deliveryDate: item.deliveryDate,
+                deliveryDate: item.createdAt,
               });
             }}
           >

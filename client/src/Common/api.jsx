@@ -9,16 +9,10 @@ const apiInstance = axios.create({
 });
 
 // Response interceptor
-apiInstance.interceptors.response.use(
-  (response) => {
-    // You can modify the response data here
-    return response.data;
-  },
-  (error) => {
-    // Handle response errors
-    return Promise.reject(handleError(error));
-  }
-);
+apiInstance.interceptors.response.use((response) => {
+  // You can modify the response data here
+  return response.data;
+});
 
 export const commonReduxRequest = async (
   method,
