@@ -11,12 +11,15 @@ import Loading from "../../../../components/Loading";
 import SearchBar from "../../../../components/SearchBar";
 import RangeDatePicker from "../../../../components/RangeDatePicker";
 import ClearFilterButton from "../../Components/ClearFilterButton";
+import Pagination from "../../../../components/Pagination";
 
 const Coupon = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { coupons, loading, error } = useSelector((state) => state.coupons);
+  const { coupons, loading, error, totalAvailableCoupons } = useSelector(
+    (state) => state.coupons
+  );
 
   // Filtering
   const [startingDate, setStartingDate] = useState("");
@@ -30,9 +33,14 @@ const Coupon = () => {
     if (value === "") {
       params.delete(type);
     } else {
-      params.set(type, value);
-      if (type === "page") {
-        setPage(value);
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");
@@ -132,6 +140,14 @@ const Coupon = () => {
               </tbody>
             </table>
           )}
+        </div>
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            page={page}
+            number={10}
+            totalNumber={totalAvailableCoupons}
+          />
         </div>
       </div>
     </>

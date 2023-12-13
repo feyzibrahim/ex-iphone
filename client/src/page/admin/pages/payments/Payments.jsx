@@ -11,14 +11,21 @@ import { BsFilterRight } from "react-icons/bs";
 import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import SearchBar from "../../../../components/SearchBar";
+import Pagination from "../../../../components/Pagination";
+import RangeDatePicker from "../../../../components/RangeDatePicker";
+import ClearFilterButton from "../../Components/ClearFilterButton";
 
 const Payments = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { payments, loading, error } = useSelector((state) => state.payments);
+  const { payments, loading, error, totalAvailablePayments } = useSelector(
+    (state) => state.payments
+  );
 
   // Filtering
+  const [startingDate, setStartingDate] = useState("");
+  const [endingDate, setEndingDate] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,12 +35,30 @@ const Payments = () => {
     if (value === "") {
       params.delete(type);
     } else {
-      params.set(type, value);
-      if (type === "page") {
-        setPage(value);
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+  // Removing filters
+  const removeFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("search");
+    params.delete("page");
+    params.delete("status");
+    params.delete("startingDate");
+    params.delete("endingDate");
+    setSearch("");
+    setStartingDate("");
+    setEndingDate("");
+    setSearchParams(params);
   };
 
   useEffect(() => {
@@ -73,14 +98,14 @@ const Payments = () => {
             handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
-            <button className="admin-button-fl bg-white">
-              <AiOutlineCalendar />
-              Select Date
-            </button>
-            <button className="admin-button-fl bg-white">
-              <BsFilterRight />
-              Filters
-            </button>
+            <RangeDatePicker
+              handleFilter={handleFilter}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              endingDate={endingDate}
+              setEndingDate={setEndingDate}
+            />
+            <ClearFilterButton handleClick={removeFilters} />
           </div>
         </div>
         {payments && payments.length > 0 ? (
@@ -105,13 +130,14 @@ const Payments = () => {
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-gray-200 ";
+                  const adjustedIndex = (page - 1) * 10 + index + 1;
                   return (
                     <tr
                       key={index}
                       className={`${classes} hover:bg-gray-200 active:bg-gray-300 cursor-pointer`}
                       // onClick={() => navigate(`detail/${item._id}`)}
                     >
-                      <td className="admin-table-row">{index + 1}</td>
+                      <td className="admin-table-row">{adjustedIndex}</td>
                       <td className="admin-table-row flex items-center gap-2">
                         <p className="line-clamp-1 mb-1 font-semibold">
                           {item.user.firstName} {item.user.lastName}
@@ -131,28 +157,6 @@ const Payments = () => {
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status || ""} />
                       </td>
-                      {/* <td className="admin-table-row">
-                        <div className="flex items-center gap-2 text-lg">
-                          <span
-                            className="hover:text-gray-500"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleUpdateModal({
-                                id: item._id,
-                                status: item.status,
-                              });
-                            }}
-                          >
-                            <AiOutlineEdit />
-                          </span>
-                          <span
-                            className="hover:text-gray-500"
-                            onClick={() => {}}
-                          >
-                            <AiOutlineDelete />
-                          </span>
-                        </div>
-                      </td> */}
                     </tr>
                   );
                 })}
@@ -164,6 +168,14 @@ const Payments = () => {
             <p className="w-44">{error ? error : "No payments yet"}</p>
           </div>
         )}
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            page={page}
+            number={10}
+            totalNumber={totalAvailablePayments}
+          />
+        </div>
       </div>
     </>
   );

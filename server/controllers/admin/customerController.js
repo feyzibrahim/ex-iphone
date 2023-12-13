@@ -3,7 +3,14 @@ const User = require("../../model/userModel");
 // Getting all Customer to list on admin dashboard
 const getCustomers = async (req, res) => {
   try {
-    const { status, search, page = 1, limit = 10 } = req.query;
+    const {
+      status,
+      search,
+      page = 1,
+      limit = 10,
+      startingDate,
+      endingDate,
+    } = req.query;
 
     let filter = {};
 
@@ -27,6 +34,15 @@ const getCustomers = async (req, res) => {
         ];
       }
     }
+    // Date
+    if (startingDate) {
+      const date = new Date(startingDate);
+      filter.createdAt = { $gte: date };
+    }
+    if (endingDate) {
+      const date = new Date(endingDate);
+      filter.createdAt = { ...filter.createdAt, $lte: date };
+    }
 
     const skip = (page - 1) * limit;
 
@@ -42,7 +58,8 @@ const getCustomers = async (req, res) => {
       }
     )
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     const totalAvailableUsers = await User.countDocuments({
       role: "user",

@@ -9,28 +9,57 @@ import TableRow from "./TableRow";
 import BlockOrUnBlock from "./BlockOrUnBlock";
 import Modal from "../../../../components/Modal";
 import FilterArray from "../../Components/FilterArray";
+import RangeDatePicker from "../../../../components/RangeDatePicker";
+import ClearFilterButton from "../../Components/ClearFilterButton";
+import SearchBar from "../../../../components/SearchBar";
+import Pagination from "../../../../components/Pagination";
 
 const ManageAdmins = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { admins, loading, error } = useSelector((state) => state.admins);
+  const { admins, loading, error, totalAvailableCoupons } = useSelector(
+    (state) => state.admins
+  );
 
+  // Filter variables
+  const [startingDate, setStartingDate] = useState("");
+  const [endingDate, setEndingDate] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Filter Handling Function
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
       params.delete(type);
     } else {
-      params.set(type, value);
-      if (type === "page") {
-        setPage(value);
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
+
+  // Removing filters
+  const removeFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("search");
+    params.delete("page");
+    params.delete("status");
+    params.delete("startingDate");
+    params.delete("endingDate");
+    setSearch("");
+    setStartingDate("");
+    setEndingDate("");
+    setSearchParams(params);
   };
 
   useEffect(() => {
@@ -57,6 +86,11 @@ const ManageAdmins = () => {
         />
       )}
       <div className="p-5 w-full overflow-y-auto">
+        <SearchBar
+          handleClick={handleFilter}
+          search={search}
+          setSearch={setSearch}
+        />
         <div className="flex justify-between items-center text-xs font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Manage Admins</h1>
@@ -69,10 +103,10 @@ const ManageAdmins = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <button className="admin-button-fl bg-gray-200 text-blue-700">
+            {/* <button className="admin-button-fl bg-gray-200 text-blue-700">
               <FiDownload />
               Export
-            </button>
+            </button> */}
             <button
               className="admin-button-fl bg-blue-700 text-white"
               onClick={() => navigate("create")}
@@ -88,14 +122,14 @@ const ManageAdmins = () => {
             handleClick={handleFilter}
           />
           <div className="flex my-2 gap-3">
-            <button className="admin-button-fl bg-white">
-              <AiOutlineCalendar />
-              Select Date
-            </button>
-            <button className="admin-button-fl bg-white">
-              <BsFilterRight />
-              Filters
-            </button>
+            <RangeDatePicker
+              handleFilter={handleFilter}
+              startingDate={startingDate}
+              setStartingDate={setStartingDate}
+              endingDate={endingDate}
+              setEndingDate={setEndingDate}
+            />
+            <ClearFilterButton handleClick={removeFilters} />
           </div>
         </div>
         <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
@@ -127,6 +161,14 @@ const ManageAdmins = () => {
               </tbody>
             </table>
           )}
+        </div>
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            page={page}
+            number={10}
+            totalNumber={totalAvailableCoupons}
+          />
         </div>
       </div>
     </>

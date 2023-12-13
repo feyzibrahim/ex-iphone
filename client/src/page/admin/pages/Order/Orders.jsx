@@ -44,9 +44,14 @@ const Orders = () => {
     if (value === "") {
       params.delete(type);
     } else {
-      params.set(type, value);
-      if (type === "page") {
-        setPage(value);
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");

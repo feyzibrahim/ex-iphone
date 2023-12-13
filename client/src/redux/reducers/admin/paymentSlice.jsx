@@ -7,6 +7,7 @@ const paymentsSlice = createSlice({
     loading: false,
     payments: [],
     error: null,
+    totalAvailablePayments: null,
   },
   extraReducers: (builder) => {
     builder
@@ -17,6 +18,7 @@ const paymentsSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.payments = payload.payments;
+        state.totalAvailablePayments = payload.totalAvailablePayments;
       })
       .addCase(getPayments.rejected, (state, { payload }) => {
         state.loading = false;

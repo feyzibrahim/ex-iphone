@@ -93,7 +93,16 @@ const getOrders = async (req, res) => {
     }
 
     if (search) {
-      filter._id = search;
+      if (mongoose.Types.ObjectId.isValid(search)) {
+        filter._id = search;
+      } else {
+        const searchAsNumber = Number(search);
+        if (!isNaN(searchAsNumber)) {
+          filter.orderId = searchAsNumber;
+        } else {
+          throw new Error("Please search using order Id");
+        }
+      }
     }
 
     const skip = (page - 1) * limit;

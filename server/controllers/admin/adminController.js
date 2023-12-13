@@ -3,7 +3,14 @@ const User = require("../../model/userModel");
 // Getting all Admins to list on super admin dashboard
 const getAdmins = async (req, res) => {
   try {
-    const { status, search } = req.query;
+    const {
+      status,
+      search,
+      page = 1,
+      limit = 10,
+      startingDate,
+      endingDate,
+    } = req.query;
 
     let filter = {};
 
@@ -13,6 +20,16 @@ const getAdmins = async (req, res) => {
       } else {
         filter.isActive = false;
       }
+    }
+
+    // Date
+    if (startingDate) {
+      const date = new Date(startingDate);
+      filter.createdAt = { $gte: date };
+    }
+    if (endingDate) {
+      const date = new Date(endingDate);
+      filter.createdAt = { ...filter.createdAt, $lte: date };
     }
 
     if (search) {
@@ -27,6 +44,7 @@ const getAdmins = async (req, res) => {
         ];
       }
     }
+    const skip = (page - 1) * limit;
 
     const admins = await User.find(
       { role: "admin", ...filter },
@@ -37,12 +55,16 @@ const getAdmins = async (req, res) => {
         walletBalance: 0,
         isEmailVerified: 0,
       }
-    );
+    )
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
     if (admins.length === 0) {
       throw Error(`No ${isActive ? "active" : "blocked"} admin`);
     }
+    const totalAvailableAdmins = await User.countDocuments(filter);
 
-    res.status(200).json({ admins });
+    res.status(200).json({ admins, totalAvailableAdmins });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

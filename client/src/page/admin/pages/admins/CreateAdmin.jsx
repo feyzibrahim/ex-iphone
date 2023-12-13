@@ -4,7 +4,7 @@ import {
   AiOutlineUser,
   AiOutlineMail,
   AiOutlinePhone,
-  AiOutlinePlus,
+  AiOutlineClose,
 } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,11 +13,10 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import InputWithIcon from "../../../../components/InputWithIcon";
 import PasswordInputWithIcon from "../../../../components/PasswordInputWithIcon";
-import { FiDownload } from "react-icons/fi";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 
 const CreateAdmin = () => {
-  const { admins, loading, error } = useSelector((state) => state.admins);
+  const { loading, error } = useSelector((state) => state.admins);
 
   const navigate = useNavigate();
 
@@ -73,17 +72,20 @@ const CreateAdmin = () => {
           />
         </div>
         <div className="flex gap-3">
-          <button className="admin-button-fl bg-gray-200 text-blue-700">
-            <FiDownload />
-            Export
-          </button>
           <button
+            className="admin-button-fl bg-gray-200 text-blue-700"
+            onClick={() => navigate(-1)}
+          >
+            <AiOutlineClose />
+            Cancel
+          </button>
+          {/* <button
             className="admin-button-fl bg-blue-700 text-white"
             onClick={() => navigate("create")}
           >
             <AiOutlinePlus />
             Create New Admin
-          </button>
+          </button> */}
         </div>
       </div>
       <div className="w-2/5 mx-auto">

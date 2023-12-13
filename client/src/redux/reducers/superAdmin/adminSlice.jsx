@@ -12,6 +12,7 @@ const adminSlice = createSlice({
     loading: false,
     admins: [],
     error: null,
+    totalAvailableAdmins: null,
   },
   extraReducers: (builder) => {
     builder
@@ -22,6 +23,7 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.admins = payload.admins;
+        state.totalAvailableAdmins = payload.totalAvailableAdmins;
       })
       .addCase(getAdmins.rejected, (state, { payload }) => {
         state.loading = false;

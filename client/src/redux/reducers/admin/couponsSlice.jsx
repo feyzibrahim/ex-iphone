@@ -11,6 +11,7 @@ const couponsSlice = createSlice({
     loading: false,
     coupons: [],
     error: null,
+    totalAvailableCoupons: null,
   },
   extraReducers: (builder) => {
     builder
@@ -35,6 +36,7 @@ const couponsSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.coupons = [...state.coupons, payload];
+        state.totalAvailableCoupons = payload.totalAvailableCoupons;
       })
       .addCase(createCoupon.rejected, (state, { payload }) => {
         state.loading = false;

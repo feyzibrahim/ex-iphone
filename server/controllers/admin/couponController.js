@@ -46,7 +46,9 @@ const getCoupons = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    return res.status(200).json({ coupons });
+    const totalAvailableCoupons = await Coupon.countDocuments(filter);
+
+    return res.status(200).json({ coupons, totalAvailableCoupons });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

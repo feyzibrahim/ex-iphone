@@ -1,18 +1,6 @@
 const Product = require("../../model/productModel");
 const mongoose = require("mongoose");
 
-function isValidStatus(status) {
-  const validStatusValues = [
-    "draft",
-    "published",
-    "out of stock",
-    "low quantity",
-    "unpublished",
-  ];
-
-  return validStatusValues.includes(status);
-}
-
 // Getting all products to list on admin dashboard
 const getProducts = async (req, res) => {
   try {
