@@ -67,6 +67,7 @@ import Coupon from "./page/admin/pages/coupon/Coupon";
 import CreateCoupon from "./page/admin/pages/coupon/CreateCoupon";
 import EditCoupon from "./page/admin/pages/coupon/EditCoupon";
 import FindCoupons from "./page/user/profileDashboard/pages/findCoupons";
+import OrderConfirmation from "./page/user/components/OrderConfirmation";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -124,6 +125,10 @@ function App() {
           <Route
             path="/checkout"
             element={<ProtectedRoute element={<Checkout />} />}
+          />
+          <Route
+            path="/order-confirmation"
+            element={<ProtectedRoute element={<OrderConfirmation />} />}
           />
           <Route
             path="/buy-now"

@@ -1,22 +1,15 @@
 import React from "react";
 import { renderStars, timeAgo } from "../../../Common/functions";
 import { URL } from "../../../Common/api";
+import ProfileImage from "../../../components/ProfileImage";
 
 const ReviewRow = ({ review }) => {
   return (
     <div className="py-2">
       {/* Review Header */}
       <div className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-full overflow-hidden">
-          {review.user.profileImgURL ? (
-            <img
-              src={`${URL}/img/${review.user.profileImgURL}`}
-              alt="User Profile"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-200"></div>
-          )}
+        <div className="w-10 h-10 shrink-0">
+          <ProfileImage user={review.user} />
         </div>
         <div>
           <h1>

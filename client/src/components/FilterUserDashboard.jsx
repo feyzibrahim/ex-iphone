@@ -4,7 +4,7 @@ import axios from "axios";
 import { URL } from "../Common/api";
 import { config } from "../Common/configurations";
 
-const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
+const FilterUserDashboard = ({ filters, price, handleClick, clearFilters }) => {
   const [categories, setCategories] = useState([]);
 
   const loadCategories = async () => {
@@ -28,8 +28,8 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
                 type="checkbox"
                 name="category"
                 value={item._id}
-                checked={filters.category.includes(item._id)}
-                onChange={() => handleClick("category", item._id)}
+                checked={filters.includes(item._id)}
+                onChange={(e) => handleClick("category", e.target.value)}
               />{" "}
               {item.name}
             </li>
@@ -42,7 +42,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value=""
-            checked={filters.price === ""}
+            checked={price === ""}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           All Price
@@ -52,7 +52,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="Under 25000"
-            checked={filters.price === "Under 25000"}
+            checked={price === "Under 25000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           Under 25000₹
@@ -62,7 +62,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="25000-50000"
-            checked={filters.price === "25000-50000"}
+            checked={price === "25000-50000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           25000₹ - 50000₹
@@ -72,7 +72,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="50000-100000"
-            checked={filters.price === "50000-100000"}
+            checked={price === "50000-100000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           50000₹ - 100000₹
@@ -82,7 +82,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="100000-150000"
-            checked={filters.price === "100000-150000"}
+            checked={price === "100000-150000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           100000₹ - 150000₹
@@ -92,7 +92,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="200000-300000"
-            checked={filters.price === "200000-300000"}
+            checked={price === "200000-300000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           200000₹ - 300000₹
@@ -102,7 +102,7 @@ const FilterUserDashboard = ({ filters, handleClick, clearFilters }) => {
             type="radio"
             name="priceRange"
             value="Above 300000"
-            checked={filters.price === "Above 300000"}
+            checked={price === "Above 300000"}
             onChange={(e) => handleClick("price", e.target.value)}
           />{" "}
           Above 300000₹{" "}

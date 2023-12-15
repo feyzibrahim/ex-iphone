@@ -89,15 +89,17 @@ const editUser = async (req, res) => {
       formData = { ...formData, profileImgURL: profileImgURL };
     }
 
-    const user = await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { _id },
       { $set: { ...formData } },
       { new: true }
     );
 
-    if (!user) {
+    if (!updatedUser) {
       throw Error("No such User");
     }
+
+    const user = await User.findOne({ _id }, { password: 0 });
 
     res.status(200).json(user);
   } catch (error) {

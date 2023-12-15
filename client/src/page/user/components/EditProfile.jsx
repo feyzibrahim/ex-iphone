@@ -9,17 +9,17 @@ import {
   AiOutlinePhone,
   AiOutlineUser,
 } from "react-icons/ai";
-import { BsShieldLockFill } from "react-icons/bs";
 import { RiCalendarEventFill } from "react-icons/ri";
-import { TiTick } from "react-icons/ti";
 
 import InputWithIcon from "../../../components/InputWithIcon";
 import CustomSingleFileInput from "../../admin/Components/CustomSingleFileInput";
 import { editUserProfile } from "../../../redux/actions/userActions";
 import { URL } from "../../../Common/api";
-import { config } from "../../../Common/configurations";
-import axios from "axios";
+import { appJson } from "../../../Common/configurations";
 import toast from "react-hot-toast";
+import { getPassedDateOnwardDateForInput } from "../../../Common/functions";
+import { commonRequest } from "../../../Common/api";
+import EditProfileOTPComponent from "./EditProfileOTPComponent";
 
 const EditProfile = ({ closeToggle }) => {
   const dispatch = useDispatch();
@@ -37,8 +37,8 @@ const EditProfile = ({ closeToggle }) => {
     lastName: user.lastName || "",
     email: user.email || "",
     phoneNumber: user.phoneNumber || "",
-    dateOfBirth: user.dateOfBirth || "",
-    profileImgURL: user.profileImgURL || "",
+    dateOfBirth: getPassedDateOnwardDateForInput(user.dateOfBirth) || "",
+    profileImgURL: user.profileImgURL || user.profileImageURL || "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -49,7 +49,6 @@ const EditProfile = ({ closeToggle }) => {
       .typeError("Phone number should be digits")
       .moreThan(999999999, "Not valid phone number"),
     dateOfBirth: Yup.date(),
-    profileImgURL: Yup.mixed().required("File is required"),
   });
 
   const handleSubmit = async (value) => {
@@ -57,19 +56,20 @@ const EditProfile = ({ closeToggle }) => {
       if (!isOTPVerified) {
         setEmailChanged(true);
         setNewEmail(value.email);
-        const response = await axios.post(
-          `${URL}/user/send-otp`,
+        const data = await commonRequest(
+          "POST",
+          "/auth/send-otp",
           { email: value.email },
-          config
+          appJson
         );
 
         // Check if OTP request was successful
-        if (response.data.success) {
+        if (data.success) {
           // Update state to show OTP section
           toast.success("OTP Sent successfully");
         } else {
           // Handle OTP request failure
-          toast.error(response.data.response.data.error);
+          toast.error(data.response.data.error);
         }
       } else {
         const formData = new FormData();
@@ -78,7 +78,7 @@ const EditProfile = ({ closeToggle }) => {
         formData.append("phoneNumber", value.phoneNumber);
         formData.append("dateOfBirth", value.dateOfBirth);
         formData.append("email", value.email);
-        formData.append("profileImgURL", value.profileImgURL);
+        formData.append("profileImgURL", value.profileImgURL || "");
 
         dispatch(editUserProfile(formData));
         closeToggle();
@@ -90,7 +90,7 @@ const EditProfile = ({ closeToggle }) => {
       formData.append("phoneNumber", value.phoneNumber);
       formData.append("dateOfBirth", value.dateOfBirth);
       formData.append("email", value.email);
-      formData.append("profileImgURL", value.profileImgURL);
+      formData.append("profileImgURL", value.profileImgURL || "");
 
       dispatch(editUserProfile(formData));
       closeToggle();
@@ -98,27 +98,24 @@ const EditProfile = ({ closeToggle }) => {
   };
 
   const verifyOTP = async () => {
-    // setLoading(true);
-
-    const response = await axios.post(
-      `${URL}/user/validate-otp`,
-      {
-        email: newEmail,
-        otp: parseInt(otp),
-      },
-      config
+    const data = await commonRequest(
+      "POST",
+      "/auth/validate-otp",
+      { email: newEmail, otp: parseInt(otp) },
+      appJson
     );
 
-    if (response) {
-      if (response.data.success) {
+    if (data) {
+      if (data.success) {
         setIsOTPVerified(true);
         toast.success("OTP Verified");
         return;
+      } else {
+        toast.error(data.response.data.message);
       }
     } else {
-      setError(response.data.error);
-      toast.error(response.data.error);
-      // setLoading(false);
+      setError(data.error);
+      toast.error(data.error);
     }
   };
 
@@ -142,20 +139,24 @@ const EditProfile = ({ closeToggle }) => {
             <div>
               {values.profileImgURL &&
               typeof values.profileImgURL === "string" ? (
-                <div className="bg-gray-100 py-5 rounded-lg text-center border-dashed border-2 h-80">
+                <div className="bg-gray-100 py-5 rounded-lg text-center h-80">
                   <div className="h-56 w-56">
                     <img
-                      src={`${URL}/img/${values.profileImgURL}`}
+                      src={
+                        values.profileImgURL.startsWith("https")
+                          ? values.profileImgURL
+                          : `${URL}/img/${values.profileImgURL}`
+                      }
                       alt="profile"
                       className="h-full w-full object-cover rounded-full"
                     />
-                    <button
-                      className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded"
-                      onClick={() => setFieldValue("profileImgURL", null)}
-                    >
-                      Delete this
-                    </button>
                   </div>
+                  <button
+                    className="mt-4 bg-red-500 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => setFieldValue("profileImgURL", null)}
+                  >
+                    Delete this
+                  </button>
                 </div>
               ) : (
                 <CustomSingleFileInput
@@ -196,6 +197,7 @@ const EditProfile = ({ closeToggle }) => {
                   icon={<RiCalendarEventFill />}
                   title="Date of birth"
                   name="dateOfBirth"
+                  as="date"
                   placeholder="Enter here"
                 />
                 <InputWithIcon
@@ -205,32 +207,12 @@ const EditProfile = ({ closeToggle }) => {
                   placeholder="Enter here"
                 />
                 {emailChanged && (
-                  <div>
-                    <p>OTP is send to Email Please enter below</p>
-                    <div className="flex items-center">
-                      <div className="sign-up-icon">
-                        {isOTPVerified ? <TiTick /> : <BsShieldLockFill />}
-                      </div>
-                      <input
-                        className="sign-up-input w-full"
-                        type="number"
-                        name="otp"
-                        id="otp"
-                        placeholder="Enter OTP here"
-                        value={otp}
-                        onChange={(e) => setOTP(e.target.value)}
-                        disabled={isOTPVerified}
-                      />
-                      <button
-                        className="btn-red-no-pad px-2 py-2 text-white ml-2"
-                        onClick={verifyOTP}
-                        type="button"
-                        disabled={isOTPVerified}
-                      >
-                        {isOTPVerified ? "Verified" : "Verify"}
-                      </button>
-                    </div>
-                  </div>
+                  <EditProfileOTPComponent
+                    otp={otp}
+                    isOTPVerified={isOTPVerified}
+                    setOTP={setOTP}
+                    verifyOTP={verifyOTP}
+                  />
                 )}
               </div>
               <button

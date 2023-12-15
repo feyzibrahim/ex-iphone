@@ -25,7 +25,7 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
             <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
           )}
         </div>
-        <p className="line-clamp-1">
+        <p className="line-clamp-1 w-52">
           {customer.firstName} {customer.lastName}
         </p>
       </td>

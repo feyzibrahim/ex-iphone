@@ -16,14 +16,13 @@ const Dashboard = () => {
   );
   const dispatch = useDispatch();
 
-  const [search, setSearch] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState({
-    category: [],
-    price: "",
-    search: "",
-    sort: "",
-  });
+
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     const categoryParam = searchParams.get("category");
@@ -32,61 +31,75 @@ const Dashboard = () => {
     const sortParam = searchParams.get("sort");
     const page = searchParams.get("page");
 
-    setFilters({
-      category: categoryParam ? categoryParam.split(",") : [],
-      price: priceParam || "",
-      search: searchParam || "",
-      sort: sortParam || "",
-    });
+    setCategory(categoryParam ? categoryParam.split(",") : []);
+    setPrice(priceParam || "");
+    setSort(sortParam || "");
     setPage(page || 1);
     setSearch(searchParam || "");
   }, []);
 
-  const [page, setPage] = useState(1);
   const handleClick = (param, value) => {
-    let updatedFilters;
+    // let updatedFilters;
+    const params = new URLSearchParams(window.location.search);
 
-    if (param === "category") {
-      const newCategories = filters.category.includes(value)
-        ? filters.category.filter((item) => item !== value)
-        : [...filters.category, value];
-
-      updatedFilters = { ...filters, category: newCategories };
+    if (value === "" || (param === "page" && value === 1)) {
+      params.delete(param);
+      if (param === "price") {
+        setPrice("");
+      }
+      if (param === "sort") {
+        setSort("");
+        params.delete("page");
+        setPage(1);
+      }
     } else {
-      updatedFilters = { ...filters, [param]: value };
-    }
+      if (param === "category" && value) {
+        let cat = params.get("category");
+        if (!cat) {
+          params.append("category", value);
+          setCategory([value]);
+        } else {
+          let temp = cat.split(",");
+          if (temp.length > 0) {
+            if (temp.includes(value)) {
+              temp = temp.filter((item) => item !== value);
+            } else {
+              temp.push(value);
+            }
 
-    setFilters(updatedFilters);
-
-    const params = new URLSearchParams();
-
-    if (updatedFilters.category.length > 0) {
-      params.append("category", updatedFilters.category.join(","));
-    }
-
-    if (updatedFilters.price) {
-      params.append("price", updatedFilters.price);
-    }
-    if (updatedFilters.search) {
-      params.append("search", updatedFilters.search);
-    }
-    if (updatedFilters.sort) {
-      params.append("sort", updatedFilters.sort);
-    }
-    if (updatedFilters.page) {
-      params.append("page", updatedFilters.page);
-      setPage(updatedFilters.page);
+            if (temp.length > 0) {
+              params.set("category", temp.join(","));
+              setCategory(temp);
+            } else {
+              params.delete("category");
+              setCategory([]);
+            }
+          } else {
+            params.delete("category");
+            setCategory([]);
+          }
+        }
+      } else {
+        params.set(param, value);
+        if (param === "price") {
+          setPrice(value);
+          params.delete("page");
+          setPage(1);
+        }
+        if (param === "sort") {
+          setSort(value);
+          params.delete("page");
+          setPage(1);
+        }
+        if (param === "search") {
+          params.delete("page");
+          setPage(1);
+        }
+      }
     }
 
     setSearchParams(params.toString() ? "?" + params.toString() : "");
   };
-
-  // Getting page number on reload
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const pageNumber = params.get("page");
-    setPage(parseInt(pageNumber || 1));
-  }, []);
 
   // Clear all filters
   const clearFilters = () => {
@@ -100,20 +113,19 @@ const Dashboard = () => {
 
     setSearchParams(params);
 
-    setFilters({
-      category: [],
-      price: "",
-      search: "",
-      sort: "",
-    });
     setSearch("");
+    setPrice("");
+    setCategory([]);
     setPage(1);
-    // setActiveSort("Newest to Oldest");
   };
 
   useEffect(() => {
     dispatch(getWishlist());
     dispatch(getUserProducts(searchParams));
+
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   return (
@@ -121,8 +133,9 @@ const Dashboard = () => {
       {/* Category */}
       <FilterUserDashboard
         clearFilters={clearFilters}
-        filters={filters}
+        filters={category}
         handleClick={handleClick}
+        price={price}
       />
       <div className="w-full lg:w-4/5 pb-5">
         <div className="flex flex-col lg:flex-row gap-5 items-center justify-between">
@@ -131,7 +144,7 @@ const Dashboard = () => {
             search={search}
             setSearch={setSearch}
           />
-          <SortButton handleClick={handleClick} filters={filters} />
+          <SortButton handleClick={handleClick} sort={sort} />
           <div className="shrink-0 hidden lg:block">
             {userProducts.length}/{totalAvailableProducts} Results Loaded
           </div>

@@ -49,8 +49,15 @@ const Checkout = () => {
 
   // Page switching
   const [orderPlacedLoading, setOrderPlacedLoading] = useState(false);
-  const [confirmationPage, setConfirmationPage] = useState(false);
-  const [orderData, setOrderData] = useState({});
+  const [orderData, setOrderData] = useState(false);
+
+  // Navigate to order-confirmation
+
+  const navigateToOrderConfirmation = (orderD) => {
+    if (orderD) {
+      navigate("/order-confirmation", { state: orderD });
+    }
+  };
 
   // Cash on delivery or wallet balance
   const saveOrderOnCashDeliveryOrMyWallet = async (response) => {
@@ -68,10 +75,10 @@ const Checkout = () => {
       );
 
       // Updating user side
-      setOrderData(order.data.order);
+      setOrderData(true);
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
-      setConfirmationPage(true);
+      navigateToOrderConfirmation(order.data.order);
       dispatch(clearCartOnOrderPlaced());
     } catch (error) {
       // Error Handling
@@ -111,10 +118,11 @@ const Checkout = () => {
       );
 
       // Updating user side
-      setOrderData(order);
+      setOrderData(true);
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
-      setConfirmationPage(true);
+      // setConfirmationPage(true);
+      navigateToOrderConfirmation(order);
       dispatch(clearCartOnOrderPlaced());
     } catch (error) {
       // Error Handling
@@ -224,17 +232,15 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (!cart || cart.length === 0) {
+    if (orderData) {
       navigate(-1);
     }
-  }, [cart]);
+  }, [orderData]);
 
   return (
     <>
       {orderPlacedLoading ? (
         <Loading />
-      ) : confirmationPage ? (
-        <OrderConfirmation orderData={orderData} />
       ) : (
         <div className="pt-20 px-5 lg:p-20 lg:flex items-start gap-5 bg-gray-100">
           <div className="lg:w-3/4">

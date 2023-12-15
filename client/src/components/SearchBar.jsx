@@ -22,6 +22,7 @@ const SearchBar = ({ handleClick, search, setSearch }) => {
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
+            handleClick("search", e.target.value);
           }}
         />
         {search ? (

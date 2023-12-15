@@ -11,7 +11,8 @@ import { RiCalendarEventFill } from "react-icons/ri";
 import { TiTick } from "react-icons/ti";
 import Modal from "../../components/Modal";
 import EditProfile from "./components/EditProfile";
-import { URL } from "@common/api";
+import { getPassedDateOnwardDateForInput } from "../../Common/functions";
+import ProfileImage from "../../components/ProfileImage";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.user);
@@ -32,29 +33,9 @@ const ProfilePage = () => {
         </h1>
         <div className="w-full">
           <div className="lg:flex items-start gap-5 p-5">
-            {!(user?.profileImgURL || user?.profileImageURL) && (
-              <div className="w-56 h-56 bg-gray-100 rounded-full shrink-0"></div>
-            )}
-
-            {user?.profileImgURL && (
-              <div className="h-56 w-56 rounded-full shrink-0 overflow-clip">
-                <img
-                  src={`${URL}/img/${user?.profileImgURL}`}
-                  alt="profile"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            )}
-
-            {user?.profileImageURL && (
-              <div className="h-56 w-56 rounded-full shrink-0 overflow-clip">
-                <img
-                  src={`${user?.profileImageURL}`}
-                  alt="profile"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-            )}
+            <div className="h-56 w-56 shrink-0">
+              <ProfileImage user={user} />
+            </div>
 
             <div className="w-full">
               <div className="lg:grid grid-cols-2 gap-5 ">
@@ -81,7 +62,11 @@ const ProfilePage = () => {
                 <InputWithIcon
                   icon={<RiCalendarEventFill />}
                   title="Date of birth"
-                  name={user?.dateOfBirth || "-"}
+                  name={
+                    user?.dateOfBirth
+                      ? getPassedDateOnwardDateForInput(user?.dateOfBirth)
+                      : "-"
+                  }
                 />
                 <InputWithIcon
                   icon={

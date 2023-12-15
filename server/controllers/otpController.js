@@ -159,7 +159,7 @@ const newPassword = async (req, res) => {
 
     const oldUserData = await User.findOne({ email });
 
-    const match = await bcrypt.compare(password, oldUserData.password);
+    const match = bcrypt.compare(password, oldUserData.password);
 
     if (match) {
       throw Error("Provide new Password");

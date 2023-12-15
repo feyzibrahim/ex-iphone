@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../../../../Common/api";
 import { config } from "../../../../Common/configurations";
+import ProfileImage from "../../../../components/ProfileImage";
 
 const Dash = () => {
   const { user } = useSelector((state) => state.user);
@@ -97,12 +98,8 @@ const Dash = () => {
               </h1>
               <div className="p-5">
                 <div className="flex gap-2 items-center pb-3">
-                  <div className="w-12 h-12 rounded-full overflow-clip">
-                    <img
-                      src={`${URL}/img/${user.profileImgURL}`}
-                      alt="safdas"
-                      className="w-full h-full object-fill"
-                    />
+                  <div className="h-12 w-12 shrink-0">
+                    <ProfileImage user={user} />
                   </div>
                   <p className="font-semibold">
                     {user.firstName} {user.lastName}

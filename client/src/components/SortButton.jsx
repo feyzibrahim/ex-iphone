@@ -1,6 +1,6 @@
 import React from "react";
 
-const SortButton = ({ filters, handleClick }) => {
+const SortButton = ({ sort, handleClick }) => {
   const handleChange = (sort, value) => {
     handleClick(sort, value);
   };
@@ -10,7 +10,7 @@ const SortButton = ({ filters, handleClick }) => {
       <p className="shrink-0"> Sort By:</p>
       <select
         className="rounded-lg outline-none px-2 py-1 border-"
-        value={filters.sort}
+        value={sort}
         onChange={(e) => {
           handleChange("sort", e.target.value);
         }}

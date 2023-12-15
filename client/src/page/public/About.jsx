@@ -11,7 +11,7 @@ import {
 const About = () => {
   return (
     <div className="bg-gray-100 py-20 px-10 lg:px-20 text-gray-400">
-      <div className="text-center relative">
+      <div className="text-center">
         <h1 className="text-3xl lg:text-6xl mt-5 lg:my-5 font-bold">
           About the ex.iphones.
         </h1>
@@ -25,12 +25,14 @@ const About = () => {
           ultrices odio. Nulla at congue diam, at dignissim turpis. Ut vehicula
           sed velit a faucibus. In feugiat vestibulum velit vel pulvinar.
         </p>
-        <img src={AboutBG} alt="AboutBG" />
-        <img
-          src={Logo}
-          alt="ex.iphones. Logo"
-          className="w-3/12 absolute top-[19.5rem] lg:top-96 left-1/2 transform -translate-x-1/2 "
-        />
+        <div className="relative flex flex-col items-center">
+          <img src={AboutBG} alt="AboutBG" />
+          <img
+            src={Logo}
+            alt="ex.iphones. Logo"
+            className="w-3/12 xl:w-2/12 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
       </div>
       <div className="lg:px-20 lg:flex">
         <div>

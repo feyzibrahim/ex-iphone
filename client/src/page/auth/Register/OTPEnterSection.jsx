@@ -22,15 +22,50 @@ const OTPEnterSection = ({
   const [resendLoading, setResendLoading] = useState(false);
 
   // Saving OTP to otp variable on change
+  // Saving OTP to otp variable on change
   const handleChange = (e, index) => {
     const updatedOtp = [...otp];
-    updatedOtp[index] = e.target.value;
+    const value = e.target.value;
 
-    if (e.target.value && index < otp.length - 1) {
-      document.getElementById(`otp-input-${index + 1}`).focus();
+    if (value === "") {
+      // If backspace is pressed, remove the number and move back to the previous box
+      updatedOtp[index] = "";
+      if (index > 0) {
+        document.getElementById(`otp-input-${index - 1}`).focus();
+      }
+    } else if (!isNaN(value) && value.length <= 1) {
+      // Check if the input is a number
+      updatedOtp[index] = value;
+
+      if (index < otp.length - 1) {
+        document.getElementById(`otp-input-${index + 1}`).focus();
+      }
     }
 
     setOtp(updatedOtp);
+  };
+
+  // Copy pasting otp
+  // Handle paste event
+  const handlePaste = (e) => {
+    const pastedData = e.clipboardData.getData("text/plain");
+
+    // Distribute the pasted content across input boxes
+    for (let i = 0; i < otp.length; i++) {
+      if (pastedData[i] && !isNaN(pastedData[i])) {
+        document.getElementById(`otp-input-${i}`).value = pastedData[i];
+        setOtp((prevOtp) => {
+          const newOtp = [...prevOtp];
+          newOtp[i] = pastedData[i];
+          return newOtp;
+        });
+      }
+    }
+
+    // Set focus on the last input box
+    document.getElementById(`otp-input-${otp.length - 1}`).focus();
+
+    e.preventDefault();
   };
 
   // OTP Submission function
@@ -63,6 +98,7 @@ const OTPEnterSection = ({
         }
       })
       .catch(({ response }) => {
+        toast.error(response.data.error);
         setError(response.data.error);
         setLoading(false);
       });
@@ -150,6 +186,7 @@ const OTPEnterSection = ({
             value={digit}
             placeholder="-"
             onChange={(e) => handleChange(e, index)}
+            onPaste={(e) => handlePaste(e)}
           />
         ))}
       </div>

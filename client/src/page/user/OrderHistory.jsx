@@ -40,7 +40,6 @@ const OrderHistory = () => {
     dispatch(getOrders(searchParams));
     const params = new URLSearchParams(window.location.search);
     const pageNum = params.get("page");
-    console.log(pageNum, "page number");
     setPage(parseInt(pageNum) || 1);
   }, [searchParams]);
 
@@ -52,7 +51,7 @@ const OrderHistory = () => {
         </h1>
         <div className="p-5 overflow-auto">
           {loading ? (
-            <div className="flex items-center justify-center h96">
+            <div className="flex items-center justify-center h-96">
               <JustLoading size={10} />
             </div>
           ) : userOrders && userOrders.length > 0 ? (

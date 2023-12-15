@@ -127,12 +127,12 @@ const Customers = () => {
             <ClearFilterButton handleClick={removeFilters} />
           </div>
         </div>
-        <div className="overflow-x-scroll lg:overflow-hidden bg-white rounded-lg">
+        <div className="overflow-x-scroll  bg-white rounded-lg">
           {customers && (
             <table className="w-full min-w-max table-auto">
               <thead className="font-normal">
                 <tr className="border-b border-gray-200">
-                  <th className="admin-table-head w-96">Name</th>
+                  <th className="admin-table-head w-52">Name</th>
                   <th className="admin-table-head">Email</th>
                   <th className="admin-table-head">Phone No</th>
                   <th className="admin-table-head">Status</th>

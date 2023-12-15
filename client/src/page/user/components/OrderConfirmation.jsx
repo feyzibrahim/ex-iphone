@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
 import date from "date-and-time";
 import { BsArrowRight } from "react-icons/bs";
+import { useLocation } from "react-router-dom";
 
-const OrderConfirmation = ({ orderData }) => {
+const OrderConfirmation = () => {
+  const location = useLocation();
+  const orderData = location.state;
+
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
       <div className="bg-white p-8 rounded text-center">

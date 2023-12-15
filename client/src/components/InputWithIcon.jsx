@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, ErrorMessage } from "formik";
 
-const InputWithIcon = ({ title, name, icon, placeholder }) => {
+const InputWithIcon = ({ title, name, icon, placeholder, as }) => {
   return (
     <div>
       <p>
@@ -12,6 +12,7 @@ const InputWithIcon = ({ title, name, icon, placeholder }) => {
         <Field
           className="sign-up-input w-full"
           name={name}
+          type={as}
           placeholder={placeholder}
         />
       </div>
