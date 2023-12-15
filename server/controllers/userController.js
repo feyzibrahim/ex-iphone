@@ -107,10 +107,36 @@ const editUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const token = req.cookies.user_token;
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      throw Error("Invalid ID!!!");
+    }
+
+    const { currentPassword, password, passwordAgain } = req.body;
+
+    const user = await User.changePassword(
+      _id,
+      currentPassword,
+      password,
+      passwordAgain
+    );
+
+    return res.status(200).json({ user, success: true });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getUserDataFirst,
   signUpUser,
   loginUser,
   logoutUser,
   editUser,
+  changePassword,
 };

@@ -16,7 +16,7 @@ const BlockOrUnBlock = ({ toggleModal, data }) => {
     }
     let isActive = selectedStatus === "active";
 
-    dispatch(blockOrUnBlock({ id, isActive }));
+    dispatch(blockOrUnBlock({ id, isActive })).then(() => toggleModal());
   };
 
   return (

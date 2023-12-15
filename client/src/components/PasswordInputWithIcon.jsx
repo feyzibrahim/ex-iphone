@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Field, ErrorMessage } from "formik";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-const PasswordInputWithIcon = ({ title, name, icon, placeholder }) => {
+const PasswordInputWithIcon = ({ title, name, icon, placeholder, canEdit }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
@@ -20,6 +20,7 @@ const PasswordInputWithIcon = ({ title, name, icon, placeholder }) => {
           name={name}
           placeholder={placeholder}
           type={showPassword ? "text" : "password"}
+          disabled={canEdit || false}
         />
         <div className="sign-up-icon-rev" onClick={togglePassword}>
           {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}

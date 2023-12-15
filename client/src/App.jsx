@@ -68,6 +68,7 @@ import CreateCoupon from "./page/admin/pages/coupon/CreateCoupon";
 import EditCoupon from "./page/admin/pages/coupon/EditCoupon";
 import FindCoupons from "./page/user/profileDashboard/pages/findCoupons";
 import OrderConfirmation from "./page/user/components/OrderConfirmation";
+import SettingsPage from "./page/user/profileDashboard/pages/settings";
 
 function App() {
   const { user } = useSelector((state) => state.user);
@@ -148,6 +149,7 @@ function App() {
             <Route path="track-order" element={<TrackOrder />} />
             <Route path="wishlist" element={<WishList />} />
             <Route path="find-coupons" element={<FindCoupons />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Route>
 
           {/* Admin Routes */}

@@ -140,6 +140,41 @@ UserSchema.statics.login = async function (email, password) {
   return user;
 };
 
+UserSchema.statics.changePassword = async function (
+  _id,
+  currentPassword,
+  password,
+  passwordAgain
+) {
+  if (password !== passwordAgain) {
+    throw Error("Password doesn't match");
+  }
+
+  if (!validator.isStrongPassword(password)) {
+    throw Error("Password is not strong enough");
+  }
+  const exists = await this.findOne({ _id });
+  if (!exists) {
+    throw Error("Cannot find email");
+  }
+
+  const match = await bcrypt.compare(currentPassword, exists.password);
+
+  if (!match) {
+    throw Error("Current Password is wrong");
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+
+  let user = await this.updateOne({ _id }, { $set: { password: hash } });
+  console.log(user);
+
+  user.password = "";
+
+  return user;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

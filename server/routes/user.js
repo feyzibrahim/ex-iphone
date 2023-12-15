@@ -5,6 +5,7 @@ const {
   getUserDataFirst,
   logoutUser,
   editUser,
+  changePassword,
 } = require("../controllers/userController");
 const {
   getProducts,
@@ -82,6 +83,9 @@ router.get("/logout", logoutUser);
 
 // Edit User profile
 router.post("/edit-profile", upload.single("profileImgURL"), editUser);
+
+// Change User Password
+router.post("/change-password", changePassword);
 
 // Products
 router.get("/products", getProducts);

@@ -97,19 +97,6 @@ const Customers = () => {
               <p className="font-semibold">Customer List</p>
             </div>
           </div>
-          <div className="flex gap-3">
-            {/* <button className="admin-button-fl bg-gray-200 text-blue-700">
-              <FiDownload />
-              Export
-            </button>
-            <button
-              className="admin-button-fl bg-blue-700 text-white"
-              onClick={() => navigate("addCustomer")}
-            >
-              <AiOutlinePlus />
-              Create New Customer
-            </button> */}
-          </div>
         </div>
         <div className="lg:flex justify-between items-center text-xs font-semibold">
           <FilterArray

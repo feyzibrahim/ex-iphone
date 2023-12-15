@@ -12,6 +12,7 @@ import { MdTrackChanges } from "react-icons/md";
 import { BiUser, BiHistory } from "react-icons/bi";
 import { GiMailbox } from "react-icons/gi";
 import { useDispatch } from "react-redux";
+import { FiSettings } from "react-icons/fi";
 
 const DashSideNavbar = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,10 @@ const DashSideNavbar = () => {
       <NavLink className="side-nav-link-sp" to="find-coupons">
         <TiTicket />
         Find Coupons
+      </NavLink>
+      <NavLink className="side-nav-link-sp" to="settings">
+        <FiSettings />
+        Settings
       </NavLink>
       <button className="side-nav-link-sp w-full" onClick={handleLogout}>
         <AiOutlineLogout />
