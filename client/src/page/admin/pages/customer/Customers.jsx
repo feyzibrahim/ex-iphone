@@ -36,6 +36,9 @@ const Customers = () => {
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
       params.delete(type);
     } else {
       if (type === "page" && value === 1) {
@@ -66,6 +69,9 @@ const Customers = () => {
 
   useEffect(() => {
     dispatch(getCustomers(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   return (
@@ -80,13 +86,13 @@ const Customers = () => {
           }
         />
       )}
-      <div className="p-5 w-full overflow-y-auto">
+      <div className="p-5 w-full overflow-y-auto text-sm">
         <SearchBar
           handleClick={handleFilter}
           search={search}
           setSearch={setSearch}
         />
-        <div className="flex justify-between items-center text-xs font-semibold">
+        <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Customers</h1>
             <div className="flex items-center gap-2 mt-2 mb-4 text-gray-500">
@@ -98,7 +104,7 @@ const Customers = () => {
             </div>
           </div>
         </div>
-        <div className="lg:flex justify-between items-center text-xs font-semibold">
+        <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={["all", "active", "blocked"]}
             handleClick={handleFilter}

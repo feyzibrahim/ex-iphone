@@ -33,6 +33,9 @@ const Payments = () => {
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
       params.delete(type);
     } else {
       if (type === "page" && value === 1) {
@@ -63,6 +66,9 @@ const Payments = () => {
 
   useEffect(() => {
     dispatch(getPayments(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   return (
@@ -153,7 +159,9 @@ const Payments = () => {
                       <td className="admin-table-row">
                         <p className="line-clamp-1">{item.payment_id}</p>
                       </td>
-                      <td className="admin-table-row">{item.order._id}</td>
+                      <td className="admin-table-row">
+                        {item.order.orderId || item.order._id}
+                      </td>
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status || ""} />
                       </td>

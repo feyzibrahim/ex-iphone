@@ -9,9 +9,11 @@ import RevenueChart from "../Components/DashboardComponents/RevenueChart";
 import MostSoldChart from "../Components/DashboardComponents/MostSoldChart";
 import Modal from "../../../components/Modal";
 import UpdateOrder from "./Order/UpdateOrder";
+import { AiOutlineCalendar } from "react-icons/ai";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
+  const [numberOfDates, setNumberOfDates] = useState(7);
 
   const { orders, loading, error } = useSelector((state) => state.orders);
 
@@ -40,12 +42,25 @@ const AdminHome = () => {
         />
       )}
       <div className="p-5 w-full overflow-auto">
-        <h1 className="font-bold text-2xl mb-5">Dashboard</h1>
+        <div className="flex justify-between items-center text-xs font-semibold pb-5">
+          <div>
+            <h1 className="font-bold text-2xl">Dashboard</h1>
+          </div>
+          <div className="flex gap-3">
+            <button
+              className="admin-button-fl bg-white hover:bg-gray-200 active:bg-gray-300 text-sm"
+              onClick={() => {}}
+            >
+              <AiOutlineCalendar />
+              Last {numberOfDates} days
+            </button>
+          </div>
+        </div>
 
         <div className="flex lg:flex-row flex-col gap-5 mb-5">
-          <SalesChart />
-          <ProfitChart />
-          <UserChart />
+          <SalesChart numberOfDates={numberOfDates} />
+          <ProfitChart numberOfDates={numberOfDates} />
+          <UserChart numberOfDates={numberOfDates} />
         </div>
 
         <div className="flex gap-5 lg:flex-row flex-col">

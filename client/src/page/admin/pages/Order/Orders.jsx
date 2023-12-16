@@ -42,6 +42,9 @@ const Orders = () => {
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
       params.delete(type);
     } else {
       if (type === "page" && value === 1) {
@@ -81,6 +84,9 @@ const Orders = () => {
   // Getting all the orders on page load
   useEffect(() => {
     dispatch(getOrders(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   // Export Modal
@@ -109,6 +115,7 @@ const Orders = () => {
           handleClick={handleFilter}
           search={search}
           setSearch={setSearch}
+          placeholder="Search Using Order Id..."
         />
         <div className="flex justify-between items-center font-semibold">
           <div>

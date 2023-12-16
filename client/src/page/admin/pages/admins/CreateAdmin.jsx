@@ -64,7 +64,7 @@ const CreateAdmin = () => {
 
   return (
     <div className="p-5 w-full overflow-y-auto text-sm">
-      <div className="flex justify-between items-center text-xs font-semibold">
+      <div className="flex justify-between items-center text-sm font-semibold">
         <div>
           <h1 className="font-bold text-2xl">Manage Admins</h1>
           <BreadCrumbs

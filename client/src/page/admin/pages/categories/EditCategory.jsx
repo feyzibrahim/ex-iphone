@@ -82,9 +82,9 @@ const EditCategory = () => {
           title="Confirm Creation?"
         />
       )}
-      <div className="p-5 w-full overflow-y-scroll">
+      <div className="p-5 w-full overflow-y-scroll text-sm">
         {/* Top Bar */}
-        <div className="flex justify-between items-center text-xs font-semibold">
+        <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Edit Category</h1>
             {/* Bread Crumbs */}

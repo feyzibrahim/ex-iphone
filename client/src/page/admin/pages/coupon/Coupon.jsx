@@ -31,6 +31,9 @@ const Coupon = () => {
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
       params.delete(type);
     } else {
       if (type === "page" && value === 1) {
@@ -62,6 +65,9 @@ const Coupon = () => {
 
   useEffect(() => {
     dispatch(getCoupons(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   if (!coupons) {
@@ -72,14 +78,14 @@ const Coupon = () => {
 
   return (
     <>
-      <div className="p-5 w-full overflow-y-auto">
+      <div className="p-5 w-full overflow-y-auto text-sm">
         <SearchBar
           handleClick={handleFilter}
           search={search}
           setSearch={setSearch}
         />
         {/* Header */}
-        <div className="flex justify-between items-center text-sm font-semibold">
+        <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Coupon</h1>
             <BreadCrumbs list={["Dashboard", "Coupon List"]} />
@@ -95,7 +101,7 @@ const Coupon = () => {
           </div>
         </div>
         {/* Filters */}
-        <div className="lg:flex justify-between items-center font-semibold text-sm">
+        <div className="lg:flex justify-between items-center font-semibold">
           <FilterArray
             list={["all", "active", "blocked"]}
             handleClick={handleFilter}

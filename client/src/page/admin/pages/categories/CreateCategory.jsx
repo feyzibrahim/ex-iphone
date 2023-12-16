@@ -60,7 +60,7 @@ const CreateCategories = () => {
       )}
       <div className="p-5 w-full overflow-y-scroll">
         {/* Top Bar */}
-        <div className="flex justify-between items-center text-xs font-semibold">
+        <div className="flex justify-between items-center text-sm font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Create Category</h1>
             {/* Bread Crumbs */}

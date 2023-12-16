@@ -2,7 +2,7 @@ import React from "react";
 import { BiSearch } from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
 
-const SearchBar = ({ handleClick, search, setSearch }) => {
+const SearchBar = ({ handleClick, search, setSearch, placeholder }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleClick("search", search);
@@ -18,7 +18,7 @@ const SearchBar = ({ handleClick, search, setSearch }) => {
         <input
           type="text"
           className="outline-none w-full"
-          placeholder="Search..."
+          placeholder={placeholder || "Search..."}
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);

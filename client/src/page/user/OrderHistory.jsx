@@ -44,7 +44,7 @@ const OrderHistory = () => {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen w-full">
+    <div className="w-full">
       <div className="bg-white rounded-lg h-full mx-5 lg:mx-0">
         <h1 className="uppercase text-lg font-semibold px-5 py-3 border-b">
           Order History
@@ -102,12 +102,14 @@ const OrderHistory = () => {
             <div className="flex justify-center">No Orders yet</div>
           )}
         </div>
-        <Pagination
-          handleClick={handleFilter}
-          number={10}
-          page={page}
-          totalNumber={totalAvailableOrders}
-        />
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            number={10}
+            page={page}
+            totalNumber={totalAvailableOrders}
+          />
+        </div>
       </div>
     </div>
   );

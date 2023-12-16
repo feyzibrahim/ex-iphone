@@ -56,8 +56,14 @@ const BuyNow = () => {
 
   // Page switching
   const [orderPlacedLoading, setOrderPlacedLoading] = useState(false);
-  const [confirmationPage, setConfirmationPage] = useState(false);
-  const [orderData, setOrderData] = useState({});
+  // const [confirmationPage, setConfirmationPage] = useState(false);
+  // const [orderData, setOrderData] = useState({});
+
+  const navigateToOrderConfirmation = (orderD) => {
+    if (orderD) {
+      navigate("/order-confirmation", { state: orderD });
+    }
+  };
 
   // Cash on delivery or wallet balance
   const saveOrderOnCashDeliveryOrMyWallet = async (response) => {
@@ -76,11 +82,12 @@ const BuyNow = () => {
       );
 
       // Updating user side
-      setOrderData(order.data.order);
+      // setOrderData(order.data.order);
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
-      setConfirmationPage(true);
+      // setConfirmationPage(true);
       dispatch(emptyBuyNowStore());
+      navigateToOrderConfirmation(order.data.order);
     } catch (error) {
       // Error Handling
       const errorMessage =
@@ -120,11 +127,12 @@ const BuyNow = () => {
       );
 
       // Updating user side
-      setOrderData(order);
+      // setOrderData(order);
       toast.success("Order Placed");
       setOrderPlacedLoading(false);
-      setConfirmationPage(true);
+      // setConfirmationPage(true);
       dispatch(emptyBuyNowStore());
+      navigateToOrderConfirmation(order.data.order);
     } catch (error) {
       // Error Handling
       const errorMessage =
@@ -232,8 +240,6 @@ const BuyNow = () => {
     <>
       {orderPlacedLoading ? (
         <Loading />
-      ) : confirmationPage ? (
-        <OrderConfirmation orderData={orderData} />
       ) : (
         <div className="pt-20 px-5 lg:p-20 lg:flex items-start gap-5 bg-gray-100">
           <div className="lg:w-3/4">

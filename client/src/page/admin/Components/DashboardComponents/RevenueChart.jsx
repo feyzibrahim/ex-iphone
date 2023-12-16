@@ -6,7 +6,7 @@ import axios from "axios";
 import { URL } from "@common/api";
 import { config } from "@common/configurations";
 
-const RevenueChart = () => {
+const RevenueChart = ({ numberOfDates }) => {
   const [totalSales, setTotalSales] = useState("");
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -15,7 +15,9 @@ const RevenueChart = () => {
   useEffect(() => {
     const loadData = async () => {
       const { data } = await axios.get(
-        `${URL}/admin/revenue-report?numberOfDates=30`,
+        `${URL}/admin/revenue-report${
+          numberOfDates ? `?numberOfDates=${numberOfDates}` : ``
+        }`,
         config
       );
 

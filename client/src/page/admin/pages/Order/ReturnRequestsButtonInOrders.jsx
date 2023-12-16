@@ -24,7 +24,7 @@ const ReturnRequestsButtonInOrders = () => {
   return (
     <div className="relative">
       {count !== 0 && (
-        <div className="absolute -right-3 -top-2 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center">
+        <div className="absolute -right-3 -top-2 w-6 h-6 bg-red-500 text-white rounded-full text-sm flex items-center justify-center">
           <p>{count}</p>
         </div>
       )}

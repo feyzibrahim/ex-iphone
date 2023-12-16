@@ -6,7 +6,7 @@ import axios from "axios";
 import { URL } from "@common/api";
 import { config } from "@common/configurations";
 
-const UserChart = () => {
+const UserChart = ({ numberOfDates }) => {
   const [total, setTotal] = useState("");
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
@@ -14,7 +14,9 @@ const UserChart = () => {
   useEffect(() => {
     const loadData = async () => {
       const { data } = await axios.get(
-        `${URL}/admin/user-count?numberOfDates=60`,
+        `${URL}/admin/user-count${
+          numberOfDates ? `?numberOfDates=${numberOfDates}` : ``
+        }`,
         config
       );
 

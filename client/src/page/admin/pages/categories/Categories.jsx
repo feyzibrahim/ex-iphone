@@ -26,11 +26,19 @@ const Categories = () => {
   const handleFilter = (type, value) => {
     const params = new URLSearchParams(window.location.search);
     if (value === "") {
+      if (type === "page") {
+        setPage(1);
+      }
       params.delete(type);
     } else {
-      params.set(type, value);
-      if (type === "page") {
-        setPage(value);
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
       }
     }
     setSearchParams(params.toString() ? "?" + params.toString() : "");
@@ -38,17 +46,20 @@ const Categories = () => {
 
   useEffect(() => {
     dispatch(getCategories(searchParams));
+    const params = new URLSearchParams(window.location.search);
+    const pageNumber = params.get("page");
+    setPage(parseInt(pageNumber || 1));
   }, [searchParams]);
 
   return (
     <>
-      <div className="p-5 w-full overflow-y-auto">
+      <div className="p-5 w-full overflow-y-auto text-sm">
         <SearchBar
           handleClick={handleFilter}
           search={search}
           setSearch={setSearch}
         />
-        <div className="flex justify-between items-center text-xs font-semibold">
+        <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Category</h1>
             <BreadCrumbs list={["Dashboard", "Category List"]} />

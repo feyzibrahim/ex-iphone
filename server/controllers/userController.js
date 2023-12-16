@@ -14,17 +14,24 @@ const cookieConfig = {
 
 // To get user data on initial page load.
 const getUserDataFirst = async (req, res) => {
-  if (!req.cookies.user_token) {
-    return res.status(401).json({ error: "No token found" });
+  try {
+    const token = req.cookies.user_token;
+    if (!token) {
+      throw Error("No token found");
+    }
+
+    const { _id } = jwt.verify(token, process.env.SECRET);
+
+    const user = await User.findOne({ _id }, { password: 0 });
+
+    if (!user) {
+      throw Error("Cannot find user");
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  const token = req.cookies.user_token;
-
-  const { _id } = jwt.verify(token, process.env.SECRET);
-
-  const user = await User.findOne({ _id }, { password: 0 });
-
-  res.status(200).json(user);
 };
 
 const signUpUser = async (req, res) => {

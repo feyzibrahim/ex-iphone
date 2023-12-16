@@ -39,7 +39,7 @@ const getPayments = async (req, res) => {
       .skip(skip)
       .limit(limit)
       .populate("user", { firstName: 1, lastName: 1 })
-      .populate("order", { totalPrice: 1 })
+      .populate("order", { totalPrice: 1, orderId: 1 })
       .sort({ createdAt: -1 });
     const totalAvailablePayments = await Payment.countDocuments(filter);
 

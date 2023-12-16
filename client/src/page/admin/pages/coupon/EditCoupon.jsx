@@ -93,9 +93,9 @@ const CreateCoupon = () => {
           title="Confirm Edit?"
         />
       )}
-      <div className="p-5 w-full overflow-y-scroll">
+      <div className="p-5 w-full overflow-y-scroll text-sm">
         {/* Top Bar */}
-        <div className="flex justify-between items-center text-sm font-semibold">
+        <div className="flex justify-between items-center font-semibold">
           <div>
             <h1 className="font-bold text-2xl">Create Coupon</h1>
             {/* Bread Crumbs */}

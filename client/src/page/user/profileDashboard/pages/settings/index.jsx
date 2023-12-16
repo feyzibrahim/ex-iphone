@@ -61,21 +61,6 @@ const SettingsPage = () => {
         validationSchema={validationSchema}
       >
         <Form className="w-full p-5">
-          <div className="mb-6">
-            <label htmlFor="notifications" className="flex items-center">
-              <input
-                type="checkbox"
-                id="notifications"
-                name="notifications"
-                className="mr-2"
-                disabled={canEdit}
-              />
-              <span className="text-sm font-medium text-gray-600">
-                Receive notifications
-              </span>
-            </label>
-          </div>
-
           <div className="mb-4">
             <PasswordInputWithIcon
               icon={

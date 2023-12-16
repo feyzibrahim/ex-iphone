@@ -32,8 +32,8 @@ const Banner = () => {
           positiveAction={deleteBanner}
         />
       )}
-      <div className="p-5 w-full overflow-x-auto">
-        <div className="text-sm font-semibold">
+      <div className="p-5 w-full overflow-x-auto text-sm">
+        <div className="font-semibold">
           <h1 className="font-bold text-2xl">Banner</h1>
           <BreadCrumbs list={["Dashboard", "Banner List"]} />
         </div>
