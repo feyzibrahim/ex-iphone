@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PasswordInputWithIcon from "../../../../../components/PasswordInputWithIcon";
 import { AiOutlineLock } from "react-icons/ai";
 import { Formik, Form } from "formik";
@@ -9,14 +9,19 @@ import toast from "react-hot-toast";
 
 const SettingsPage = () => {
   const [canEdit, setCanEdit] = useState(true);
-  const toggleEdit = () => {
-    setCanEdit(!canEdit);
-  };
+  const formikRef = useRef(null);
 
   const initialValues = {
     currentPassword: "",
     password: "",
     passwordAgain: "",
+  };
+
+  const toggleEdit = () => {
+    if (!canEdit) {
+      formikRef.current.resetForm();
+    }
+    setCanEdit(!canEdit);
   };
 
   const validationSchema = Yup.object().shape({
@@ -59,6 +64,7 @@ const SettingsPage = () => {
         initialValues={initialValues}
         onSubmit={handleLoginSubmit}
         validationSchema={validationSchema}
+        innerRef={formikRef}
       >
         <Form className="w-full p-5">
           <div className="mb-4">
