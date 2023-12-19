@@ -12,6 +12,7 @@ const categoriesSlice = createSlice({
     loading: false,
     categories: [],
     error: null,
+    totalAvailableCategories: null,
   },
   extraReducers: (builder) => {
     builder
@@ -21,7 +22,8 @@ const categoriesSlice = createSlice({
       .addCase(getCategories.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
-        state.categories = payload;
+        state.categories = payload.categories;
+        state.totalAvailableCategories = payload.totalAvailableCategories;
       })
       .addCase(getCategories.rejected, (state, { payload }) => {
         state.loading = false;

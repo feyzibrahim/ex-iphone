@@ -10,12 +10,13 @@ import StatusComponent from "../../../../components/StatusComponent";
 import FilterArray from "../../Components/FilterArray";
 import SearchBar from "../../../../components/SearchBar";
 import { URL } from "@common/api";
+import Pagination from "../../../../components/Pagination";
 
 const Categories = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { categories, loading, error } = useSelector(
+  const { categories, loading, error, totalAvailableCategories } = useSelector(
     (state) => state.categories
   );
 
@@ -155,6 +156,14 @@ const Categories = () => {
               </table>
             )
           )}
+        </div>
+        <div className="py-5">
+          <Pagination
+            handleClick={handleFilter}
+            page={page}
+            number={10}
+            totalNumber={totalAvailableCategories}
+          />
         </div>
       </div>
     </>

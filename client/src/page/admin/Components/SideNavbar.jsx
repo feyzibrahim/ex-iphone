@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ExIphoneLogo from "../../../components/ExIphoneLogo";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -9,10 +9,12 @@ import { HiOutlineTicket } from "react-icons/hi";
 import { BsCardChecklist, BsCreditCard } from "react-icons/bs";
 import { AiOutlineTags } from "react-icons/ai";
 import { FaUsersCog, FaUsers } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../redux/actions/userActions";
 
 const SideNavbar = () => {
+  const { user } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -57,10 +59,12 @@ const SideNavbar = () => {
           Payments
         </NavLink>
         <p className="side-nav-sub-title">User Management</p>
-        <NavLink className="side-nav-link-sp" to="manageAdmins">
-          <FaUsersCog />
-          Manage Admins
-        </NavLink>
+        {user && user.role === "superAdmin" && (
+          <NavLink className="side-nav-link-sp" to="manageAdmins">
+            <FaUsersCog />
+            Manage Admins
+          </NavLink>
+        )}
         <NavLink className="side-nav-link-sp" to="customers">
           <FaUsers />
           Customers

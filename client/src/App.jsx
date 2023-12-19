@@ -98,7 +98,7 @@ function App() {
             path="/"
             element={
               user ? (
-                user.role === "admin" ? (
+                user.role === "admin" || user.role === "superAdmin" ? (
                   <Navigate to="/admin/" />
                 ) : (
                   <Dashboard />
@@ -153,7 +153,8 @@ function App() {
           </Route>
 
           {/* Admin Routes */}
-          {user && user.role === "admin" ? (
+          {(user && user.role === "admin") ||
+          (user && user.role === "superAdmin") ? (
             <Route path="/admin/*" element={<AdminRoutes />} />
           ) : (
             <Route path="/admin" element={<Navigate to="/" />} />

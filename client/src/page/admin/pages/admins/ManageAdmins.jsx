@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { BsCaretRightFill, BsFilterRight } from "react-icons/bs";
-import { AiOutlinePlus, AiOutlineCalendar } from "react-icons/ai";
-import { FiDownload } from "react-icons/fi";
+import { BsCaretRightFill } from "react-icons/bs";
+import { AiOutlinePlus } from "react-icons/ai";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdmins } from "../../../../redux/actions/superAdmin/adminAction";

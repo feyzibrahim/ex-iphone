@@ -33,7 +33,8 @@ export const getCategories = createAsyncThunk(
         `${URL}/admin/categories?${queries}`,
         config
       );
-      return data.categories;
+
+      return data;
     } catch (error) {
       return handleError(error, rejectWithValue);
     }

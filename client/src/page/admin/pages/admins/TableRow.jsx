@@ -2,7 +2,7 @@ import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
-import { URL } from "@common/api";
+import ProfileImage from "../../../../components/ProfileImage";
 
 const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
@@ -13,15 +13,7 @@ const TableRow = ({ isLast, admin, toggleBlockUnBlockModal }) => {
     >
       <td className="admin-table-row flex items-center gap-2">
         <div className="w-10 h-10 overflow-clip flex justify-center items-center">
-          {admin.profileImgURL ? (
-            <img
-              src={`${URL}/img/${admin.profileImgURL}`}
-              alt="img"
-              className="object-cover w-full h-full rounded-md"
-            />
-          ) : (
-            <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
-          )}
+          <ProfileImage user={admin} radius="md" />
         </div>
         {admin.firstName} {admin.lastName}
       </td>

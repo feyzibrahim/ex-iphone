@@ -3,6 +3,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import date from "date-and-time";
 import StatusComponent from "../../../../components/StatusComponent";
 import { URL } from "@common/api";
+import ProfileImage from "../../../../components/ProfileImage";
 
 const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
   const classes = isLast ? "p-4" : "p-4 border-b border-gray-200 ";
@@ -13,17 +14,7 @@ const TableRow = ({ isLast, customer, toggleBlockUnBlockModal }) => {
     >
       <td className="admin-table-row flex items-center gap-2">
         <div className="w-10 h-10 overflow-clip flex justify-center items-center shrink-0">
-          {customer.profileImgURL &&
-          customer.profileImgURL != null &&
-          customer.profileImgURL != "null" ? (
-            <img
-              src={`${URL}/img/${customer.profileImgURL}`}
-              alt="img"
-              className="object-cover w-full h-full rounded-md"
-            />
-          ) : (
-            <div className="w-10 h-10 bg-slate-300 rounded-md"></div>
-          )}
+          <ProfileImage user={customer} radius="md" />
         </div>
         <p className="line-clamp-1 w-52">
           {customer.firstName} {customer.lastName}

@@ -59,7 +59,9 @@ const CreateAdmin = () => {
     formData.append("passwordAgain", value.passwordAgain);
     formData.append("phoneNumber", value.phoneNumber);
 
-    dispatch(createNewAdmin(formData));
+    dispatch(createNewAdmin(formData)).then(() => {
+      navigate(-1);
+    });
   };
 
   return (

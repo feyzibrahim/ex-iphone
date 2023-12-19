@@ -78,6 +78,7 @@ const Payments = () => {
           handleClick={handleFilter}
           search={search}
           setSearch={setSearch}
+          placeholder="Search with Payment Id"
         />
         <div className="flex justify-between items-center font-semibold">
           <div>
@@ -124,8 +125,8 @@ const Payments = () => {
                   <th className="admin-table-head">Total Price</th>
                   <th className="admin-table-head">Date</th>
                   <th className="admin-table-head">Payment Mode</th>
-                  <th className="admin-table-head w-60">Payment Id</th>
-                  <th className="admin-table-head">Order Id</th>
+                  <th className="admin-table-head w-80">Payment Id</th>
+                  {/* <th className="admin-table-head">Order Id</th> */}
                   <th className="admin-table-head">Status</th>
                   {/* <th className="admin-table-head">Action</th> */}
                 </tr>
@@ -159,9 +160,9 @@ const Payments = () => {
                       <td className="admin-table-row">
                         <p className="line-clamp-1">{item.payment_id}</p>
                       </td>
-                      <td className="admin-table-row">
+                      {/* <td className="admin-table-row">
                         {item.order.orderId || item.order._id}
-                      </td>
+                      </td> */}
                       <td className="admin-table-row capitalize">
                         <StatusComponent status={item.status || ""} />
                       </td>

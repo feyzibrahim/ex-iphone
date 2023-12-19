@@ -24,7 +24,9 @@ const getCategories = async (req, res) => {
 
     const categories = await Category.find(filter).skip(skip).limit(limit);
 
-    res.status(200).json({ categories });
+    const totalAvailableCategories = await Category.countDocuments(filter);
+
+    res.status(200).json({ categories, totalAvailableCategories });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

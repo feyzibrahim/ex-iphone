@@ -48,11 +48,39 @@ const EditProduct = () => {
     moreImageURL: [],
   });
 
+  // Changing Data
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFetchedData({
       ...fetchedData,
       [name]: value,
+    });
+  };
+
+  // changing the attributes
+  const handleAttributeChange = (index, attributeName, value) => {
+    setFetchedData((prevData) => {
+      const updatedAttributes = [...prevData.attributes];
+      updatedAttributes[index] = {
+        ...updatedAttributes[index],
+        [attributeName]: value,
+      };
+      return {
+        ...prevData,
+        attributes: updatedAttributes,
+      };
+    });
+  };
+
+  // Deleting attributes
+  const handleDeleteAttribute = (index) => {
+    setFetchedData((prevData) => {
+      const updatedAttributes = [...prevData.attributes];
+      updatedAttributes.splice(index, 1);
+      return {
+        ...prevData,
+        attributes: updatedAttributes,
+      };
     });
   };
 
@@ -348,24 +376,68 @@ const EditProduct = () => {
                   value="Add"
                 />
               </form>
-              <div className="border mt-5 rounded-lg">
-                {fetchedData.attributes.map((at, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`flex px-2 py-1 ${
-                        index % 2 === 0 && "bg-gray-200"
-                      }`}
-                    >
-                      <p className="w-2/6">{at.name}</p>
-                      <p className="w-3/6">{at.value}</p>
-                      <p className="w-1/6">
-                        {at.isHighlight ? "Highlighted" : ""}
-                      </p>
-                    </div>
-                  );
-                })}
-              </div>
+              <table className="border mt-5 rounded-lg w-full">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="px-2 py-1 w-2/6">Name</th>
+                    <th className="px-2 py-1 w-2/6">Value</th>
+                    <th className="px-2 py-1 w-1/6">Highlighted</th>
+                    <th className="px-2 py-1 w-1/6">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {fetchedData.attributes.map((at, index) => (
+                    <tr key={index}>
+                      <td className="px-2 py-1">
+                        <input
+                          className="admin-input-no-m w-full"
+                          type="text"
+                          value={at.name}
+                          onChange={(e) =>
+                            handleAttributeChange(index, "name", e.target.value)
+                          }
+                        />
+                      </td>
+                      <td className="px-2 py-1">
+                        <input
+                          className="admin-input-no-m w-full"
+                          type="text"
+                          value={at.value}
+                          onChange={(e) =>
+                            handleAttributeChange(
+                              index,
+                              "value",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </td>
+                      <td className="px-2 py-1">
+                        <input
+                          className="admin-input-no-m w-full"
+                          type="checkbox"
+                          checked={at.isHighlight}
+                          onChange={(e) => {
+                            handleAttributeChange(
+                              index,
+                              "isHighlight",
+                              e.target.checked
+                            );
+                          }}
+                        />
+                      </td>
+                      <td className="px-2 py-1 text-center">
+                        <button
+                          onClick={() => handleDeleteAttribute(index)}
+                          className="text-xl text-gray-500 hover:text-gray-800 active:text-black"
+                        >
+                          <AiOutlineDelete />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
           {/* Pricing */}
