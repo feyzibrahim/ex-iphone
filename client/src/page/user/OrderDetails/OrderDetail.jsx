@@ -47,7 +47,7 @@ const OrderDetail = () => {
     }
   };
 
-  // Function for return date
+  // Function for return date calculation
   const calcReturnDate = (d) => {
     const originalDate = new Date(d);
     const modifiedDate = new Date(originalDate);
@@ -55,6 +55,12 @@ const OrderDetail = () => {
 
     const formattedDate = date.format(modifiedDate, "MMM DD, YYYY");
     return formattedDate;
+  };
+
+  // Function to check if the return date is before today
+  const isReturnDateBeforeToday = (returnDate) => {
+    const today = new Date();
+    return new Date(returnDate) < today;
   };
 
   // Toggle Modals
@@ -162,18 +168,36 @@ const OrderDetail = () => {
                 <>
                   {orderData.status === "delivered" && (
                     <div>
-                      <p
-                        className="font-semibold flex items-center gap-1 text-orange-400 cursor-pointer hover:bg-orange-100 px-2 rounded-lg"
-                        onClick={toggleReturnModal}
-                      >
-                        Return <HiOutlineReceiptRefund />
-                      </p>
-                      <p className="px-2 text-xs">
-                        Last Date for Return{" "}
-                        {calcReturnDate(
+                      {isReturnDateBeforeToday(
+                        calcReturnDate(
                           getStatusDate("delivered", orderData.statusHistory)
-                        )}
-                      </p>
+                        )
+                      ) ? (
+                        <p className="px-2 text-xs">
+                          Last Date for Return was{" "}
+                          {calcReturnDate(
+                            getStatusDate("delivered", orderData.statusHistory)
+                          )}
+                        </p>
+                      ) : (
+                        <>
+                          <p
+                            className="font-semibold flex items-center gap-1 text-orange-400 cursor-pointer hover:bg-orange-100 px-2 rounded-lg"
+                            onClick={toggleReturnModal}
+                          >
+                            Return <HiOutlineReceiptRefund />
+                          </p>
+                          <p className="px-2 text-xs">
+                            Last Date for Return{" "}
+                            {calcReturnDate(
+                              getStatusDate(
+                                "delivered",
+                                orderData.statusHistory
+                              )
+                            )}
+                          </p>
+                        </>
+                      )}
                     </div>
                   )}
                 </>

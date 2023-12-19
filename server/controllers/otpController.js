@@ -59,7 +59,7 @@ const validateOTP = async (req, res) => {
       message: "OTP validation Success",
     });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 

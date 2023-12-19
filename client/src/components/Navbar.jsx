@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { debounce } from "time-loom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../redux/actions/userActions";
@@ -19,17 +20,17 @@ import { BiHistory, BiUser } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { MdTrackChanges } from "react-icons/md";
 import { TiTicket } from "react-icons/ti";
+import OutsideTouchCloseComponent from "./OutsideTouchCloseComponent";
 
 const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const datePickerRef = useRef(null);
 
   const [dropDown, setDropDown] = useState(false);
-  const toggleDropDown = () => {
+  const toggleDropDown = debounce(() => {
     setDropDown(!dropDown);
-  };
+  }, 100);
 
   const handleLogout = () => {
     toggleDropDown();
@@ -41,23 +42,6 @@ const Navbar = () => {
   const toggleSideNavbar = () => {
     setShowSideNavbar(!showSideNavbar);
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        datePickerRef.current &&
-        !datePickerRef.current.contains(event.target)
-      ) {
-        setDropDown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <>
@@ -118,9 +102,9 @@ const Navbar = () => {
               </button>
 
               {dropDown && (
-                <div
-                  className="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl"
-                  ref={datePickerRef}
+                <OutsideTouchCloseComponent
+                  toggleVisibility={toggleDropDown}
+                  style="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl"
                 >
                   <NavLink
                     to="/dashboard/"
@@ -150,7 +134,7 @@ const Navbar = () => {
                     <AiOutlineLogout className="text-xl" />
                     Logout
                   </button>
-                </div>
+                </OutsideTouchCloseComponent>
               )}
               {/* <button className="sm:hidden hover:text-blue-400 p-2">
               <GiHamburgerMenu />

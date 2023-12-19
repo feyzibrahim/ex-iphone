@@ -10,12 +10,20 @@ import MostSoldChart from "../Components/DashboardComponents/MostSoldChart";
 import Modal from "../../../components/Modal";
 import UpdateOrder from "./Order/UpdateOrder";
 import { AiOutlineCalendar } from "react-icons/ai";
+import OutsideTouchCloseComponent from "../../../components/OutsideTouchCloseComponent";
+import { debounce } from "time-loom";
+import { useSearchParams } from "react-router-dom";
 
 const AdminHome = () => {
+  const { orders, loading, error } = useSelector((state) => state.orders);
+
   const dispatch = useDispatch();
   const [numberOfDates, setNumberOfDates] = useState(7);
 
-  const { orders, loading, error } = useSelector((state) => state.orders);
+  const [dropDown, setDropDown] = useState(false);
+  const toggleDropDown = debounce(() => {
+    setDropDown(!dropDown);
+  }, 100);
 
   useEffect(() => {
     dispatch(getOrders({}));
@@ -46,14 +54,57 @@ const AdminHome = () => {
           <div>
             <h1 className="font-bold text-2xl">Dashboard</h1>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 relative">
             <button
               className="admin-button-fl bg-white hover:bg-gray-200 active:bg-gray-300 text-sm"
-              onClick={() => {}}
+              onClick={toggleDropDown}
             >
               <AiOutlineCalendar />
               Last {numberOfDates} days
             </button>
+            {dropDown && (
+              <OutsideTouchCloseComponent
+                toggleVisibility={toggleDropDown}
+                style="absolute top-10 right-0 font-normal w-44 bg-white rounded-lg shadow-2xl"
+              >
+                <button
+                  className="navbar-drop-ul w-full"
+                  onClick={() => {
+                    setNumberOfDates(7);
+                    toggleDropDown();
+                  }}
+                >
+                  Last 7 Days
+                </button>
+                <button
+                  className="navbar-drop-ul w-full"
+                  onClick={() => {
+                    setNumberOfDates(30);
+                    toggleDropDown();
+                  }}
+                >
+                  Last 30 Days
+                </button>
+                <button
+                  className="navbar-drop-ul w-full"
+                  onClick={() => {
+                    setNumberOfDates(180);
+                    toggleDropDown();
+                  }}
+                >
+                  Last 180 Days
+                </button>
+                <button
+                  className="navbar-drop-ul w-full"
+                  onClick={() => {
+                    setNumberOfDates(365);
+                    toggleDropDown();
+                  }}
+                >
+                  Last 365 Days
+                </button>
+              </OutsideTouchCloseComponent>
+            )}
           </div>
         </div>
 
@@ -64,10 +115,10 @@ const AdminHome = () => {
         </div>
 
         <div className="flex gap-5 lg:flex-row flex-col">
-          <RevenueChart />
+          <RevenueChart numberOfDates={numberOfDates} />
           <div className="bg-white p-5 rounded-md w-full lg:w-1/3">
             <h1 className="text-lg font-bold">Most Sold Items</h1>
-            <MostSoldChart />
+            <MostSoldChart numberOfDates={numberOfDates} />
           </div>
         </div>
         {orders && orders.length > 0 ? (

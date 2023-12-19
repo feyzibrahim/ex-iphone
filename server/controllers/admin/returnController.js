@@ -2,6 +2,7 @@ const Order = require("../../model/orderModel");
 const mongoose = require("mongoose");
 const Payment = require("../../model/paymentModel");
 const Wallet = require("../../model/walletModel");
+const Counter = require("../../model/counterModel");
 
 function isValidStatus(status) {
   const validStatusValues = [
@@ -146,37 +147,38 @@ const updateReturnOrderStatus = async (req, res) => {
         }
       );
 
-      // Adding the refund to wallet of user.
-      let wallet = {};
-      const exists = await Wallet.findOne({ user: updatedOrder.user });
-      if (exists) {
-        wallet = await Wallet.findByIdAndUpdate(exists._id, {
-          $inc: {
-            balance: updatedOrder.totalPrice,
-          },
-          $push: {
-            transactions: {
-              amount: updatedOrder.totalPrice,
-              type: "credit",
-              description,
-              order: id,
-            },
-          },
-        });
+      // Getting the transaction counter
+      const counter = await Counter.findOne({
+        model: "Wallet",
+        field: "transaction_id",
+      });
+
+      // Checking if order counter already exist
+      if (counter) {
+        counter.count += 1;
+        await counter.save();
       } else {
-        wallet = await Wallet.create({
-          user: updatedOrder.user,
-          balance: updatedOrder.totalPrice,
-          transactions: [
-            {
-              amount: updatedOrder.totalPrice,
-              type: "credit",
-              description,
-              order: id,
-            },
-          ],
-        });
+        await Counter.create({ model: "Wallet", field: "transaction_id" });
       }
+
+      // Adding the refund to wallet of user.
+      const filter = { user: updatedOrder.user };
+      const update = {
+        $inc: { balance: updatedOrder.totalPrice },
+        $push: {
+          transactions: {
+            transaction_id: counter.count + 1,
+            amount: updatedOrder.totalPrice,
+            type: "credit",
+            description,
+            order: id,
+          },
+        },
+      };
+
+      const options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+      const wallet = await Wallet.findOneAndUpdate(filter, update, options);
     }
 
     const order = await Order.findById(id, {

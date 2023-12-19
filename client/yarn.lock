@@ -2648,6 +2648,11 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+time-loom@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/time-loom/-/time-loom-1.2.1.tgz#2e2e2f852e0ff59006a270db8f1caaeb80cd95f0"
+  integrity sha512-dXSo/4IncyVO6UVTNGeKjrLMcY0voc9UPZ9PFkdTDaa8G5ya0gKRVyfJSVAAqLmoS4QR5I+pszKft3QR1iDVig==
+
 tiny-case@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-case/-/tiny-case-1.0.3.tgz#d980d66bc72b5d5a9ca86fb7c9ffdb9c898ddd03"

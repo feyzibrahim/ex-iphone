@@ -71,7 +71,6 @@ export const getPassedDateOnwardDateForInput = (inputDateString) => {
 // Modify Payment Mode Text
 
 export const modifyPaymentModeText = (mode) => {
-  console.log(mode);
   if (mode === "cashOnDelivery") {
     return "Cash on Delivery";
   }

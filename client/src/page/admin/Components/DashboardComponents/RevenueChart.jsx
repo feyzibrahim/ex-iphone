@@ -32,7 +32,7 @@ const RevenueChart = ({ numberOfDates }) => {
       }
     };
     loadData();
-  }, []);
+  }, [numberOfDates]);
 
   return (
     <div className="bg-white px-5 pt-5 pb-20 rounded-md w-full lg:w-2/3 h-80">

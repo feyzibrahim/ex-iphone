@@ -15,6 +15,10 @@ const walletSchema = new mongoose.Schema({
   },
   transactions: [
     {
+      transaction_id: {
+        type: Number,
+        unique: true,
+      },
       amount: {
         type: Number,
         required: true,

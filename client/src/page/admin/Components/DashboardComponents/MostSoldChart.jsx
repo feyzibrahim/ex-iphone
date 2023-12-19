@@ -5,14 +5,16 @@ import axios from "axios";
 import { URL } from "@common/api";
 import { config } from "@common/configurations";
 
-const MostSoldChart = () => {
+const MostSoldChart = ({ numberOfDates }) => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState([]);
 
   useEffect(() => {
     const loadData = async () => {
       const { data } = await axios.get(
-        `${URL}/admin/most-sold-product`,
+        `${URL}/admin/most-sold-product${
+          numberOfDates ? `?numberOfDates=${numberOfDates}` : ``
+        }`,
         config
       );
 
@@ -24,7 +26,7 @@ const MostSoldChart = () => {
       }
     };
     loadData();
-  }, []);
+  }, [numberOfDates]);
 
   return (
     <div className="h-60">

@@ -21,10 +21,9 @@ import CustomSingleFileInput from "../../components/CustomSingleFileInput";
 import OTPEnterSection from "./Register/OTPEnterSection";
 import OTPExpired from "./components/OTPExpired";
 import toast from "react-hot-toast";
-import axios from "axios";
-import { URL } from "../../Common/api";
-import { config } from "../../Common/configurations";
+import { appJson } from "../../Common/configurations";
 import { GoogleLogin } from "@react-oauth/google";
+import { commonRequest } from "../../Common/api";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -89,38 +88,30 @@ const Register = () => {
   };
 
   const handleRegister = async (value) => {
-    try {
-      // Display loading state
-      setOTPLoading(true);
-      setData(value);
+    // Display loading state
+    setOTPLoading(true);
+    setData(value);
+    if (value.email.trim() === "") {
+      toast.error("Enter an email to continue");
+      return;
+    }
 
-      if (value.email.trim() === "") {
-        toast.error("Enter an email to continue");
-        return;
-      }
+    const res = await commonRequest(
+      "POST",
+      "/auth/send-otp",
+      { email: value.email },
+      appJson
+    );
 
-      // Send OTP request
-      const response = await axios.post(
-        `${URL}/auth/send-otp`,
-        { email: value.email },
-        config
-      );
-
-      // Check if OTP request was successful
-      if (response.data.success) {
-        // Update state to show OTP section
-        setEmailSec(false);
-        setOTPSec(true);
-        setOTPLoading(false);
-        toast.success("OTP Sent successfully");
-      } else {
-        // Handle OTP request failure
-        toast.error(response.data.response.data.error);
-        setOTPLoading(false);
-      }
-    } catch (error) {
-      // Handle any other errors
-      console.error("Error sending OTP:", error);
+    if (res.success) {
+      // Update state to show OTP section
+      setEmailSec(false);
+      setOTPSec(true);
+      setOTPLoading(false);
+      toast.success("OTP Sent successfully");
+    } else {
+      // Handle OTP request failure
+      toast.error(res.response.data.error);
       setOTPLoading(false);
     }
   };
@@ -227,6 +218,7 @@ const Register = () => {
               }}
               onError={() => {
                 console.log("Login Failed");
+                toast.error("Something is wrong! Please try later");
               }}
             />
           </div>

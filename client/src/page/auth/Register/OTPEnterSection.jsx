@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
-import { config } from "../../../Common/configurations";
-import { URL } from "../../../Common/api";
+import { appJson } from "../../../Common/configurations";
+import { commonRequest } from "../../../Common/api";
 
 const OTPEnterSection = ({
   email,
@@ -82,26 +81,20 @@ const OTPEnterSection = ({
 
     setLoading(true);
 
-    await axios
-      .post(
-        `${URL}/auth/validate-otp`,
-        {
-          email,
-          otp: otpNumber,
-        },
-        config
-      )
-      .then(({ data }) => {
-        if (data.success) {
-          // setOTPSec(false);
-          dispatchSignUp();
-        }
-      })
-      .catch(({ response }) => {
-        toast.error(response.data.error);
-        setError(response.data.error);
-        setLoading(false);
-      });
+    const res = await commonRequest(
+      "POST",
+      "/auth/validate-otp",
+      { email, otp: otpNumber },
+      appJson
+    );
+
+    if (res.success) {
+      dispatchSignUp();
+    } else {
+      toast.error(res.response.data.error);
+      setError(res.response.data.error);
+      setLoading(false);
+    }
   };
 
   // OTP 5 Minute Timer function
@@ -143,25 +136,41 @@ const OTPEnterSection = ({
   const handleResending = async () => {
     if (resendSeconds === 0) {
       setResendLoading(true);
-      await axios
-        .post(
-          `${URL}/auth/resend-otp`,
-          {
-            email,
-          },
-          config
-        )
-        .then(({ data }) => {
-          if (data.success) {
-            toast.success(data.message);
-            setResendLoading(false);
-          }
-        })
-        .catch(({ response }) => {
-          setError(response.data.error);
-          toast.error(response.data.error);
-          setResendLoading(false);
-        });
+
+      const res = await commonRequest(
+        "POST",
+        "/auth/resend-otp",
+        { email },
+        appJson
+      );
+      if (res.success) {
+        toast.success(res.message);
+        setResendLoading(false);
+      } else {
+        setError(res.response.data.error);
+        toast.error(res.response.data.error);
+        setResendLoading(false);
+      }
+
+      // await axios
+      //   .post(
+      //     `${URL}/auth/resend-otp`,
+      //     {
+      //       email,
+      //     },
+      //     config
+      //   )
+      //   .then(({ data }) => {
+      //     if (data.success) {
+      //       toast.success(data.message);
+      //       setResendLoading(false);
+      //     }
+      //   })
+      //   .catch(({ response }) => {
+      //     setError(response.data.error);
+      //     toast.error(response.data.error);
+      //     setResendLoading(false);
+      //   });
 
       setResendSeconds(30);
     } else {

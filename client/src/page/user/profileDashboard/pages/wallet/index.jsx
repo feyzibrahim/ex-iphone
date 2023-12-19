@@ -58,7 +58,9 @@ const Wallet = () => {
                     wallet.transactions.map((item, index) => {
                       return (
                         <tr key={index}>
-                          <td className="px-5 py-3">{item._id}</td>
+                          <td className="px-5 py-3">
+                            {item.transaction_id || item._id}
+                          </td>
                           <td className="px-5 py-3">₹{item.amount}</td>
                           <td className="px-5 py-3 capitalize">{item.type}</td>
                           <td className="px-5 py-3 capitalize">

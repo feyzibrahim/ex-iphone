@@ -167,7 +167,7 @@ const updateOrderStatus = async (req, res) => {
 
     if (paymentStatus === "yes") {
       await Payment.create({
-        order: updated._id,
+        order: updated.orderId || updated._id,
         payment_id: `cod_${uuid.v4()}`,
         user: updated.user,
         status: "success",
@@ -177,7 +177,7 @@ const updateOrderStatus = async (req, res) => {
 
     if (paymentStatus === "no") {
       await Payment.create({
-        order: updated._id,
+        order: updated.orderId || updated._id,
         user: updated.user,
         status: "pending",
         paymentMode: "cashOnDelivery",

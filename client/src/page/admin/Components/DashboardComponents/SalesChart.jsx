@@ -29,7 +29,7 @@ const SalesChart = ({ numberOfDates }) => {
       }
     };
     loadData();
-  }, []);
+  }, [numberOfDates]);
 
   return (
     <div className="bg-white p-5 rounded-md w-full flex justify-between">
