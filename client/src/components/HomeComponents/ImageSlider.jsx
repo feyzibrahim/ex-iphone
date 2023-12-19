@@ -28,7 +28,7 @@ const ImageSlider = () => {
   };
 
   return (
-    <div className="w-full px-5 sm:px-20">
+    <div className="w-full px-5 sm:px-20 pb-12">
       <Slider {...settings}>
         {items &&
           items.map((item) => (

@@ -93,7 +93,6 @@ const EditProduct = () => {
         });
 
         setFetchedData({ ...data.product });
-        console.log(data);
 
         setDuplicateFetchData({ ...data.product });
       } catch (error) {

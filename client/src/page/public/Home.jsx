@@ -84,7 +84,7 @@ const Home = () => {
       <ImageSlider />
 
       {/* Apple Watch Listing */}
-      <AppleWatchCollection />
+      {/* <AppleWatchCollection /> */}
 
       {/* Newsletter */}
       <div className="bg-gray-200 py-20">
