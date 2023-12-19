@@ -4,10 +4,17 @@ import { updateReturnOrderStatus } from "../../../../redux/actions/admin/ordersA
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import {
+  getPassedDateOnwardDateForInput,
+  getTodayOnwardDateForInput,
+} from "../../../../Common/functions";
 
 const UpdateReturnOrder = ({ toggleModal, data }) => {
   const { id, status } = data;
   const dispatch = useDispatch();
+  const orderDate = getPassedDateOnwardDateForInput(data.deliveryDate);
+  console.log(data);
+  const todayDate = getTodayOnwardDateForInput();
 
   const initialValues = {
     status: status,
@@ -88,6 +95,8 @@ const UpdateReturnOrder = ({ toggleModal, data }) => {
               <Field
                 type="date"
                 name="date"
+                min={orderDate}
+                max={todayDate}
                 className="px-5 py-2 w-full bg-gray-300 rounded-lg"
               />
               <ErrorMessage

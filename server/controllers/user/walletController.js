@@ -36,7 +36,31 @@ const getWallet = async (req, res) => {
 
     const wallet = await Wallet.findOne({ user: _id });
 
-    return res.status(200).json({ wallet });
+    if (!wallet) {
+      return res.status(404).json({ error: "Wallet not found" });
+    }
+
+    // Sorting transactions in descending order based on createdAt
+    wallet.transactions.sort((a, b) => b.createdAt - a.createdAt);
+
+    // Pagination
+    const page = parseInt(req.query.page) || 1; // Current page, default is 1
+    const limit = parseInt(req.query.limit) || 10; // Number of transactions per page
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const paginatedTransactions = wallet.transactions.slice(
+      startIndex,
+      endIndex
+    );
+
+    return res.status(200).json({
+      wallet: {
+        ...wallet.toObject(),
+        transactions: paginatedTransactions,
+      },
+      totalAvailableWalletTransactions: wallet.transactions.length,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

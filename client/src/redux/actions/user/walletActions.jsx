@@ -4,10 +4,10 @@ import { appJson } from "@common/configurations";
 
 export const getWallet = createAsyncThunk(
   "wallet/getWallet",
-  async (_, { rejectWithValue }) => {
+  async (queries, { rejectWithValue }) => {
     return commonReduxRequest(
       "get",
-      `/user/wallet`,
+      `/user/wallet${queries && `?${queries}`}`,
       null,
       appJson,
       rejectWithValue

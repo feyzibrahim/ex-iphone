@@ -15,7 +15,7 @@ const OrderTableRow = ({ item, index, toggleUpdateModal, classes }) => {
         navigate(`/admin/orders/detail/${item.orderId || item._id}`)
       }
     >
-      <td className="admin-table-row">{index + 1}</td>
+      <td className="admin-table-row">{index}</td>
       <td className="admin-table-row flex items-center gap-2">
         <div className="w-10 h-10 overflow-clip flex justify-center items-center  shrink-0">
           {item.products[0].productId.imageURL ? (

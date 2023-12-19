@@ -39,16 +39,18 @@ const ImageZoom = ({ width, zoomedWidth, zoomedValue, imageUrl }) => {
     return Math.min(width * ratio, zoomedValue * ratio);
   };
 
+  const zoomedHeight = (zoomedWidth / imageSize.width) * imageSize.height;
+
   const getZoomedImagePosition = () => {
     if (hoverPosition) {
       const percentageX = (hoverPosition.x / imageSize.width) * 100;
       const percentageY = (hoverPosition.y / imageSize.height) * 100;
 
       const bgPosX = Math.floor(
-        ((zoomedValue - width) / imageSize.width) * percentageX
+        ((zoomedValue - zoomedWidth) / imageSize.width) * percentageX
       );
       const bgPosY = Math.floor(
-        ((zoomedValue - width) / imageSize.height) * percentageY
+        ((zoomedValue - zoomedHeight) / imageSize.height) * percentageY
       );
 
       return `${-bgPosX}px ${-bgPosY}px`;

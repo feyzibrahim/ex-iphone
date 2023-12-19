@@ -168,6 +168,7 @@ const ReturnRequests = () => {
                               toggleUpdateModal({
                                 id: item._id,
                                 status: item.status,
+                                deliveryDate: item.deliveryDate,
                               });
                             }}
                           >

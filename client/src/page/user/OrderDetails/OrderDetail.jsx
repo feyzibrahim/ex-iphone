@@ -60,7 +60,7 @@ const OrderDetail = () => {
   // Function to check if the return date is before today
   const isReturnDateBeforeToday = (returnDate) => {
     const today = new Date();
-    return new Date(returnDate) < today;
+    return new Date(returnDate) <= today;
   };
 
   // Toggle Modals

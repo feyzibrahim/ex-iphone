@@ -148,7 +148,7 @@ const updateReturnOrderStatus = async (req, res) => {
       );
 
       // Getting the transaction counter
-      const counter = await Counter.findOne({
+      let counter = await Counter.findOne({
         model: "Wallet",
         field: "transaction_id",
       });
@@ -158,7 +158,10 @@ const updateReturnOrderStatus = async (req, res) => {
         counter.count += 1;
         await counter.save();
       } else {
-        await Counter.create({ model: "Wallet", field: "transaction_id" });
+        counter = await Counter.create({
+          model: "Wallet",
+          field: "transaction_id",
+        });
       }
 
       // Adding the refund to wallet of user.

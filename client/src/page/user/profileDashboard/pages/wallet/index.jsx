@@ -1,17 +1,44 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineWallet } from "react-icons/ai";
 import { getWallet } from "../../../../../redux/actions/user/walletActions";
 import { useDispatch, useSelector } from "react-redux";
 import date from "date-and-time";
 import JustLoading from "../../../../../components/JustLoading";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "../../../../../components/Pagination";
 
 const Wallet = () => {
   const dispatch = useDispatch();
-  const { wallet, loading, error } = useSelector((state) => state.wallet);
+  const { wallet, loading, error, totalAvailableWalletTransactions } =
+    useSelector((state) => state.wallet);
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [page, setPage] = useState(1);
+  const handleFilter = (type, value) => {
+    const params = new URLSearchParams(window.location.search);
+    if (value === "") {
+      params.delete(type);
+    } else {
+      if (type === "page" && value === 1) {
+        params.delete(type);
+        setPage(1);
+      } else {
+        params.set(type, value);
+        if (type === "page") {
+          setPage(value);
+        }
+      }
+    }
+    setSearchParams(params.toString() ? "?" + params.toString() : "");
+  };
 
   useEffect(() => {
-    dispatch(getWallet());
-  }, []);
+    const params = new URLSearchParams(window.location.search);
+    const pageNum = params.get("page");
+    setPage(parseInt(pageNum) || 1);
+    dispatch(getWallet(searchParams));
+  }, [searchParams]);
 
   return (
     <div className="w-full">
@@ -59,7 +86,7 @@ const Wallet = () => {
                       return (
                         <tr key={index}>
                           <td className="px-5 py-3">
-                            {item.transaction_id || item._id}
+                            {item.transaction_id || "N/A"}
                           </td>
                           <td className="px-5 py-3">₹{item.amount}</td>
                           <td className="px-5 py-3 capitalize">{item.type}</td>
@@ -82,6 +109,14 @@ const Wallet = () => {
                 <p>No Transactions</p>
               </div>
             )}
+          </div>
+          <div className="py-5">
+            <Pagination
+              handleClick={handleFilter}
+              number={10}
+              page={page}
+              totalNumber={totalAvailableWalletTransactions}
+            />
           </div>
         </div>
       )}

@@ -7,6 +7,7 @@ const walletSlice = createSlice({
     loading: false,
     wallet: {},
     error: null,
+    totalAvailableWalletTransactions: null,
   },
   extraReducers: (builder) => {
     builder
@@ -17,6 +18,8 @@ const walletSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.wallet = payload.wallet;
+        state.totalAvailableWalletTransactions =
+          payload.totalAvailableWalletTransactions;
       })
       .addCase(getWallet.rejected, (state, { payload }) => {
         state.loading = false;

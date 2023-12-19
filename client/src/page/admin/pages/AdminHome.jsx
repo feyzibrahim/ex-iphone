@@ -145,7 +145,7 @@ const AdminHome = () => {
                     : "p-4 border-b border-gray-200 ";
                   return (
                     <OrderTableRow
-                      index={index}
+                      index={index + 1}
                       item={item}
                       toggleUpdateModal={toggleUpdateModal}
                       classes={classes}
