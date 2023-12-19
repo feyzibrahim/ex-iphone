@@ -109,6 +109,10 @@ const Register = () => {
       setOTPSec(true);
       setOTPLoading(false);
       toast.success("OTP Sent successfully");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     } else {
       // Handle OTP request failure
       toast.error(res.response.data.error);

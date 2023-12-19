@@ -111,7 +111,7 @@ const ProductDetails = () => {
           <div className="lg:flex gap-10 justify-center">
             {/* Product Images */}
             <div className="lg:w-1/2 bg-white p-5 rounded flex flex-col items-center h-fit">
-              <div className="w-80 h-80 lg:w-96 lg:h-96 flex">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 hidden lg:block">
                 {currentImage && (
                   <ImageZoom
                     imageUrl={`${URL}/img/${currentImage}`}
@@ -121,13 +121,22 @@ const ProductDetails = () => {
                   />
                 )}
               </div>
+              <div className="w-80 lg:w-96 lg:h-96 lg:hidden mx-auto">
+                {currentImage && (
+                  <img
+                    src={`${URL}/img/${currentImage}`}
+                    alt="Product"
+                    className="w-60 h-60 object-cover"
+                  />
+                )}
+              </div>
 
               <div className="flex gap-1 lg:gap-5 mt-5">
                 {product.moreImageURL &&
                   product.moreImageURL.map((image, i) => (
                     <div
                       key={i}
-                      className={`flex justify-center items-center w-20 h-20 overflow-clip border ${
+                      className={`flex justify-center items-center w-12 h-12 lg:w-20 lg:h-20 overflow-clip border ${
                         currentImage === image
                           ? "border-gray-500"
                           : "border-gray-300"

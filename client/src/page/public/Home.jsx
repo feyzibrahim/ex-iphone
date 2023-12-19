@@ -6,7 +6,6 @@ import { BiSearch } from "react-icons/bi";
 import NewCollection from "../../components/HomeComponents/NewCollection";
 import fourIphones from "../../assets/fourIphone.png";
 import NewIphone from "../../components/HomeComponents/NewIphone";
-import AppleWatchCollection from "../../components/HomeComponents/AppleWatchCollection";
 import { useSelector } from "react-redux";
 import ImageSlider from "../../components/HomeComponents/ImageSlider";
 import JustLoading from "../../components/JustLoading";
@@ -57,7 +56,11 @@ const Home = () => {
           </div>
         </div>
         {/* BG iPhone Image */}
-        <img src={BgImage} className="lg:w-[1200px] lg:-ml-32" alt="Bg Image" />
+        <img
+          src={BgImage}
+          className="lg:w-[1200px] lg:-ml-32 lg:mt-16"
+          alt="Bg Image"
+        />
       </div>
       {/* ---------- New Collections  ---------*/}
       <NewCollection />
