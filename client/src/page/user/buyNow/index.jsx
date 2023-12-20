@@ -132,9 +132,10 @@ const BuyNow = () => {
       setOrderPlacedLoading(false);
       // setConfirmationPage(true);
       dispatch(emptyBuyNowStore());
-      navigateToOrderConfirmation(order.data.order);
+      navigateToOrderConfirmation(order);
     } catch (error) {
       // Error Handling
+      console.log(error);
       const errorMessage =
         error.response?.data?.error ||
         "Something went wrong. Please try again.";

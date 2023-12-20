@@ -131,6 +131,22 @@ const createOrder = async (req, res) => {
 
     // When payment is done using wallet reducing the wallet and creating payment
     if (paymentMode === "myWallet") {
+      let counter = await Counter.findOne({
+        model: "Wallet",
+        field: "transaction_id",
+      });
+
+      // Checking if order counter already exist
+      if (counter) {
+        counter.count += 1;
+        await counter.save();
+      } else {
+        counter = await Counter.create({
+          model: "Wallet",
+          field: "transaction_id",
+        });
+      }
+
       const exists = await Wallet.findOne({ user: _id });
       if (!exists) {
         throw Error("No Wallet where found");
@@ -152,6 +168,7 @@ const createOrder = async (req, res) => {
           },
           $push: {
             transactions: {
+              transaction_id: counter.count + 1,
               amount: sumWithTax,
               type: "debit",
               description: "Product Ordered",
@@ -523,7 +540,6 @@ const buyNow = async (req, res) => {
     await updateProductList(id, -quantity);
 
     const order = await Order.create(orderData);
-    console.log(order);
 
     // When payment is done using wallet reducing the wallet and creating payment
     if (paymentMode === "myWallet") {
@@ -540,6 +556,22 @@ const buyNow = async (req, res) => {
         paymentMode: "myWallet",
       });
 
+      let counter = await Counter.findOne({
+        model: "Wallet",
+        field: "transaction_id",
+      });
+
+      // Checking if order counter already exist
+      if (counter) {
+        counter.count += 1;
+        await counter.save();
+      } else {
+        counter = await Counter.create({
+          model: "Wallet",
+          field: "transaction_id",
+        });
+      }
+
       let wallet = {};
       if (exists) {
         wallet = await Wallet.findByIdAndUpdate(exists._id, {
@@ -548,6 +580,7 @@ const buyNow = async (req, res) => {
           },
           $push: {
             transactions: {
+              transaction_id: counter.count + 1,
               amount: sumWithTax,
               type: "debit",
               description: "Product Ordered",

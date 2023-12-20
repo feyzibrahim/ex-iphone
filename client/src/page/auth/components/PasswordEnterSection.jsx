@@ -23,7 +23,7 @@ const PasswordEnterSection = ({ email, setPasswordSec, setFinalMessage }) => {
 
     await axios
       .post(
-        `${URL}/user/set-new-password`,
+        `${URL}/auth/set-new-password`,
         {
           email,
           password,

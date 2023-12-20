@@ -91,7 +91,6 @@ const Checkout = () => {
   };
 
   // Razor Pay payment
-
   // Saving the order to db
   const saveOrder = async (response) => {
     setOrderPlacedLoading(true);
@@ -126,6 +125,7 @@ const Checkout = () => {
       dispatch(clearCartOnOrderPlaced());
     } catch (error) {
       // Error Handling
+      console.log(error);
       const errorMessage =
         error.response?.data?.error ||
         "Something went wrong. Please try again.";

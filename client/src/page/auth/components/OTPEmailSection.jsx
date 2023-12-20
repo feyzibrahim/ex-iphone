@@ -17,7 +17,7 @@ const OTPEmailSection = ({ email, setEmail, setEmailSec, setOTPSec }) => {
     }
     setLoading(true);
     axios
-      .post(`${URL}/user/forget-password`, { email }, config)
+      .post(`${URL}/auth/forget-password`, { email }, config)
       .then(({ data }) => {
         if (data.success) {
           setEmailSec(false);
