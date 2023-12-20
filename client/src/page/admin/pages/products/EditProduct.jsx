@@ -10,6 +10,7 @@ import axios from "axios";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { getCategories } from "../../../../redux/actions/admin/categoriesAction";
 import { URL } from "@common/api";
+import toast from "react-hot-toast";
 
 const EditProduct = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const EditProduct = () => {
     price: "",
     markup: "",
     moreImageURL: [],
+    offer: "",
   });
 
   // Changing Data
@@ -179,6 +181,14 @@ const EditProduct = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const toggleConfirm = () => {
+    if (fetchedData.offer && fetchedData.offer < 1) {
+      toast.error("Offer can't go below 1");
+      return;
+    }
+    if (fetchedData.offer && fetchedData.offer > 100) {
+      toast.error("Offer can't above below 100");
+      return;
+    }
     setShowConfirm(!showConfirm);
   };
 
@@ -459,6 +469,17 @@ const EditProduct = () => {
                 placeholder="Type product markup here"
                 className="admin-input"
                 value={fetchedData.markup || ""}
+                onChange={handleInputChange}
+              />
+              <p className="admin-label">Offer</p>
+              <input
+                type="number"
+                name="offer"
+                placeholder="Type product offer here"
+                className="admin-input"
+                value={fetchedData.offer || ""}
+                min={1}
+                max={99}
                 onChange={handleInputChange}
               />
             </div>

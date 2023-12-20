@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineCalendar } from "react-icons/ai";
 import { FiDownload } from "react-icons/fi";
 import BreadCrumbs from "../../Components/BreadCrumbs";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "../../../../components/Modal";
 import { getOrders } from "../../../../redux/actions/admin/ordersAction";
-import { BsFilterRight } from "react-icons/bs";
 import UpdateOrder from "./UpdateOrder";
 import FilterArray from "../../Components/FilterArray";
 import ReturnRequestsButtonInOrders from "./ReturnRequestsButtonInOrders";
@@ -17,6 +15,7 @@ import SearchBar from "../../../../components/SearchBar";
 import Pagination from "../../../../components/Pagination";
 import RangeDatePicker from "../../../../components/RangeDatePicker";
 import ClearFilterButton from "../../Components/ClearFilterButton";
+import toast from "react-hot-toast";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -28,6 +27,14 @@ const Orders = () => {
   const [selectedOrderToUpdate, setSelectedOrderToUpdate] = useState({});
   const [updateModal, setUpdateModal] = useState(false);
   const toggleUpdateModal = (data) => {
+    if (data.status === "cancelled") {
+      toast.error("Cannot Edit Cancelled Product");
+      return;
+    }
+    if (data.status === "returned") {
+      toast.error("Cannot Edit Returned Product");
+      return;
+    }
     setUpdateModal(!updateModal);
     setSelectedOrderToUpdate(data);
   };

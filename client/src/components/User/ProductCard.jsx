@@ -30,9 +30,14 @@ const ProductCard = ({ product }) => {
       )}
       <p className="font-bold  text-gray-800 line-clamp-1">{product.name}</p>
       <p className="font-semibold text-md text-blue-500">
-        <span className="text-gray-500 line-through">
-          {parseInt((product.price + product.markup) * 1.25)}₹
-        </span>
+        {product.offer && (
+          <span className="text-gray-500 line-through">
+            {parseInt(
+              ((product.price + product.markup) * (product.offer + 100)) / 100
+            )}
+            ₹
+          </span>
+        )}
         {" " + (product.price + product.markup)}₹
       </p>
     </div>

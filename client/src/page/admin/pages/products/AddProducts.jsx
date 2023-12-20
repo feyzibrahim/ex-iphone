@@ -41,6 +41,7 @@ const AddProducts = () => {
   const [price, setPrice] = useState("");
   const [markup, setMarkup] = useState("");
   const [moreImageURL, setMoreImageURL] = useState("");
+  const [offer, setOffer] = useState("");
 
   const handleSingleImageInput = (img) => {
     setImageURL(img);
@@ -72,6 +73,7 @@ const AddProducts = () => {
     formData.append("price", price);
     formData.append("markup", markup);
     formData.append("category", category);
+    formData.append("offer", offer);
     formData.append("status", status.toLowerCase());
 
     formData.append("imageURL", imageURL);
@@ -266,6 +268,16 @@ const AddProducts = () => {
                 className="admin-input"
                 value={markup}
                 onChange={(e) => setMarkup(e.target.value)}
+              />
+              <p className="admin-label">Offer</p>
+              <input
+                type="number"
+                placeholder="Type product offer here"
+                className="admin-input"
+                value={offer}
+                min={1}
+                max={100}
+                onChange={(e) => setOffer(e.target.value)}
               />
             </div>
             <div className="admin-div">

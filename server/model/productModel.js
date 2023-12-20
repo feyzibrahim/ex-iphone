@@ -63,6 +63,9 @@ const productsSchema = new Schema(
     numberOfReviews: {
       type: Number,
     },
+    offer: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

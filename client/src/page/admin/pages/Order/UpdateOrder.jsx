@@ -65,12 +65,36 @@ const UpdateOrder = ({ toggleModal, data }) => {
                 name="status"
                 className="capitalize px-5 py-2 w-full bg-gray-300 rounded-lg"
               >
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="shipped">Shipped</option>
+                <option
+                  value="pending"
+                  disabled={
+                    status === "pending" ||
+                    status === "processing" ||
+                    status === "shipped" ||
+                    status === "delivered"
+                  }
+                >
+                  Pending
+                </option>
+                <option
+                  value="processing"
+                  disabled={
+                    status === "processing" ||
+                    status === "shipped" ||
+                    status === "delivered"
+                  }
+                >
+                  Processing
+                </option>
+                <option
+                  value="shipped"
+                  disabled={status === "shipped" || status === "delivered"}
+                >
+                  Shipped
+                </option>
                 <option value="delivered">Delivered</option>
                 <option value="cancelled">Cancelled</option>
-                <option value="returned">Returned</option>
+                {/* <option value="returned">Returned</option> */}
               </Field>
               <ErrorMessage
                 name="status"

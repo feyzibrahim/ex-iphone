@@ -101,7 +101,7 @@ const Pagination = ({ handleClick, page, number, totalNumber }) => {
           <BsArrowLeft />
         </p>
       )}
-      {renderPaginationNumber()}
+      {paginationNum > 1 && renderPaginationNumber()}
       {paginationNum > 1 && (
         <p
           className="pagination-arrows"

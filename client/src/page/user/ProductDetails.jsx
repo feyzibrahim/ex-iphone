@@ -190,12 +190,21 @@ const ProductDetails = () => {
                   {product.price + product.markup}₹
                 </span>
                 {"  "}
-                <span className="text-gray-500 line-through">
-                  {(product.price + product.markup) * 1.25}₹
-                </span>
-                <span className="bg-orange-500 px-3 py-1 ml-5 text-base rounded">
-                  25% Off
-                </span>
+                {product.offer && (
+                  <>
+                    <span className="text-gray-500 line-through">
+                      {parseInt(
+                        ((product.price + product.markup) *
+                          (product.offer + 100)) /
+                          100
+                      )}
+                      ₹
+                    </span>
+                    <span className="bg-orange-500 px-3 py-1 ml-5 text-base rounded">
+                      {product.offer}% Off
+                    </span>
+                  </>
+                )}
               </p>
               {product.attributes &&
                 product.attributes.slice(0, 4).map((at, index) => (

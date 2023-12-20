@@ -9,6 +9,7 @@ const uuid = require("uuid");
 const Wallet = require("../../model/walletModel");
 const Coupon = require("../../model/couponModel");
 const { generateInvoicePDF } = require("../Common/invoicePDFGenFunctions");
+const Counter = require("../../model/counterModel");
 
 // Just the function increment or decrement product count
 const updateProductList = async (id, count) => {
@@ -272,8 +273,8 @@ const cancelOrder = async (req, res) => {
 
     await Promise.all(updateProductPromises);
 
-    const order = await Order.findByIdAndUpdate(
-      id,
+    const order = await Order.findOneAndUpdate(
+      find,
       {
         $set: {
           status: "cancelled",
@@ -300,13 +301,29 @@ const cancelOrder = async (req, res) => {
       // Adding the refund to wallet of user.
 
       await Payment.findOneAndUpdate(
-        { order: id },
+        { order: order._id },
         {
           $set: {
             status: "refunded",
           },
         }
       );
+
+      let counter = await Counter.findOne({
+        model: "Wallet",
+        field: "transaction_id",
+      });
+
+      // Checking if order counter already exist
+      if (counter) {
+        counter.count += 1;
+        await counter.save();
+      } else {
+        counter = await Counter.create({
+          model: "Wallet",
+          field: "transaction_id",
+        });
+      }
 
       let wallet = {};
       const exists = await Wallet.findOne({ user: _id });
@@ -317,10 +334,11 @@ const cancelOrder = async (req, res) => {
           },
           $push: {
             transactions: {
+              transaction_id: counter.count + 1,
               amount: order.totalPrice,
               type: "credit",
               description: "Order Cancellation Refund",
-              order: id,
+              order: order._id,
             },
           },
         });
@@ -330,10 +348,11 @@ const cancelOrder = async (req, res) => {
           balance: order.totalPrice,
           transactions: [
             {
+              transaction_id: counter.count + 1,
               amount: order.totalPrice,
               type: "credit",
               description: "Order Cancellation Refund",
-              order: id,
+              order: order._id,
             },
           ],
         });

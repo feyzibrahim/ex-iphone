@@ -60,6 +60,7 @@ const getProducts = async (req, res) => {
         markup: 1,
         numberOfReviews: 1,
         rating: 1,
+        offer: 1,
       }
     )
       .sort(sortOptions)

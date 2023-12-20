@@ -130,6 +130,13 @@ const getOrders = async (req, res) => {
 const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
+
+    let find = {};
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      find._id = id;
+    } else {
+      find.orderId = id;
+    }
     const { status, description, date, paymentStatus } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -137,7 +144,7 @@ const updateOrderStatus = async (req, res) => {
     }
 
     const statusExists = await Order.findOne({
-      _id: id,
+      ...find,
       "statusHistory.status": status,
     });
 
@@ -157,7 +164,7 @@ const updateOrderStatus = async (req, res) => {
       };
     }
 
-    const updated = await Order.findByIdAndUpdate(id, updateOptions, {
+    const updated = await Order.findOneAndUpdate(find, updateOptions, {
       new: true,
     });
 
@@ -167,7 +174,7 @@ const updateOrderStatus = async (req, res) => {
 
     if (paymentStatus === "yes") {
       await Payment.create({
-        order: updated.orderId || updated._id,
+        order: updated._id,
         payment_id: `cod_${uuid.v4()}`,
         user: updated.user,
         status: "success",
@@ -177,14 +184,14 @@ const updateOrderStatus = async (req, res) => {
 
     if (paymentStatus === "no") {
       await Payment.create({
-        order: updated.orderId || updated._id,
+        order: updated._id,
         user: updated.user,
         status: "pending",
         paymentMode: "cashOnDelivery",
       });
     }
 
-    const order = await Order.findById(id, {
+    const order = await Order.findOne(find, {
       address: 0,
       products: { $slice: 1 },
     })
