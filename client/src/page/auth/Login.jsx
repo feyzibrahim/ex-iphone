@@ -8,7 +8,7 @@ import {
   googleLoginOrSignUp,
   loginUser,
 } from "../../redux/actions/userActions";
-
+import { updateError } from "../../redux/reducers/userSlice";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import InputWithIcon from "../../components/InputWithIcon";
@@ -40,6 +40,9 @@ const Login = () => {
         navigate("/");
       }
     }
+    return () => {
+      dispatch(updateError(""));
+    };
   }, [user]);
 
   const handleLoginSubmit = (value) => {

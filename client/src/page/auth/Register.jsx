@@ -24,6 +24,7 @@ import toast from "react-hot-toast";
 import { appJson } from "../../Common/configurations";
 import { GoogleLogin } from "@react-oauth/google";
 import { commonRequest } from "../../Common/api";
+import { updateError } from "../../redux/reducers/userSlice";
 
 const Register = () => {
   const { user, loading, error } = useSelector((state) => state.user);
@@ -38,6 +39,9 @@ const Register = () => {
     if (user) {
       navigate("/");
     }
+    return () => {
+      dispatch(updateError(""));
+    };
   }, [user]);
 
   const initialValues = {

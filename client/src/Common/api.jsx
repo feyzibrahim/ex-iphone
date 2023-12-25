@@ -1,8 +1,8 @@
 import { handleError } from "./configurations";
 import axios from "axios";
 
-export const URL = "https://exiphones.shop/api";
-// export const URL = "http://localhost:4000/api";
+// export const URL = "https://exiphones.shop/api";
+export const URL = "http://localhost:4000/api";
 
 const apiInstance = axios.create({
   baseURL: URL,
